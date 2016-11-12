@@ -31,15 +31,5 @@ public class UserOpenPoint {
     Map<String, Object> message = userService.registUser(username, email, password);
     return message;
   }
-  /**
-  * 用户登录接口
-  * @param principal 用户名或邮箱账号
-  * @param password 密码
-  * @return 返回登录结果信息
-  */
-  @RequestMapping(value = "/authc/sigin", method = RequestMethod.POST)
-  public Map<String, Object> sigin(@RequestParam(value = "principal", required = true) String principal, @RequestParam(value = "password", required = true) String password) {
-    Map<String, Object> message = userService.sigin(principal,password);
-    return message;
-  }
+ 
 }

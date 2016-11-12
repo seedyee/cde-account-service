@@ -81,54 +81,7 @@ public class UserService {
     result.put("error", "null");
     return result;
   }
-  /**
-  * 用户登录服务
-  * @param principal 用户名或邮箱
-  * @param password 密码
-  * @return
-  */
-  @Transactional
-  public Map<String, Object> sigin(String principal, String password){
-    Map<String, Object> result = new HashMap<>();
-    List<Map<String, Object>> userList = null;
-    Email email = null;
-    if (principal != null && password != null) {
-      //使用用户名登录的情况
-      userList =  userDaoImp.getUserByUsername(principal);
-      if (userList.size() > 0) {//使用用户名登录的情况
-        Map<String,Object> userMap= (Map<String,Object>) userList.get(0);
-        if (userMap.get("password").equals(password)) {
-          result.put("error", "null");
-          return result;
-        }else {
-          result.put("error", "10002  密码错误");
-          return result;
-        }
-      }else {//邮箱存在且是默认邮箱才可以登录
-        email = emailDaoImp.getByDefalutEmail(principal);
-        if (email != null) {
-          List<Map<String, Object>> userById = userDaoImp.getUserById(email.getUserId());
-          Map<String, Object> userMap = userById.get(0);
-          if (userMap.get("password").equals(password)) {
-            result.put("error", "null");
-            return result;
-          }else {
-            result.put("error", "10002  密码错误");
-            return result;
-          }
-        }
-      }
-    }
-    //处理没有传递邮箱或是用户名的错误信息
-    result.put("error", "10005  用户不存在");
-    return result;
-  }
 
-  public Map<String, Object> signout(String id) {
-    Map<String, Object> result = new HashMap<>();
-    result.put("error", "null");
-    return result;
-  }
   /**
   * 根据用户id获取用户信息
   * @param id 用户id
