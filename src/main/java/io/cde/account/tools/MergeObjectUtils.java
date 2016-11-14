@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+
 /**
  * @author lcl
  * @createDate 2016年11月3日上午11:42:11
@@ -27,25 +28,30 @@ public class MergeObjectUtils {
           Object value2 = m.invoke(updateObject);
           if (value2 != null && value1 != value2) {
             if (value2 instanceof String) {
-              m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), String.class);
-              m.invoke(formerObject, value2);
+	            m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), String.class);
+	            m.invoke(formerObject, value2);
             }
             if (value2 instanceof Integer) {
-              m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), Integer.class);
-              m.invoke(formerObject, value2);
+	            m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), Integer.class);
+	            m.invoke(formerObject, value2);
             }
             if (value2 instanceof Long) {
-              m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), Long.class);
-              m.invoke(formerObject, value2);
+	            m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), Long.class);
+	            m.invoke(formerObject, value2);
             }
             if (value2 instanceof List) {
-              m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), List.class);
-              m.invoke(formerObject, value2);
+	            m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), List.class);
+	            m.invoke(formerObject, value2);
             }
             if (value2 instanceof Map) {
-              m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), Map.class);
-              m.invoke(formerObject, value2);
+	            m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), Map.class);
+	            m.invoke(formerObject, value2);
             }
+            if (value2 instanceof Boolean) {
+            	    m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), Boolean.class);
+            	    m.invoke(formerObject, value2);
+            }
+           
           }
         }
       }
