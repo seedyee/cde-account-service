@@ -45,6 +45,7 @@ public class EmailEndPoint {
 	 */
 	@RequestMapping(value = "/{accountId}/emails/{emailId}", method = RequestMethod.POST)
 	public Object updateEmail(@PathVariable String accountId, @PathVariable String emailId, @ModelAttribute(name = "email") Email email) {
+		email.setId(emailId);
 		message = emailService.updateEmail(email);
 		return message;
 	}
@@ -60,14 +61,14 @@ public class EmailEndPoint {
 		return message;
 	}
 	/**
-	 * 删除用户邮箱信息-----------有问题
+	 * 删除用户邮箱信息
 	 * @param accountId
 	 * @param emailId
 	 * @return
 	 */
 	@RequestMapping(value = "/{accountId}/emails/{emailId}", method = RequestMethod.DELETE)
-	public Object deleteEmail(@PathVariable String accountId, @PathVariable String emailId, @RequestParam(name = "id", required = true) String id) {
-		message = emailService.deleteEmail(accountId,id);
+	public Object deleteEmail(@PathVariable String accountId, @PathVariable String emailId) {
+		message = emailService.deleteEmail(accountId,emailId);
 		return message;
 	}
 }

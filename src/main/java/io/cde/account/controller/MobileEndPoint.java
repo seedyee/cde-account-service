@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.cde.account.domaim.Mobile;
@@ -47,6 +46,7 @@ public class MobileEndPoint {
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles/{mobileId}", method = RequestMethod.POST)
 	public Object updateMobile(@PathVariable String accountId, @PathVariable String mobileId, @ModelAttribute(name = "mobile") Mobile mobile) {
+		mobile.setId(mobileId);
 		message = mobileService.updateMobile(mobile);
 		return message;
 	}
@@ -69,8 +69,8 @@ public class MobileEndPoint {
 	 * @return
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles/{mobileId}", method = RequestMethod.DELETE)
-	public Object deleteMobile(@PathVariable String accountId, @PathVariable String mobileId, @RequestParam(name = "id", required = true) String id) {
-		message = mobileService.deleteMobile(accountId, id);
+	public Object deleteMobile(@PathVariable String accountId, @PathVariable String mobileId) {
+		message = mobileService.deleteMobile(accountId, mobileId);
 		return message;
 	}
 }
