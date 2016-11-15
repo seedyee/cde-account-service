@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.cde.account.dao.Interface;
 
 import java.util.List;
@@ -18,22 +15,22 @@ public interface EmailRepository extends MongoRepository<Email, String>{
 	
 	/**
 	 * 根据邮箱地址获取邮箱信息
-	 * @param email
-	 * @return
+	 * @param email 邮箱地址
+	 * @return 返回查询的邮箱的对象
 	 */
 	Email findByEmail(String email);
 	
 	/**
 	 * 根据邮箱id查询邮箱信息
-	 * @param id
-	 * @return
+	 * @param id 邮箱id
+	 * @return 返回查询的有限的对象
 	 */
 	Email findById(String id);
 	
 	/**
 	 * 根据用户id获取用户邮箱信息
-	 * @param accountId
-	 * @return
+	 * @param accountId 用户id
+	 * @return 返回用户的邮箱信息集合
 	 */
 	List<Email> findByAccountId(String accountId);
 	

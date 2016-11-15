@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.cde.account.tools;
 
 import java.util.HashMap;

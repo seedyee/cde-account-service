@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.cde.account.dao.Interface;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -15,15 +12,15 @@ import io.cde.account.domaim.Account;
 public interface AccountRepository extends MongoRepository<Account, String> {
 	/**
 	 * 根据用户名查询用户信息
-	 * @param name
-	 * @return
+	 * @param name 用户名
+	 * @return 返回查询出的用户信息
 	 */
 	Account findByName(String name);
 	
 	/**
 	 * 根据id查询用户信息
-	 * @param id
-	 * @return
+	 * @param id 用户id
+	 * @return 返回查询出的用户信息
 	 */
 	Account findById(String id);
 }

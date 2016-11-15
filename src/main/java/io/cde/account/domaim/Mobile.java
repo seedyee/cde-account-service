@@ -5,9 +5,6 @@ package io.cde.account.domaim;
  * @createDate 2016年11月1日下午2:16:25
  *
  */
-//@Entity
-//@Table(name = "f_mobile")
-//@Component
 public class Mobile extends BaseEntity {
 
   /**
@@ -23,21 +20,18 @@ public class Mobile extends BaseEntity {
   */
   private boolean isVerified;
 
-  //@Column(name = "f_user_id", nullable = false)
   public String getAccountId() {
     return accountId;
   }
   public void setAccountId(String accountId) {
     this.accountId = accountId;
   }
-  //@Column(name = "f_mobile", nullable = false, length = 20)
   public String getMobile() {
     return mobile;
   }
   public void setMobile(String mobile) {
     this.mobile = mobile;
   }
-  //@Column(name = "f_verified", nullable = true, length = 10)
   public boolean getIsVerified() {
     return isVerified;
   }

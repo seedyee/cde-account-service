@@ -6,9 +6,8 @@ import org.springframework.data.annotation.Transient;
 
 /**
  * 用户实体
- * 
  * @author lcl
- *
+ * @createDate 2016年11月14日上午11:06:17
  */
 
 public class Account extends BaseEntity {
@@ -80,16 +79,12 @@ public class Account extends BaseEntity {
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	// @Column(name = "f_password", nullable = false, length = 50)
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -97,124 +92,85 @@ public class Account extends BaseEntity {
 	public String getNewPassword() {
 		return newPassword;
 	}
-
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
 	}
-
-	// @Column(name = "f_avatar", nullable = true, length = 300)
 	public String getAvatar() {
 		return avatar;
 	}
-
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
-
-	// @Column(name = "f_company", nullable = true, length = 50)
 	public String getCompany() {
 		return company;
 	}
-
 	public void setCompany(String company) {
 		this.company = company;
 	}
-
-	// @Column(name = "f_company_address", nullable = true, length = 200)
 	public String getCompanyAddress() {
 		return companyAddress;
 	}
-
 	public void setCompanyAddress(String companyAddress) {
 		this.companyAddress = companyAddress;
 	}
-
-	// @Column(name ="f_company_business", nullable = true, length = 50)
 	public String getCompanyBusiness() {
 		return companyBusiness;
 	}
-
 	public void setCompanyBusiness(String companyBusiness) {
 		this.companyBusiness = companyBusiness;
 	}
-
-	// @Column(name = "f_position", nullable = true, length = 50)
 	public String getPosition() {
 		return position;
 	}
-
 	public void setPosition(String position) {
 		this.position = position;
 	}
-
-	// @Column(name = "f_personal", nullable = true, length = 300)
 	public String getPersonal() {
 		return personal;
 	}
-
 	public void setPersonal(String personal) {
 		this.personal = personal;
 	}
-
-	// @Column(name = "f_timestamp", nullable = true)
 	public Date getTimestamp() {
 		return timestamp;
 	}
-
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
-
-	// @Column(name = "f_real_name", nullable = true, length = 50)
 	public String getRealName() {
 		return realName;
 	}
-
 	public void setRealName(String realName) {
 		this.realName = realName;
 	}
-
-	// @Transient
+	@Transient
 	public String getVerifyCode() {
 		return verifyCode;
 	}
-
 	public void setVerifyCode(String verifyCode) {
 		this.verifyCode = verifyCode;
 	}
-
-	// @Column(name = "f_email", nullable = true, length = 50)
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	// @Column(name = "f_mobile", nullable = true, length = 50)
 	public String getMobile() {
 		return mobile;
 	}
-
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-
-	// @Column(name = "f_public_email", nullable = true, length = 10)
 	public boolean getIsPublicEmail() {
 		return isPublicEmail;
 	}
-
 	public void setIsPublicEmail(boolean isPublicEmail) {
 		this.isPublicEmail = isPublicEmail;
 	}
-
-	// @Column(name = "f_public_mobile", nullable = true, length = 10)
 	public boolean getIsPublicMobile() {
 		return isPublicMobile;
 	}
-
 	public void setIsPublicMobile(boolean isPublicMobile) {
 		this.isPublicMobile = isPublicMobile;
 	}

@@ -1,5 +1,3 @@
-/**
- * 
  */
 package io.cde.account.service;
 
@@ -16,7 +14,7 @@ import io.cde.account.tools.ResultUtils;
 /**
  * @author lcl
  * @createDate 2016年11月13日下午10:12:18
- *
+ * 
  */
 @Service
 public class AccountService {
@@ -30,10 +28,9 @@ public class AccountService {
 	@Autowired
 	private EmailService emailService;
 	
-	
 	/**
 	 * 注册用户
-	 * @param account
+	 * @param account 
 	 * @return
 	 */
 	public Object createAccount(Account account) {
@@ -45,16 +42,13 @@ public class AccountService {
 		if (checkEmail == true || checkAccount == true) {
 			return ResultUtils.resultError(1000001, "该用户已存在");
 		}
-		//存用户
 		createAccount = accountRepository.save(account);
-		//存邮箱
 		email.setAccountId(createAccount.getId());
 		email.setEmail(account.getEmail());
 		email.setIsVerified(false);
 		emailRepository.save(email);
 		return ResultUtils.result(createAccount);
 	}
-
 	/**
 	 * 获取用户信息
 	 * @param accountId

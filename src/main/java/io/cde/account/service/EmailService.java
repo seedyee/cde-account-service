@@ -50,7 +50,7 @@ public class EmailService {
 	public Object updateEmail(Email email) {
 		Email formEmail = emailRepository.findById(email.getId());
 		if (formEmail == null) {
-			return ResultUtils.resultError(1000008, "邮箱不存在");
+			return ResultUtils.resultError(1000011, "用户没有关联该邮箱");
 		}
 		formEmail.setIsVerified(email.getIsVerified());
 		emailRepository.save(formEmail);
@@ -77,9 +77,9 @@ public class EmailService {
 	public Object deleteEmail(String accountId, String id) {
 		Email checkDefaultEmail = emailRepository.findById(id);
 		Account account = accountRepository.findById(accountId);
-//		if (checkDefaultEmail == null || account == null ) {
-//			return ResultUtils.resultError(1000007, "用户名或邮箱不存在");
-//		}
+		if (checkDefaultEmail == null || account == null ) {
+			return ResultUtils.resultError(1000011, "用户没有关联该邮箱");
+		}
 		if (checkDefaultEmail.getEmail().equals(account.getEmail())) {
 			return ResultUtils.resultError(1000020, "默认邮箱不能删除");
 		}
@@ -99,5 +99,4 @@ public class EmailService {
 		}
 		return false;
 	}
-	
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.cde.account.service;
 
 import java.util.ArrayList;
@@ -78,9 +75,9 @@ public class MobileService {
 	public Object deleteMobile(String accountId, String id) {
 		Mobile checkDefaultMobile = mobileRepository.findById(id);
 		Account account = accountRepository.findById(accountId);
-//		if (checkDefaultMobile == null || account == null ) {
-//			return ResultUtils.resultError(1000007, "用户名或电话不存在------");
-//		}
+		if (checkDefaultMobile == null || account == null ) {
+			return ResultUtils.resultError(1000013, "用户没有关联该电话号码");
+		}
 		if (checkDefaultMobile.getMobile().equals(account.getMobile())) {
 			return ResultUtils.resultError(1000021, "默认电话不能删除");
 		}

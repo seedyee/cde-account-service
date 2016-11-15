@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.cde.account.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +26,8 @@ public class MobileEndPoint {
 	
 	/**
 	 * 获取用户的电话信息
-	 * @param accountId
-	 * @return
+	 * @param accountId 用户id
+	 * @return 返回用户的电话信息或是错误的操作信息
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles", method = RequestMethod.GET)
 	public Object getMobiles(@PathVariable String accountId) {
@@ -39,10 +36,10 @@ public class MobileEndPoint {
 	}
 	/**
 	 * 修改用户的电话信息
-	 * @param accountId
-	 * @param mobileId
-	 * @param mobile
-	 * @return
+	 * @param accountId 用户id
+	 * @param mobileId 要修改的电话的id
+	 * @param mobile 携带要修改的电话信息的对象
+	 * @return 返回操作的结果
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles/{mobileId}", method = RequestMethod.POST)
 	public Object updateMobile(@PathVariable String accountId, @PathVariable String mobileId, @ModelAttribute(name = "mobile") Mobile mobile) {
@@ -52,9 +49,9 @@ public class MobileEndPoint {
 	}
 	/**
 	 * 增加用户电话信息
-	 * @param accountId
-	 * @param mobile
-	 * @return
+	 * @param accountId 用户id
+	 * @param mobile 携带要添加的电话的结果
+	 * @return 返回添加操作的结果
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles", method = RequestMethod.POST)
 	public Object addMobile(@PathVariable String accountId, @ModelAttribute(name = "mobile") Mobile mobile) {
@@ -63,10 +60,9 @@ public class MobileEndPoint {
 	}
 	/**
 	 * 删除用户电话信息
-	 * @param accountId
-	 * @param mobileId
-	 * @param id
-	 * @return
+	 * @param accountId 用户id
+	 * @param mobileId 要删除的电话的id
+	 * @return 删除操作的结果
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles/{mobileId}", method = RequestMethod.DELETE)
 	public Object deleteMobile(@PathVariable String accountId, @PathVariable String mobileId) {

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.cde.account.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +19,16 @@ import io.cde.account.tools.ResultUtils;
 @RestController
 @RequestMapping(value = "/accounts")
 public class AccountEndPoint {
+	
 	@Autowired
 	private AccountService accountService;
 	
 	private Object message = null;
+	
 	/**
 	 * 注册用户
-	 * @param account
-	 * @return
+	 * @param account 注册的用户信息对象
+	 * @return 返回注册操作结果
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public Object createAccount(@ModelAttribute(name = "account")Account account) {
@@ -37,13 +36,13 @@ public class AccountEndPoint {
 			this.message = accountService.createAccount(account);
 			return this.message;
 		}
-		return "传入的参数有误";
+		return ResultUtils.resultError(1000016, "没有传递参数");
 	}
 	
 	/**
 	 * 获取用户基本信息
-	 * @param accountId
-	 * @return
+	 * @param accountId 用户id
+	 * @return 返回用户基本信息或是错误的操作反馈
 	 */
 	@RequestMapping(value = "/{accountId}/basicInfo", method = RequestMethod.GET)
 	public Object getAccountInfo(@PathVariable String accountId) {
@@ -51,10 +50,10 @@ public class AccountEndPoint {
 		return this.message;
 	}
 	/**
-	 * 修改用户信息---------有问题
-	 * @param accountId
-	 * @param account
-	 * @return
+	 * 修改用户信息
+	 * @param accountId 用户id
+	 * @param account 携带要修改的信息的用户对象
+	 * @return 返回修改操作的结果
 	 */
 	@RequestMapping(value = "/{accountId}/basicInfo", method = RequestMethod.POST)
 	public Object updateAccountInfo(@PathVariable String accountId, @ModelAttribute(name = "account")Account account) {
@@ -63,9 +62,9 @@ public class AccountEndPoint {
 	}
 	/**
 	 * 修改用户密码
-	 * @param accountId
-	 * @param account
-	 * @return
+	 * @param accountId 用户id
+	 * @param account 携带要修改的密码的用户对象
+	 * @return 返回修改操作的结果
 	 */
 	@RequestMapping(value = "/{accountId}/password", method = RequestMethod.POST)
 	public Object updateAccountPassword(@PathVariable String accountId, @ModelAttribute(name = "account")Account account) {

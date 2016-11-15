@@ -5,9 +5,6 @@ package io.cde.account.domaim;
  * @author lcl
  *
  */
-//@Entity
-//@Table(name = "f_email")
-//@Component
 public class Email extends BaseEntity{
 
   /**
@@ -23,21 +20,18 @@ public class Email extends BaseEntity{
   */
   private boolean isVerified;
 
-  //@Column(name = "f_user_id",nullable = false, length = 100)
   public String getAccountId() {
     return accountId;
   }
   public void setAccountId(String accountId) {
     this.accountId = accountId;
   }
-  //@Column(name = "f_email", nullable = false, length = 50)
   public String getEmail() {
     return email;
   }
   public void setEmail(String email) {
     this.email = email;
   }
-  //@Column(name = "f_verified", nullable = true, length = 10)
   public boolean getIsVerified() {
     return isVerified;
   }

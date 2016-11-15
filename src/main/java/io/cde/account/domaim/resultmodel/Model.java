@@ -3,7 +3,7 @@ package io.cde.account.domaim.resultmodel;
 /**
  * @author lcl
  * @createDate 2016年11月14日上午11:06:17
- *
+ * 返回数据的模型实体
  */
 public class Model {
 	/**

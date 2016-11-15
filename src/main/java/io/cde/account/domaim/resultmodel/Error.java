@@ -3,7 +3,7 @@ package io.cde.account.domaim.resultmodel;
 /**
  * @author lcl
  * @createDate 2016年11月14日上午11:06:46
- *
+ * 错误信息实体
  */
 public class Error {
 	/**
