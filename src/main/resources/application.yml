@@ -1,6 +1,15 @@
 spring:
-  profiles:
-    active: dev
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/cde-account-service
+  redis:
+    host: 192.168.1.10
+    pool:
+      max-active: 8
+      max-wait: 1
+      max-idle: 8
+      min-idle: 0 
+
 logging:
   file: my.log
   
