@@ -25,10 +25,12 @@ public class Email extends BaseEntity {
 	/**
 	 * 是否默认，保留字段
 	 */
+	@Transient
 	private boolean isDefault;
 	/**
 	 * 是否公开，保留字段
 	 */
+	@Transient
 	private boolean isPublic;
 	
 	public String getAccountId() {
@@ -49,14 +51,12 @@ public class Email extends BaseEntity {
 	public void setIsVerified(boolean isVerified) {
 		this.isVerified = isVerified;
 	}
-	@Transient
 	public boolean getIsDefault() {
 		return isDefault;
 	}
 	public void setIsDefault(boolean isDefault) {
 		this.isDefault = isDefault;
 	}
-	@Transient
 	public boolean getIsPublic() {
 		return isPublic;
 	}

@@ -1,6 +1,7 @@
 package io.cde.account.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import io.cde.account.dao.Interface.AccountRepository;
@@ -34,6 +35,7 @@ public class AccountService {
 	 */
 	public Object createAccount(Account account) {
 		Account createAccount = null;
+		String hashed = null;
 		Email email = new Email();
 		boolean checkAccount = this.checkAccountByName(account.getName());
 		boolean checkEmail = emailService.checkEmailByEmailAddress(account.getEmail());
@@ -41,6 +43,9 @@ public class AccountService {
 		if (checkEmail == true || checkAccount == true) {
 			return ResultUtils.resultError(1000001, "该用户已存在");
 		}
+		//加密存入数据库
+		hashed = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
+		account.setPassword(hashed);
 		createAccount = accountRepository.save(account);
 		email.setAccountId(createAccount.getId());
 		email.setEmail(account.getEmail());
@@ -89,8 +94,9 @@ public class AccountService {
 		if (formAccount == null) {
 			return ResultUtils.resultError(1000005, "用户不存在");
 		}
-		if (formAccount.getPassword().equals(account.getPassword())) {
-			formAccount.setPassword(account.getNewPassword());
+		//检查密码是否正确
+		if (BCrypt.checkpw(account.getPassword(), formAccount.getPassword())) {
+			formAccount.setPassword(BCrypt.hashpw(account.getNewPassword(), BCrypt.gensalt()));
 			accountRepository.save(formAccount);
 			return ResultUtils.resultNullError();
 		}
