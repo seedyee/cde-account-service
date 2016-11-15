@@ -17,6 +17,8 @@ target/
 *.cmd
 *.settings
 *.mvn
+*.log
+*.idea
 
 ### NetBeans ###
 nbproject/private/
