@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.cde.account.service;
 
 import java.util.ArrayList;
@@ -38,10 +35,13 @@ public class EmailService {
 		List<Email> emails = new ArrayList<>();
 		emails = emailRepository.findByAccountId(accountId);
 		if (emails.size() > 0) {
+			Account account = accountRepository.findById(accountId);
+			emails = this.setDefaultAndPublicEmail(emails,account.getEmail(), account.getIsPublicEmail());
 			return ResultUtils.result(emails);
 		}
 		return ResultUtils.resultNullError();
 	}
+	
 	/**
 	 * 修改邮箱信息
 	 * @param email
@@ -98,5 +98,21 @@ public class EmailService {
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * 封装返回数据
+	 * @param emails
+	 * @param email
+	 * @param isPublicEmail
+	 * @return
+	 */
+	private List<Email> setDefaultAndPublicEmail(List<Email> emails, String email, boolean isPublicEmail) {
+		for (Email email2 : emails) {
+			if (email2.getEmail().equals(email)) {
+				email2.setIsDefault(true);
+				email2.setIsPublic(isPublicEmail);
+			}
+		}
+		return emails;
 	}
 }

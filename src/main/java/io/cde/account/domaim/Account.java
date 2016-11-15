@@ -20,7 +20,9 @@ public class Account extends BaseEntity {
 	 * 用户密码
 	 */
 	private String password;
-
+	/**
+	 * 新密码，由于修改密码的保留字段，不存入数据库
+	 */
 	private String newPassword;
 	/**
 	 * 用户头像地址

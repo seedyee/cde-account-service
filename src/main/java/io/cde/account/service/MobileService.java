@@ -35,6 +35,8 @@ public class MobileService {
 		List<Mobile> mobiles = new ArrayList<>();
 		mobiles = mobileRepository.findByAccountId(accountId);
 		if (mobiles.size() > 0) {
+			Account account = accountRepository.findById(accountId);
+			mobiles = this.setDefaultAndPublicMobile(mobiles, account.getMobile(), account.getIsPublicMobile());
 			return ResultUtils.result(mobiles);
 		}
 		return ResultUtils.resultNullError();
@@ -49,7 +51,7 @@ public class MobileService {
 		if (formMobile == null) {
 			return ResultUtils.resultError(1000017, "该电话没有关联用户");
 		}
-		formMobile.setIsVerified(mobile.getIsVerified());
+		formMobile.setIsVerified(mobile.getIsVerified());;
 		mobileRepository.save(formMobile);
 		return ResultUtils.resultNullError();
 	}
@@ -83,5 +85,20 @@ public class MobileService {
 		}
 		mobileRepository.delete(checkDefaultMobile);
 		return ResultUtils.resultNullError();
+	}
+	/**
+	 * @param mobiles
+	 * @param mobile
+	 * @param isPublicMobile
+	 * @return
+	 */
+	private List<Mobile> setDefaultAndPublicMobile(List<Mobile> mobiles, String mobile, boolean isPublicMobile) {
+		for (Mobile mobile2 : mobiles) {
+			if (mobile2.getMobile().equals(mobile)) {
+				mobile2.setIsDefault(true);
+				mobile2.setIsPublic(isPublicMobile);
+			}
+		}
+		return mobiles;
 	}
 }
