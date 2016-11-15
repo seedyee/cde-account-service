@@ -51,7 +51,6 @@ public class MergeObjectUtils {
             	    m = formerObject.getClass().getMethod("set" + toUpperCaseFirstOne(fName), Boolean.class);
             	    m.invoke(formerObject, value2);
             }
-           
           }
         }
       }
