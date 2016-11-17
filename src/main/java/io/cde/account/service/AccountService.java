@@ -51,7 +51,7 @@ public class AccountService {
 		email.setEmail(account.getEmail());
 		email.setIsVerified(false);
 		emailRepository.save(email);
-		return ResultUtils.result(createAccount);
+		return ResultUtils.resultNullError();
 	}
 	/**
 	 * 获取用户信息
