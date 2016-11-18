@@ -8,6 +8,7 @@ import io.cde.account.dao.Interface.AccountRepository;
 import io.cde.account.dao.Interface.EmailRepository;
 import io.cde.account.domaim.Account;
 import io.cde.account.domaim.Email;
+import io.cde.account.tools.ErrorMessageSourceHandler;
 import io.cde.account.tools.MergeObjectUtils;
 import io.cde.account.tools.ResultUtils;
 
@@ -18,6 +19,9 @@ import io.cde.account.tools.ResultUtils;
  */
 @Service
 public class AccountService {
+	
+	@Autowired
+	private ErrorMessageSourceHandler errorHandler;
 	
 	@Autowired
 	private AccountRepository accountRepository;
@@ -61,6 +65,9 @@ public class AccountService {
 	public Object getAccountInfo(String accountId) {
 		Account account = null;
 		account = accountRepository.findById(accountId);
+		if (account == null) {
+			return ResultUtils.resultError(errorHandler.getCode("error.code"), errorHandler.getMessage("error.message"));
+		}
 		return ResultUtils.result(account);
 	} 
 	/**

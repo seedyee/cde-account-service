@@ -9,7 +9,8 @@ spring:
       max-wait: 1
       max-idle: 8
       min-idle: 0 
-
+  messages:
+    basename: i18n/messages
 logging:
   file: my.log
   
