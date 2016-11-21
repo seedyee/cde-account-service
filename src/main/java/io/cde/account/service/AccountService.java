@@ -8,6 +8,7 @@ import io.cde.account.dao.Interface.AccountRepository;
 import io.cde.account.dao.Interface.EmailRepository;
 import io.cde.account.domaim.Account;
 import io.cde.account.domaim.Email;
+import io.cde.account.domaim.i18n.error.ErrorStatus;
 import io.cde.account.tools.ErrorMessageSourceHandler;
 import io.cde.account.tools.MergeObjectUtils;
 import io.cde.account.tools.ResultUtils;
@@ -66,7 +67,7 @@ public class AccountService {
 		Account account = null;
 		account = accountRepository.findById(accountId);
 		if (account == null) {
-			return ResultUtils.resultError(errorHandler.getCode("error.code"), errorHandler.getMessage("error.message"));
+			return ResultUtils.resultError(ErrorStatus.INVAILD_PASSWORD.getCode(), errorHandler.getMessage(ErrorStatus.INVAILD_PASSWORD.toString()));
 		}
 		return ResultUtils.result(account);
 	} 

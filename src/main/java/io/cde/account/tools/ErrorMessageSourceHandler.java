@@ -17,15 +17,10 @@ public class ErrorMessageSourceHandler {
 	private  MessageSource messageSource;
 	
 	/**
-	 * 根据属性名从资源文件中获取错误码
+	 * 根据
 	 * @param messageKey
-	 * @return 返回int类型的错误码
+	 * @return
 	 */
-	public int getCode(String codeKey) {
-		String messageCode = messageSource.getMessage(codeKey, null, LocaleContextHolder.getLocale());
-		return Integer.parseInt(messageCode);
-	}
-	
 	public String getMessage(String messageKey) {
 		String message = messageSource.getMessage(messageKey, null, LocaleContextHolder.getLocale());
 		return message;
