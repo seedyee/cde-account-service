@@ -10,6 +10,8 @@ import io.cde.account.dao.Interface.AccountRepository;
 import io.cde.account.dao.Interface.MobileRepository;
 import io.cde.account.domaim.Account;
 import io.cde.account.domaim.Mobile;
+import io.cde.account.domaim.i18n.error.ErrorStatus;
+import io.cde.account.tools.ErrorMessageSourceHandler;
 import io.cde.account.tools.ResultUtils;
 
 /**
@@ -19,7 +21,10 @@ import io.cde.account.tools.ResultUtils;
  */
 @Service
 public class MobileService {
-
+	
+	@Autowired
+	private ErrorMessageSourceHandler errorHandler;
+	
 	@Autowired
 	private MobileRepository mobileRepository;
 	
@@ -49,7 +54,7 @@ public class MobileService {
 	public Object updateMobile(Mobile mobile) {
 		Mobile formMobile = mobileRepository.findById(mobile.getId());
 		if (formMobile == null) {
-			return ResultUtils.resultError(1000017, "该电话没有关联用户");
+			return ResultUtils.resultError(ErrorStatus.ACCOUNT_NOT_MOBILE.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_NOT_MOBILE.toString()));
 		}
 		formMobile.setIsVerified(mobile.getIsVerified());;
 		mobileRepository.save(formMobile);
@@ -63,7 +68,7 @@ public class MobileService {
 	public Object addMobile(Mobile mobile) {
 		Mobile checkEmail = mobileRepository.findByMobile(mobile.getMobile());
 		if (checkEmail != null) {
-			return ResultUtils.resultError(1000019, "该号码已经被使用过");
+			return ResultUtils.resultError(ErrorStatus.MOBILE_EXISTED.getCode(), errorHandler.getMessage(ErrorStatus.MOBILE_EXISTED.toString()));
 		}
 		mobileRepository.save(mobile);
 		return ResultUtils.resultNullError();
@@ -78,10 +83,10 @@ public class MobileService {
 		Mobile checkDefaultMobile = mobileRepository.findById(id);
 		Account account = accountRepository.findById(accountId);
 		if (checkDefaultMobile == null || account == null ) {
-			return ResultUtils.resultError(1000013, "用户没有关联该电话号码");
+			return ResultUtils.resultError(ErrorStatus.ACCOUNT_NOT_MOBILE.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_NOT_MOBILE.toString()));
 		}
 		if (checkDefaultMobile.getMobile().equals(account.getMobile())) {
-			return ResultUtils.resultError(1000021, "默认电话不能删除");
+			return ResultUtils.resultError(ErrorStatus.ILLEGAL_DELETE_MOBILE.getCode(), errorHandler.getMessage(ErrorStatus.ILLEGAL_DELETE_MOBILE.toString()));
 		}
 		mobileRepository.delete(checkDefaultMobile);
 		return ResultUtils.resultNullError();

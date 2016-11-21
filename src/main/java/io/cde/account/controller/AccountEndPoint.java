@@ -32,11 +32,8 @@ public class AccountEndPoint {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public Object createAccount(@ModelAttribute(name = "account")Account account) {
-		if (account.getName() != null && account.getPassword() != null && account.getEmail() != null) {
-			this.message = accountService.createAccount(account);
-			return this.message;
-		}
-		return ResultUtils.resultError(1000016, "没有传递参数");
+		this.message = accountService.createAccount(account);
+		return this.message;
 	}
 	
 	/**
@@ -68,11 +65,8 @@ public class AccountEndPoint {
 	 */
 	@RequestMapping(value = "/{accountId}/password", method = RequestMethod.POST)
 	public Object updateAccountPassword(@PathVariable String accountId, @ModelAttribute(name = "account")Account account) {
-		if (account.getPassword() != null && account.getNewPassword() != null) {
-			account.setId(accountId);
-			this.message = accountService.updateAccountPassword(account);
-			return message;
-		}
-		return ResultUtils.resultError(1000016, "没有传递参数");
+		account.setId(accountId);
+		this.message = accountService.updateAccountPassword(account);
+		return message;
 	}
 }

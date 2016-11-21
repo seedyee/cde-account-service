@@ -46,7 +46,7 @@ public class AccountService {
 		boolean checkEmail = emailService.checkEmailByEmailAddress(account.getEmail());
 		
 		if (checkEmail == true || checkAccount == true) {
-			return ResultUtils.resultError(1000001, "该用户已存在");
+			return ResultUtils.resultError(ErrorStatus.ACCOUNT_EXISTED.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_EXISTED.toString()));
 		}
 		//加密存入数据库
 		hashed = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
@@ -66,9 +66,6 @@ public class AccountService {
 	public Object getAccountInfo(String accountId) {
 		Account account = null;
 		account = accountRepository.findById(accountId);
-		if (account == null) {
-			return ResultUtils.resultError(ErrorStatus.INVAILD_PASSWORD.getCode(), errorHandler.getMessage(ErrorStatus.INVAILD_PASSWORD.toString()));
-		}
 		return ResultUtils.result(account);
 	} 
 	/**
@@ -79,12 +76,12 @@ public class AccountService {
 	public Object updateAccountInfo(Account account) {
 		Account formAccount = accountRepository.findById(account.getId());
 		if (formAccount == null) {
-			return ResultUtils.resultError(1000005, "用户不存在");
+			return ResultUtils.resultNullError();
 		}
 		if (account.getName() != null) {
 			boolean checkAccount = this.checkAccountByName(account.getName());
 			if (checkAccount) {
-				return ResultUtils.resultError(1000001, "该用户已经存在");
+				return ResultUtils.resultError(ErrorStatus.ACCOUNT_EXISTED.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_EXISTED.toString()));
 			}
 			formAccount.setName(account.getName());
 		}
@@ -99,16 +96,13 @@ public class AccountService {
 	 */
 	public Object updateAccountPassword(Account account) {
 		Account formAccount = accountRepository.findById(account.getId());
-		if (formAccount == null) {
-			return ResultUtils.resultError(1000005, "用户不存在");
-		}
 		//检查密码是否正确
 		if (BCrypt.checkpw(account.getPassword(), formAccount.getPassword())) {
 			formAccount.setPassword(BCrypt.hashpw(account.getNewPassword(), BCrypt.gensalt()));
 			accountRepository.save(formAccount);
 			return ResultUtils.resultNullError();
 		}
-		return ResultUtils.resultError(1000002, "密码错误");
+		return ResultUtils.resultError(ErrorStatus.ILLEGAL_ACCOUNT_PASSWORD.getCode(), errorHandler.getMessage(ErrorStatus.ILLEGAL_ACCOUNT_PASSWORD.toString()));
 	}
 	
 	/**

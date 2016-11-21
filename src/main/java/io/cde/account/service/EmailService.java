@@ -10,6 +10,8 @@ import io.cde.account.dao.Interface.AccountRepository;
 import io.cde.account.dao.Interface.EmailRepository;
 import io.cde.account.domaim.Account;
 import io.cde.account.domaim.Email;
+import io.cde.account.domaim.i18n.error.ErrorStatus;
+import io.cde.account.tools.ErrorMessageSourceHandler;
 import io.cde.account.tools.ResultUtils;
 
 /**
@@ -19,6 +21,9 @@ import io.cde.account.tools.ResultUtils;
  */
 @Service
 public class EmailService {
+	
+	@Autowired
+	private ErrorMessageSourceHandler errorHandler;
 	
 	@Autowired
 	private EmailRepository emailRepository;
@@ -50,7 +55,7 @@ public class EmailService {
 	public Object updateEmail(Email email) {
 		Email formEmail = emailRepository.findById(email.getId());
 		if (formEmail == null) {
-			return ResultUtils.resultError(1000011, "用户没有关联该邮箱");
+			return ResultUtils.resultError(ErrorStatus.ACCOUNT_NOT_EMAIL.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_NOT_EMAIL.toString()));
 		}
 		formEmail.setIsVerified(email.getIsVerified());
 		emailRepository.save(formEmail);
@@ -64,7 +69,7 @@ public class EmailService {
 	public Object addEmail(Email email) {
 		Email checkEmail = emailRepository.findByEmail(email.getEmail());
 		if (checkEmail != null) {
-			return ResultUtils.resultError(1000018, "该邮箱已经被使用过");
+			return ResultUtils.resultError(ErrorStatus.EMAIL_EXISTED.getCode(), errorHandler.getMessage(ErrorStatus.EMAIL_EXISTED.toString()));
 		}
 		emailRepository.save(email);
 		return ResultUtils.resultNullError();
@@ -78,10 +83,10 @@ public class EmailService {
 		Email checkDefaultEmail = emailRepository.findById(id);
 		Account account = accountRepository.findById(accountId);
 		if (checkDefaultEmail == null || account == null ) {
-			return ResultUtils.resultError(1000011, "用户没有关联该邮箱");
+			return ResultUtils.resultError(ErrorStatus.ACCOUNT_NOT_EMAIL.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_NOT_EMAIL.toString()));
 		}
 		if (checkDefaultEmail.getEmail().equals(account.getEmail())) {
-			return ResultUtils.resultError(1000020, "默认邮箱不能删除");
+			return ResultUtils.resultError(ErrorStatus.ILLEGAL_DELETE_EMAIL.getCode(), errorHandler.getMessage(ErrorStatus.ILLEGAL_DELETE_EMAIL.toString()));
 		}
 		emailRepository.delete(checkDefaultEmail);
 		return ResultUtils.resultNullError();
