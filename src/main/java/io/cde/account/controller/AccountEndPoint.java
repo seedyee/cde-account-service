@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.cde.account.domaim.Account;
 import io.cde.account.service.AccountService;
-import io.cde.account.tools.ResultUtils;
 
 /**
  * @author lcl
@@ -24,7 +23,6 @@ public class AccountEndPoint {
 	private AccountService accountService;
 	
 	private Object message = null;
-	
 	/**
 	 * 注册用户
 	 * @param account 注册的用户信息对象
@@ -35,7 +33,6 @@ public class AccountEndPoint {
 		this.message = accountService.createAccount(account);
 		return this.message;
 	}
-	
 	/**
 	 * 获取用户基本信息
 	 * @param accountId 用户id

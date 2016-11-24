@@ -1,7 +1,5 @@
 package io.cde.account.config;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +16,7 @@ public class InternationalConfig {
 	@Value(value = "${spring.messages.basename}")
 	private String basename;
 	
-	@Bean(name = "messageSource")
+	@Bean
 	public ResourceBundleMessageSource getMessageResource() {
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 		messageSource.setBasename(basename);
