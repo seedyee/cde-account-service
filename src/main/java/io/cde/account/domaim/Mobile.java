@@ -55,6 +55,7 @@ public class Mobile extends BaseEntity {
 	public void setIsVerified(boolean isVerified) {
 		this.isVerified = isVerified;
 	}
+	
 	public boolean getIsDefault() {
 		return isDefault;
 	}
@@ -62,6 +63,7 @@ public class Mobile extends BaseEntity {
 	public void setIsDefault(boolean isDefault) {
 		this.isDefault = isDefault;
 	}
+	
 	public boolean getIsPublic() {
 		return isPublic;
 	}
@@ -69,5 +71,4 @@ public class Mobile extends BaseEntity {
 	public void setIsPublic(boolean isPublic) {
 		this.isPublic = isPublic;
 	}
-	
 }

@@ -17,8 +17,8 @@ public class ResultUtils {
 	
 	/**
 	 * 返回数据和null错误对象
-	 * @param object
-	 * @return
+	 * @param object 需要返回的实体对象
+	 * @return 返回使用model封装以后的数据
 	 */
 	public static Object result(Object object) {
 		model = new Model();
@@ -27,10 +27,10 @@ public class ResultUtils {
 		return model;
 	}
 	/**
-	 * 返回错误对象
-	 * @param code
-	 * @param message
-	 * @return
+	 * 返回错误信息
+	 * @param code 错误码
+	 * @param message 错误信息描述
+	 * @return 返回错误信息
 	 */
 	public static Object resultError(int code, String message) {
 		Map<String, Error> resultError = new HashMap<>();
@@ -42,7 +42,7 @@ public class ResultUtils {
 	}
 	/**
 	 * 操作成功返回一个null错误对象
-	 * @return
+	 * @return 返回空错误对象
 	 */
 	public static Object resultNullError(){
 		Map<String, Error> resultError = new HashMap<>();

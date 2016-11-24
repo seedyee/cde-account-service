@@ -20,23 +20,23 @@ import io.cde.account.tools.ResultUtils;
  */
 @Service
 public class AccountService {
-	
+    
 	@Autowired
 	private ErrorMessageSourceHandler errorHandler;
-	
+    
 	@Autowired
 	private AccountRepository accountRepository;
-	
+
 	@Autowired
 	private EmailRepository emailRepository;
-	
+
 	@Autowired
 	private EmailService emailService;
-	
+
 	/**
 	 * 注册用户
-	 * @param account 
-	 * @return
+	 * @param account 携带用户信息的对象
+	 * @return 返回注册结果
 	 */
 	public Object createAccount(Account account) {
 		Account createAccount = null;
@@ -60,8 +60,8 @@ public class AccountService {
 	}
 	/**
 	 * 获取用户信息
-	 * @param accountId
-	 * @return
+	 * @param accountId 用户id
+	 * @return 返回获取用户信息的操作结果
 	 */
 	public Object getAccountInfo(String accountId) {
 		Account account = null;
@@ -70,8 +70,8 @@ public class AccountService {
 	} 
 	/**
 	 * 修改用户信息
-	 * @param account
-	 * @return
+	 * @param account 携带修改信息的用户对象
+	 * @return 返回修改操作的结果
 	 */
 	public Object updateAccountInfo(Account account) {
 		Account formAccount = accountRepository.findById(account.getId());
@@ -91,8 +91,8 @@ public class AccountService {
 	}
 	/**
 	 * 修改用户密码
-	 * @param account
-	 * @return
+	 * @param account 需要修改密码的用户
+	 * @return 返回修改操作的结果
 	 */
 	public Object updateAccountPassword(Account account) {
 		Account formAccount = accountRepository.findById(account.getId());
@@ -107,8 +107,8 @@ public class AccountService {
 	
 	/**
 	 * 根据用户名判断用户是否存在
-	 * @param name
-	 * @return
+	 * @param name 用户名
+	 * @return 若存在返回true，不存在返回false
 	 */
 	private boolean checkAccountByName(String name) {
 		Account account = null;

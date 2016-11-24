@@ -23,6 +23,7 @@ public class Account extends BaseEntity {
 	/**
 	 * 新密码，由于修改密码的保留字段，不存入数据库
 	 */
+	@Transient
 	private String newPassword;
 	/**
 	 * 用户头像地址
@@ -81,98 +82,127 @@ public class Account extends BaseEntity {
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getPassword() {
 		return password;
 	}
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@Transient
+	
 	public String getNewPassword() {
 		return newPassword;
 	}
+	
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
 	}
+	
 	public String getAvatar() {
 		return avatar;
 	}
+	
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
+	
 	public String getCompany() {
 		return company;
 	}
+	
 	public void setCompany(String company) {
 		this.company = company;
 	}
+	
 	public String getCompanyAddress() {
 		return companyAddress;
 	}
+	
 	public void setCompanyAddress(String companyAddress) {
 		this.companyAddress = companyAddress;
 	}
+	
 	public String getCompanyBusiness() {
 		return companyBusiness;
 	}
+	
 	public void setCompanyBusiness(String companyBusiness) {
 		this.companyBusiness = companyBusiness;
 	}
+	
 	public String getPosition() {
 		return position;
 	}
+	
 	public void setPosition(String position) {
 		this.position = position;
 	}
+	
 	public String getPersonal() {
 		return personal;
 	}
+	
 	public void setPersonal(String personal) {
 		this.personal = personal;
 	}
+	
 	public Date getTimestamp() {
 		return timestamp;
 	}
+	
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
+	
 	public String getRealName() {
 		return realName;
 	}
+	
 	public void setRealName(String realName) {
 		this.realName = realName;
 	}
-	@Transient
+	
 	public String getVerifyCode() {
 		return verifyCode;
 	}
+	
 	public void setVerifyCode(String verifyCode) {
 		this.verifyCode = verifyCode;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	public String getMobile() {
 		return mobile;
 	}
+	
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
+	
 	public boolean getIsPublicEmail() {
 		return isPublicEmail;
 	}
+	
 	public void setIsPublicEmail(boolean isPublicEmail) {
 		this.isPublicEmail = isPublicEmail;
 	}
+	
 	public boolean getIsPublicMobile() {
 		return isPublicMobile;
 	}
+	
 	public void setIsPublicMobile(boolean isPublicMobile) {
 		this.isPublicMobile = isPublicMobile;
 	}

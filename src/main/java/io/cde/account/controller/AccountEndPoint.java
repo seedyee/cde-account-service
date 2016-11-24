@@ -18,13 +18,13 @@ import io.cde.account.service.AccountService;
 @RestController
 @RequestMapping(value = "/accounts")
 public class AccountEndPoint {
-	
 	@Autowired
 	private AccountService accountService;
 	
 	private Object message = null;
+	
 	/**
-	 * 注册用户
+	 * 注册用户.
 	 * @param account 注册的用户信息对象
 	 * @return 返回注册操作结果
 	 */
@@ -34,7 +34,7 @@ public class AccountEndPoint {
 		return this.message;
 	}
 	/**
-	 * 获取用户基本信息
+	 * 获取用户基本信息.
 	 * @param accountId 用户id
 	 * @return 返回用户基本信息或是错误的操作反馈
 	 */

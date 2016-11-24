@@ -7,19 +7,25 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 
 /**
  * @author lcl
- * @createDate 2016年11月18日下午4:21:25
  * 国际化messageSource 配置
  */
 @Configuration
 public class InternationalConfig {
-	
-	@Value(value = "${spring.messages.basename}")
-	private String basename;
-	
-	@Bean
-	public ResourceBundleMessageSource getMessageResource() {
-		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-		messageSource.setBasename(basename);
-		return messageSource;
-	}
+
+    /**
+    * 获取国际化资源文件的basename.
+    */
+    @Value(value = "${spring.messages.basename}")
+    private String basename;
+
+    /**
+    * 配置messageSource实体.
+    * @return 返回messagesource对象.
+    */
+    @Bean
+    public ResourceBundleMessageSource getMessageResource() {
+        final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename(basename);
+        return messageSource;
+    }
 }

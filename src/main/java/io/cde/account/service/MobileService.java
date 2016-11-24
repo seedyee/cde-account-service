@@ -33,8 +33,8 @@ public class MobileService {
 	
 	/**
 	 * 根据用户id获取邮箱信息
-	 * @param accountId
-	 * @return
+	 * @param accountId 用户id
+	 * @return 返回用户邮箱信息
 	 */
 	public Object getMobiles(String accountId) {
 		List<Mobile> mobiles = new ArrayList<>();
@@ -48,8 +48,8 @@ public class MobileService {
 	}
 	/**
 	 * 修改电话信息
-	 * @param mobile
-	 * @return
+	 * @param mobile 次改的电话对象
+	 * @return 返回修改操作结果
 	 */
 	public Object updateMobile(Mobile mobile) {
 		Mobile formMobile = mobileRepository.findById(mobile.getId());
@@ -62,8 +62,8 @@ public class MobileService {
 	}
 	/**
 	 * 添加电话号码信息
-	 * @param mobile
-	 * @return
+	 * @param mobile 添加的电话对象
+	 * @return 返回添加的结果
 	 */
 	public Object addMobile(Mobile mobile) {
 		Mobile checkEmail = mobileRepository.findByMobile(mobile.getMobile());
@@ -75,9 +75,9 @@ public class MobileService {
 	}
 	/**
 	 * 删除电话信息
-	 * @param accountId
-	 * @param id
-	 * @return
+	 * @param accountId 用户id
+	 * @param id 电话id
+	 * @return 返回删除操作的结果
 	 */
 	public Object deleteMobile(String accountId, String id) {
 		Mobile checkDefaultMobile = mobileRepository.findById(id);
@@ -92,9 +92,9 @@ public class MobileService {
 		return ResultUtils.resultNullError();
 	}
 	/**
-	 * @param mobiles
-	 * @param mobile
-	 * @param isPublicMobile
+	 * @param mobiles 用户所有电话
+	 * @param mobile 用户默认电话
+	 * @param isPublicMobile 默认电话是否公开
 	 * @return
 	 */
 	private List<Mobile> setDefaultAndPublicMobile(List<Mobile> mobiles, String mobile, boolean isPublicMobile) {

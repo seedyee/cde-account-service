@@ -36,30 +36,39 @@ public class Email extends BaseEntity {
 	public String getAccountId() {
 		return accountId;
 	}
+	
 	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	public boolean getIsVerified() {
 		return isVerified;
 	}
+	
 	public void setIsVerified(boolean isVerified) {
 		this.isVerified = isVerified;
 	}
+	
 	public boolean getIsDefault() {
 		return isDefault;
 	}
+	
 	public void setIsDefault(boolean isDefault) {
 		this.isDefault = isDefault;
 	}
+	
 	public boolean getIsPublic() {
 		return isPublic;
 	}
+	
 	public void setIsPublic(boolean isPublic) {
 		this.isPublic = isPublic;
 	}

@@ -24,33 +24,37 @@ public class EmailService {
 	
 	@Autowired
 	private ErrorMessageSourceHandler errorHandler;
-	
+	/**
+     * 
+     */
 	@Autowired
 	private EmailRepository emailRepository;
-	
+	/**
+     * 
+     */
 	@Autowired
 	private AccountRepository accountRepository;
-	
+
 	/**
 	 * 获取用户邮箱信息
-	 * @param accountId
-	 * @return
+	 * @param accountId 用户id
+	 * @return 返回用户邮箱信息
 	 */
 	public Object getEmails(String accountId) {
 		List<Email> emails = new ArrayList<>();
 		emails = emailRepository.findByAccountId(accountId);
 		if (emails.size() > 0) {
 			Account account = accountRepository.findById(accountId);
-			emails = this.setDefaultAndPublicEmail(emails,account.getEmail(), account.getIsPublicEmail());
+			emails = this.setDefaultAndPublicEmail(emails, account.getEmail(), account.getIsPublicEmail());
 			return ResultUtils.result(emails);
 		}
 		return ResultUtils.resultNullError();
 	}
-	
+
 	/**
-	 * 修改邮箱信息
-	 * @param email
-	 * @return
+	 * 修改邮箱信息。
+	 * @param email 需要修改的邮箱对象
+	 * @return 返回修改操作的结果
 	 */
 	public Object updateEmail(Email email) {
 		Email formEmail = emailRepository.findById(email.getId());
@@ -62,10 +66,10 @@ public class EmailService {
 		return ResultUtils.resultNullError();
 	}
 	/**
-	 * 添加用户邮箱
-	 * @param email
-	 * @return
-	 */
+	* 添加用户邮箱
+  	* @param email 添加的邮箱对象
+	* @return 返回添加结果
+	*/
 	public Object addEmail(Email email) {
 		Email checkEmail = emailRepository.findByEmail(email.getEmail());
 		if (checkEmail != null) {
@@ -76,8 +80,9 @@ public class EmailService {
 	}
 	/**
 	 * 根据邮箱id删除邮箱信息,不能删除默认邮箱
-	 * @param id
-	 * @return
+	 * @param accountId 用户id
+	 * @param id 邮箱id
+	 * @return 返回操作的结果
 	 */
 	public Object deleteEmail(String accountId, String id) {
 		Email checkDefaultEmail = emailRepository.findById(id);
@@ -93,8 +98,8 @@ public class EmailService {
 	}
 	/**
 	 * 根据邮箱地址判断邮箱是否存在
-	 * @param emailAddress
-	 * @return
+	 * @param emailAddress 邮箱地址
+	 * @return 存在返回true，不存在返回false
 	 */
 	public boolean checkEmailByEmailAddress(String emailAddress) {
 		Email email = null;
@@ -106,9 +111,9 @@ public class EmailService {
 	}
 	/**
 	 * 封装返回数据
-	 * @param emails
-	 * @param email
-	 * @param isPublicEmail
+	 * @param emails 用户所有邮箱
+	 * @param email 用户默认邮箱
+	 * @param isPublicEmail 默认邮箱是否是公开
 	 * @return
 	 */
 	private List<Email> setDefaultAndPublicEmail(List<Email> emails, String email, boolean isPublicEmail) {
