@@ -8,7 +8,7 @@
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Cde Account Service</name>
+  <name>CDE Account Service</name>
 
   <parent>
     <groupId>io.cde</groupId>
@@ -25,10 +25,7 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-mongodb</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-commons</artifactId>
-    </dependency>
+    
   </dependencies>
 
 </project>
