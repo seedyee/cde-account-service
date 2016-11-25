@@ -15,7 +15,7 @@ public class InternationalConfig {
     /**
     * 获取国际化资源文件的basename.
     */
-    @Value(value = "${spring.messages.basename}")
+    @Value(value = "${i18n.messages.basename}")
     private String basename;
 
     /**
