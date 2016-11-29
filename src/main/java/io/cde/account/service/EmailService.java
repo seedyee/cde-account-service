@@ -43,7 +43,7 @@ public class EmailService {
 		emails = emailRepository.findByAccountId(accountId);
 		if (emails.size() > 0) {
 			Account account = accountRepository.findById(accountId);
-			emails = this.setDefaultAndPublicEmail(emails, account.getEmail(), account.getIsPublicEmail());
+			emails = this.setDefaultAndPublicEmail(emails, account.getEmail(), account.isPublicEmail());
 			return null;
 		}
 		return null;

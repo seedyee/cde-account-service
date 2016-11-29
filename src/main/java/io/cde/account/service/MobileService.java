@@ -40,7 +40,7 @@ public class MobileService {
 		mobiles = mobileRepository.findByAccountId(accountId);
 		if (mobiles.size() > 0) {
 			Account account = accountRepository.findById(accountId);
-			mobiles = this.setDefaultAndPublicMobile(mobiles, account.getMobile(), account.getIsPublicMobile());
+			mobiles = this.setDefaultAndPublicMobile(mobiles, account.getMobile(), account.isPublicMobile());
 			return null;
 		}
 		return null;
