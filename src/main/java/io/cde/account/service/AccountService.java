@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import io.cde.account.dao.Interface.AccountRepository;
-import io.cde.account.dao.Interface.EmailRepository;
+import io.cde.account.dao.AccountRepository;
+import io.cde.account.dao.EmailRepository;
 import io.cde.account.domain.Account;
 import io.cde.account.domain.Email;
 import io.cde.account.domain.i18n.Error;

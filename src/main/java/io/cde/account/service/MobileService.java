@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.cde.account.dao.Interface.AccountRepository;
-import io.cde.account.dao.Interface.MobileRepository;
+import io.cde.account.dao.AccountRepository;
+import io.cde.account.dao.MobileRepository;
 import io.cde.account.domain.Account;
 import io.cde.account.domain.Mobile;
 import io.cde.account.domain.i18n.Error;

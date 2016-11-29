@@ -1,4 +1,4 @@
-package io.cde.account.dao.Interface;
+package io.cde.account.dao;
 
 import java.util.List;
 
