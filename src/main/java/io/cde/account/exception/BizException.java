@@ -1,7 +1,5 @@
 package io.cde.account.exception;
 
-import org.springframework.data.redis.serializer.StringRedisSerializer;
-
 /**
  * @author lcl
  * @createDate 2016年11月29日下午1:59:24

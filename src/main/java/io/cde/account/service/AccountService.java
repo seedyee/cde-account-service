@@ -66,7 +66,7 @@ public class AccountService {
 	public Object getAccountInfo(String accountId) {
 		Account account = null;
 		account = accountRepository.findById(accountId);
-		return null;
+		return account;
 	} 
 	/**
 	 * 修改用户信息
