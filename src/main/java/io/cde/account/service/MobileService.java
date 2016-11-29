@@ -8,11 +8,10 @@ import org.springframework.stereotype.Service;
 
 import io.cde.account.dao.Interface.AccountRepository;
 import io.cde.account.dao.Interface.MobileRepository;
-import io.cde.account.domaim.i18n.error.ErrorStatus;
 import io.cde.account.domain.Account;
 import io.cde.account.domain.Mobile;
+import io.cde.account.domain.i18n.Error;
 import io.cde.account.tools.ErrorMessageSourceHandler;
-import io.cde.account.tools.ResultUtils;
 
 /**
  * @author lcl
@@ -42,9 +41,9 @@ public class MobileService {
 		if (mobiles.size() > 0) {
 			Account account = accountRepository.findById(accountId);
 			mobiles = this.setDefaultAndPublicMobile(mobiles, account.getMobile(), account.getIsPublicMobile());
-			return ResultUtils.result(mobiles);
+			return null;
 		}
-		return ResultUtils.resultNullError();
+		return null;
 	}
 	/**
 	 * 修改电话信息
@@ -54,11 +53,11 @@ public class MobileService {
 	public Object updateMobile(Mobile mobile) {
 		Mobile formMobile = mobileRepository.findById(mobile.getId());
 		if (formMobile == null) {
-			return ResultUtils.resultError(ErrorStatus.ACCOUNT_NOT_MOBILE.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_NOT_MOBILE.toString()));
+			return null;
 		}
 		formMobile.setIsVerified(mobile.getIsVerified());;
 		mobileRepository.save(formMobile);
-		return ResultUtils.resultNullError();
+		return null;
 	}
 	/**
 	 * 添加电话号码信息
@@ -68,10 +67,10 @@ public class MobileService {
 	public Object addMobile(Mobile mobile) {
 		Mobile checkEmail = mobileRepository.findByMobile(mobile.getMobile());
 		if (checkEmail != null) {
-			return ResultUtils.resultError(ErrorStatus.MOBILE_EXISTED.getCode(), errorHandler.getMessage(ErrorStatus.MOBILE_EXISTED.toString()));
+			return null;
 		}
 		mobileRepository.save(mobile);
-		return ResultUtils.resultNullError();
+		return null;
 	}
 	/**
 	 * 删除电话信息
@@ -83,13 +82,13 @@ public class MobileService {
 		Mobile checkDefaultMobile = mobileRepository.findById(id);
 		Account account = accountRepository.findById(accountId);
 		if (checkDefaultMobile == null || account == null ) {
-			return ResultUtils.resultError(ErrorStatus.ACCOUNT_NOT_MOBILE.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_NOT_MOBILE.toString()));
+			return null;
 		}
 		if (checkDefaultMobile.getMobile().equals(account.getMobile())) {
-			return ResultUtils.resultError(ErrorStatus.ILLEGAL_DELETE_MOBILE.getCode(), errorHandler.getMessage(ErrorStatus.ILLEGAL_DELETE_MOBILE.toString()));
+			return null;
 		}
 		mobileRepository.delete(checkDefaultMobile);
-		return ResultUtils.resultNullError();
+		return null;
 	}
 	/**
 	 * @param mobiles 用户所有电话

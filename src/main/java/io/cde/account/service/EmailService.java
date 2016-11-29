@@ -8,11 +8,9 @@ import org.springframework.stereotype.Service;
 
 import io.cde.account.dao.Interface.AccountRepository;
 import io.cde.account.dao.Interface.EmailRepository;
-import io.cde.account.domaim.i18n.error.ErrorStatus;
 import io.cde.account.domain.Account;
 import io.cde.account.domain.Email;
 import io.cde.account.tools.ErrorMessageSourceHandler;
-import io.cde.account.tools.ResultUtils;
 
 /**
  * @author lcl
@@ -46,9 +44,9 @@ public class EmailService {
 		if (emails.size() > 0) {
 			Account account = accountRepository.findById(accountId);
 			emails = this.setDefaultAndPublicEmail(emails, account.getEmail(), account.getIsPublicEmail());
-			return ResultUtils.result(emails);
+			return null;
 		}
-		return ResultUtils.resultNullError();
+		return null;
 	}
 
 	/**
@@ -59,11 +57,11 @@ public class EmailService {
 	public Object updateEmail(Email email) {
 		Email formEmail = emailRepository.findById(email.getId());
 		if (formEmail == null) {
-			return ResultUtils.resultError(ErrorStatus.ACCOUNT_NOT_EMAIL.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_NOT_EMAIL.toString()));
+			return null;
 		}
 		formEmail.setIsVerified(email.getIsVerified());
 		emailRepository.save(formEmail);
-		return ResultUtils.resultNullError();
+		return null;
 	}
 	/**
 	* 添加用户邮箱
@@ -73,10 +71,10 @@ public class EmailService {
 	public Object addEmail(Email email) {
 		Email checkEmail = emailRepository.findByEmail(email.getEmail());
 		if (checkEmail != null) {
-			return ResultUtils.resultError(ErrorStatus.EMAIL_EXISTED.getCode(), errorHandler.getMessage(ErrorStatus.EMAIL_EXISTED.toString()));
+			return null;
 		}
 		emailRepository.save(email);
-		return ResultUtils.resultNullError();
+		return null;
 	}
 	/**
 	 * 根据邮箱id删除邮箱信息,不能删除默认邮箱
@@ -88,13 +86,13 @@ public class EmailService {
 		Email checkDefaultEmail = emailRepository.findById(id);
 		Account account = accountRepository.findById(accountId);
 		if (checkDefaultEmail == null || account == null ) {
-			return ResultUtils.resultError(ErrorStatus.ACCOUNT_NOT_EMAIL.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_NOT_EMAIL.toString()));
+			return null;
 		}
 		if (checkDefaultEmail.getEmail().equals(account.getEmail())) {
-			return ResultUtils.resultError(ErrorStatus.ILLEGAL_DELETE_EMAIL.getCode(), errorHandler.getMessage(ErrorStatus.ILLEGAL_DELETE_EMAIL.toString()));
+			return null;
 		}
 		emailRepository.delete(checkDefaultEmail);
-		return ResultUtils.resultNullError();
+		return null;
 	}
 	/**
 	 * 根据邮箱地址判断邮箱是否存在

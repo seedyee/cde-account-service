@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 
 import io.cde.account.dao.Interface.AccountRepository;
 import io.cde.account.dao.Interface.EmailRepository;
-import io.cde.account.domaim.i18n.error.ErrorStatus;
 import io.cde.account.domain.Account;
 import io.cde.account.domain.Email;
+import io.cde.account.domain.i18n.Error;
 import io.cde.account.tools.ErrorMessageSourceHandler;
 import io.cde.account.tools.MergeObjectUtils;
-import io.cde.account.tools.ResultUtils;
+
 
 /**
  * @author lcl
@@ -46,7 +46,7 @@ public class AccountService {
 		boolean checkEmail = emailService.checkEmailByEmailAddress(account.getEmail());
 		
 		if (checkEmail == true || checkAccount == true) {
-			return ResultUtils.resultError(ErrorStatus.ACCOUNT_EXISTED.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_EXISTED.toString()));
+			return null;
 		}
 		//加密存入数据库
 		hashed = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
@@ -56,7 +56,7 @@ public class AccountService {
 		email.setEmail(account.getEmail());
 		email.setIsVerified(false);
 		emailRepository.save(email);
-		return ResultUtils.resultNullError();
+		return null;
 	}
 	/**
 	 * 获取用户信息
@@ -66,7 +66,7 @@ public class AccountService {
 	public Object getAccountInfo(String accountId) {
 		Account account = null;
 		account = accountRepository.findById(accountId);
-		return ResultUtils.result(account);
+		return null;
 	} 
 	/**
 	 * 修改用户信息
@@ -76,18 +76,18 @@ public class AccountService {
 	public Object updateAccountInfo(Account account) {
 		Account formAccount = accountRepository.findById(account.getId());
 		if (formAccount == null) {
-			return ResultUtils.resultNullError();
+			return null;
 		}
 		if (account.getName() != null) {
 			boolean checkAccount = this.checkAccountByName(account.getName());
 			if (checkAccount) {
-				return ResultUtils.resultError(ErrorStatus.ACCOUNT_EXISTED.getCode(), errorHandler.getMessage(ErrorStatus.ACCOUNT_EXISTED.toString()));
+				return null;
 			}
 			formAccount.setName(account.getName());
 		}
 		formAccount = (Account) MergeObjectUtils.merge(formAccount, account);
 		accountRepository.save(formAccount);
-		return ResultUtils.resultNullError();
+		return null;
 	}
 	/**
 	 * 修改用户密码
@@ -100,9 +100,9 @@ public class AccountService {
 		if (BCrypt.checkpw(account.getPassword(), formAccount.getPassword())) {
 			formAccount.setPassword(BCrypt.hashpw(account.getNewPassword(), BCrypt.gensalt()));
 			accountRepository.save(formAccount);
-			return ResultUtils.resultNullError();
+			return null;
 		}
-		return ResultUtils.resultError(ErrorStatus.ILLEGAL_ACCOUNT_PASSWORD.getCode(), errorHandler.getMessage(ErrorStatus.ILLEGAL_ACCOUNT_PASSWORD.toString()));
+		return null;
 	}
 	
 	/**
