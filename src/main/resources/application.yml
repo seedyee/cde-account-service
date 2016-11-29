@@ -10,8 +10,8 @@ spring:
       max-idle: 8
       min-idle: 0 
 
-account: 
-  i18n: 
+account:
+  i18n:
     messages:
       basename: i18n/messages
     
