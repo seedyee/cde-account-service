@@ -1,4 +1,4 @@
-package io.cde.account.domaim;
+package io.cde.account.domain;
 
 import org.springframework.data.annotation.Id;
 

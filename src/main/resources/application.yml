@@ -14,9 +14,6 @@ account:
   i18n:
     messages:
       basename: i18n/messages
-    
-logging:
-  file: my.log
   
 debug: true
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import io.cde.account.domaim.Mobile;
+import io.cde.account.domain.Mobile;
 
 /**
  * @author lcl

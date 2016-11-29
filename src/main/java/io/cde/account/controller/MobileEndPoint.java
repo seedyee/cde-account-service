@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.cde.account.domaim.Mobile;
+import io.cde.account.domain.Mobile;
 import io.cde.account.service.MobileService;
 
 /**

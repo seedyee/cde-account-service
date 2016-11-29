@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import io.cde.account.dao.Interface.AccountRepository;
 import io.cde.account.dao.Interface.MobileRepository;
-import io.cde.account.domaim.Account;
-import io.cde.account.domaim.Mobile;
 import io.cde.account.domaim.i18n.error.ErrorStatus;
+import io.cde.account.domain.Account;
+import io.cde.account.domain.Mobile;
 import io.cde.account.tools.ErrorMessageSourceHandler;
 import io.cde.account.tools.ResultUtils;
 

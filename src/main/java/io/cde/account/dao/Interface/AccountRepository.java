@@ -2,7 +2,7 @@ package io.cde.account.dao.Interface;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import io.cde.account.domaim.Account;
+import io.cde.account.domain.Account;
 
 /**
  * @author lcl

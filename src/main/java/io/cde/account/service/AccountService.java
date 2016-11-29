@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 
 import io.cde.account.dao.Interface.AccountRepository;
 import io.cde.account.dao.Interface.EmailRepository;
-import io.cde.account.domaim.Account;
-import io.cde.account.domaim.Email;
 import io.cde.account.domaim.i18n.error.ErrorStatus;
+import io.cde.account.domain.Account;
+import io.cde.account.domain.Email;
 import io.cde.account.tools.ErrorMessageSourceHandler;
 import io.cde.account.tools.MergeObjectUtils;
 import io.cde.account.tools.ResultUtils;

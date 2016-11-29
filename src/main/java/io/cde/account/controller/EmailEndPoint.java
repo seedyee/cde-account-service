@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.cde.account.domaim.Email;
+import io.cde.account.domain.Email;
 import io.cde.account.service.EmailService;
 
 /**

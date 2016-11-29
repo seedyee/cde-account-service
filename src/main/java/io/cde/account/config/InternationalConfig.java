@@ -13,15 +13,16 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 public class InternationalConfig {
 
     /**
-    * 获取国际化资源文件的basename.
-    */
+     * 获取国际化资源文件的basename.
+     */
     @Value(value = "${account.i18n.messages.basename}")
     private String basename;
 
     /**
-    * 配置messageSource实体.
-    * @return 返回messagesource对象.
-    */
+     * 配置messageSource实体.
+     *
+     * @return 返回messagesource对象.
+     */
     @Bean
     public ResourceBundleMessageSource getMessageResource() {
         final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
