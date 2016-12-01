@@ -2,6 +2,8 @@ package io.cde.account.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import io.cde.account.domain.Email;
 
 /**
@@ -9,16 +11,17 @@ import io.cde.account.domain.Email;
  * @createDate 2016年11月29日下午3:33:42
  *
  */
+
 public interface EmailDao {
 	
 	/**
-	 * 根据用户id和邮箱id获取邮箱信息.
+	 * 根据用户id和邮箱id判断该用户是否关联该邮箱.
 	 * 
 	 * @param accountId 用户id
 	 * @param emailId 邮箱id
-	 * @return 查询到则返回邮箱信息，否则返回null
+	 * @return 有返回true，否则返回false
 	 */
-    Email getEmailById(String accountId, String emailId);
+    boolean isAssociated(String accountId, String emailId);
     
     /**
      * 根据邮箱地址查询邮箱信息.
@@ -28,21 +31,16 @@ public interface EmailDao {
      */
     boolean isEmailExisted(String email);
     
-    /**
-     * 根据用户id获取用户的所有邮箱信息.
-     * 
-     * @param accountId 用户id
-     * @return 查询到则返回用户的邮箱list，否则返回长度为0的list，即返回空list
-     */
-    List<Email> getEmails(String accountId);
     
     /**
      * 修改邮箱信息.
      * 
+     * @param 用户id
+     * @param emailId 邮箱id
      * @param isVerified 是否认证字段
      * @return 修改操作成功返回1，否则返回-1
      */
-    int updateEmail(boolean isVerified);
+    int updateEmail(String accountId, String emailId, boolean isVerified);
     
     /**
      * 为指定的用户添加邮箱.

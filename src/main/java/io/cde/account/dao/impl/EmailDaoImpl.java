@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Repository;
 
 import io.cde.account.dao.EmailDao;
+import io.cde.account.domain.Account;
 import io.cde.account.domain.Email;
 
 /**
@@ -15,6 +18,7 @@ import io.cde.account.domain.Email;
  * @createDate 2016年11月29日下午3:56:03
  *
  */
+@Repository
 public class EmailDaoImpl implements EmailDao {
 	
 	@Autowired
@@ -24,15 +28,15 @@ public class EmailDaoImpl implements EmailDao {
 	 * @see io.cde.account.dao.EmailDao#getEmailById(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Email getEmailById(String accountId, String emailId) {
-		Email email = null;
+	public boolean isAssociated(String accountId, String emailId) {
+		boolean isAssociated = false;
 		Query query = Query.query(Criteria.where("_id").is(accountId).and("emails._id").is(emailId));
 		try {
-			email = mongoTemplate.findOne(query, Email.class);
+			isAssociated = mongoTemplate.exists(query, Email.class);
 		} catch (Exception e) {
-			return email;
+			return isAssociated;
 		}
-		return email;
+		return isAssociated;
 	}
 
 	/* (non-Javadoc)
@@ -54,21 +58,18 @@ public class EmailDaoImpl implements EmailDao {
 	}
 
 	/* (non-Javadoc)
-	 * @see io.cde.account.dao.EmailDao#getEmails(java.lang.String)
-	 */
-	@Override
-	public List<Email> getEmails(String accountId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
 	 * @see io.cde.account.dao.EmailDao#updateEmail(boolean)
 	 */
 	@Override
-	public int updateEmail(boolean isVerified) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateEmail(String accountId, String emailId, boolean isVerified) {
+		Query query = Query.query(Criteria.where("_id").is(accountId).and("emails._id").is(emailId));
+		Update update = Update.update("emails.isVerified", isVerified);
+		try {
+			mongoTemplate.updateFirst(query, update, Account.class);
+		} catch (Exception e) {
+			//抛异常
+		}
+		return 1;
 	}
 
 	/* (non-Javadoc)
@@ -76,8 +77,15 @@ public class EmailDaoImpl implements EmailDao {
 	 */
 	@Override
 	public int addEmail(String accountId, Email email) {
-		// TODO Auto-generated method stub
-		return 0;
+		Query query = Query.query(Criteria.where("_id").is(accountId));
+		Update update = new Update();
+		update.addToSet("emails", email);
+		try {
+			mongoTemplate.upsert(query, update, Account.class);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return 1;
 	}
 
 	/* (non-Javadoc)
@@ -85,8 +93,15 @@ public class EmailDaoImpl implements EmailDao {
 	 */
 	@Override
 	public int deleteEmail(String accountId, String emailId) {
-		// TODO Auto-generated method stub
-		return 0;
+		Query query = Query.query(Criteria.where("_id").is(accountId));
+		Update update = new Update();
+		update.pull("emails._id", emailId);
+		try {
+			mongoTemplate.upsert(query, update, Account.class);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return 1;
 	}
 
 }

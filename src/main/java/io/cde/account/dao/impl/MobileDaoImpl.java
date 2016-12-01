@@ -1,6 +1,6 @@
 package io.cde.account.dao.impl;
 
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
 import io.cde.account.dao.MobileDao;
 import io.cde.account.domain.Mobile;
@@ -10,15 +10,17 @@ import io.cde.account.domain.Mobile;
  * @createDate 2016年11月29日下午5:55:10
  *
  */
+@Repository
 public class MobileDaoImpl implements MobileDao {
 
 	/* (non-Javadoc)
 	 * @see io.cde.account.dao.MobileDao#getMobileById(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Mobile getMobileById(String accountId, String mobileId) {
+	public boolean isAssociated(String accountId, String mobileId) {
+		boolean isAssociated = false;
 		// TODO Auto-generated method stub
-		return null;
+		return isAssociated;
 	}
 
 	/* (non-Javadoc)
@@ -28,15 +30,6 @@ public class MobileDaoImpl implements MobileDao {
 	public boolean isMobileExisted(String mobile) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see io.cde.account.dao.MobileDao#getMobiles(java.lang.String)
-	 */
-	@Override
-	public List<Mobile> getMobiles(String accountId) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/* (non-Javadoc)

@@ -8,6 +8,7 @@ import io.cde.account.domain.Account;
  * @createDate 2016年11月29日上午11:05:35
  *
  */
+
 public interface AccountDao {
     /**
      * 创建用户.

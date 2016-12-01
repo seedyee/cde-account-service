@@ -17,8 +17,8 @@ import io.cde.account.domain.Account;
  */
 @Repository
 public class AccountDaoImpl implements AccountDao {
-
-    @Autowired
+    
+	@Autowired
 	private MongoTemplate mongoTemPlate;
 
 	/* (non-Javadoc)
@@ -69,8 +69,18 @@ public class AccountDaoImpl implements AccountDao {
 	 */
 	@Override
 	public int updateAccount(Account account) {
-		// TODO Auto-generated method stub
-		return 0;
+		Query query = Query.query(Criteria.where("_id").is(account.getId()));
+		Update update = Update.update("realName", account.getRealName()).set("email", account.getEmail())
+				.set("company", account.getCompany()).set("companyBusiness", account.getCompanyBusiness())
+				.set("companyAddress", account.getCompanyAddress()).set("position", account.getPosition())
+				.set("personal", account.getPersonal()).set("isPublicEmail", account.isPublicEmail())
+				.set("isPublicMobile", account.isPublicMobile());
+		try {
+			mongoTemPlate.updateFirst(query, update, Account.class);
+		} catch (Exception e) {
+			return -1;
+		}
+		return 1;
 	}
     
 	/* (non-Javadoc)
@@ -102,5 +112,4 @@ public class AccountDaoImpl implements AccountDao {
 		}
 		return 1;
 	}
-
 }
