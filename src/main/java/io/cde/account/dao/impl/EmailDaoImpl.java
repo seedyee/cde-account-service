@@ -30,7 +30,7 @@ public class EmailDaoImpl implements EmailDao {
 	@Override
 	public boolean isAssociated(String accountId, String emailId) {
 		boolean isAssociated = false;
-		Query query = Query.query(Criteria.where("emails.emailId").is(emailId));
+		Query query = Query.query(Criteria.where("_id").is(accountId).and("emails.emailId").is(emailId));
 		isAssociated = mongoTemplate.exists(query, "account");
 		return isAssociated;
 	}

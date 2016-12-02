@@ -30,7 +30,7 @@ public class MobileDaoImpl implements MobileDao {
 	@Override
 	public boolean isAssociated(String accountId, String mobileId) {
 		boolean isAssociated = false;
-		Query query = Query.query(Criteria.where("mobiles.mobileId").is(mobileId));
+		Query query = Query.query(Criteria.where("_id").is(accountId).and("mobiles.mobileId").is(mobileId));
 		isAssociated = mongoTemplate.exists(query, "account");
 		return isAssociated;
 	}
