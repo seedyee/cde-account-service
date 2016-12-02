@@ -1,4 +1,4 @@
-package io.cde.account.service.impl;
+package io.cde.account.service;
 
 import javax.security.auth.login.AccountNotFoundException;
 
@@ -20,7 +20,7 @@ public interface AccountService {
 	 * @return 注册成功返回1,否则返回-1
 	 * @throws BizException 有户名被使用过抛出用户已存在异常
 	 */
-	int createAccount(Account account) throws BizException;
+	void createAccount(Account account) throws BizException;
 	
 	/**
 	 * 获取用户信息.
@@ -37,7 +37,7 @@ public interface AccountService {
 	 * @return 返回操作结果
 	 * @throws BizException 
 	 */
-	int updateAccount(Account account) throws BizException;
+	void updateAccount(Account account) throws BizException;
 	
 	/**
 	 * 修改用户名.
@@ -48,7 +48,7 @@ public interface AccountService {
 	 * @throws BizException 用户id错误抛出无效用户id异常，用户名被使用过抛出用户已存在异常
 	 * @throws AccountNotFoundException 
 	 */
-	int updateName(String accountId,String name) throws BizException;
+	void updateName(String accountId,String name) throws BizException;
 	
 	/**
 	 * 修改密码.
@@ -60,5 +60,5 @@ public interface AccountService {
 	 * @throws BizException 密码错误则抛出用户名和密码不匹配异常.
 	 * @throws AccountNotFoundException 错误的用户id则抛出无效的用户id异常；
 	 */
-	int updatePassword(String accountId, String oldPassword, String newPassword) throws BizException;
+	void updatePassword(String accountId, String oldPassword, String newPassword) throws BizException;
 }
