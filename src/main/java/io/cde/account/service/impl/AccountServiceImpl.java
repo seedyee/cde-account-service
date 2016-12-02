@@ -1,7 +1,6 @@
 package io.cde.account.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -12,6 +11,7 @@ import io.cde.account.dao.impl.AccountDaoImpl;
 import io.cde.account.domain.Account;
 import io.cde.account.domain.Email;
 import io.cde.account.domain.i18n.Error;
+import io.cde.account.domain.i18n.SystemError;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.AccountService;
 import io.cde.account.tools.AccountCheck;
@@ -49,7 +49,7 @@ public class AccountServiceImpl implements AccountService{
         account.setEmails(emails);
         int createAccount = accountDao.createAccount(account);
         if (createAccount <= 0) {
-        		throw new BizException(1, "创建用户失败");
+        		throw new BizException(SystemError.INSERT_FAILED.getCode(), errorHandler.getMessage(SystemError.INSERT_FAILED.toString()));
 		}
 	}
 
@@ -69,7 +69,7 @@ public class AccountServiceImpl implements AccountService{
         accountCheck.checkAccountExistedById(account.getId());
         int updateAccount = accountDao.updateAccount(account);
         if (updateAccount <= 0) {
-        	throw new BizException(1, "修改用户基本信息失败");
+        		throw new BizException(SystemError.UPDATE_FAILED.getCode(), errorHandler.getMessage(SystemError.UPDATE_FAILED.toString()));
 		}
 	}
 
@@ -82,7 +82,7 @@ public class AccountServiceImpl implements AccountService{
 		accountCheck.checkAccountExistedByName(name);
 		int updateResult = accountDao.updateName(accountId, name);
 		if (updateResult <= 0) {
-			throw new BizException(1, "修改用户名失败");
+			throw new BizException(SystemError.UPDATE_FAILED.getCode(), errorHandler.getMessage(SystemError.UPDATE_FAILED.toString()));
 		}
 	}
 
@@ -97,7 +97,7 @@ public class AccountServiceImpl implements AccountService{
 		}
 		int updatePassword = accountDao.updatePassword(accountId, newPassword);
 		if (updatePassword <= 0) {
-			throw new BizException(1000, "修改用户密码失败");
+			throw new BizException(SystemError.UPDATE_FAILED.getCode(), errorHandler.getMessage(SystemError.UPDATE_FAILED.toString()));
 		}
 	}
 }

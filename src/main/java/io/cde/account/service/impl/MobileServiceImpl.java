@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import io.cde.account.dao.impl.MobileDaoImpl;
 import io.cde.account.domain.Account;
-import io.cde.account.domain.Email;
 import io.cde.account.domain.Mobile;
+import io.cde.account.domain.i18n.SystemError;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.MobileService;
 import io.cde.account.tools.AccountCheck;
@@ -57,7 +57,7 @@ public class MobileServiceImpl implements MobileService {
 		mobile.setMobileId(new ObjectId().toString());
 		int addMobile = mobileDao.addMobile(accountId, mobile);
 		if (addMobile <= 0) {
-			throw new BizException(1, "添加电话信息失败");
+			throw new BizException(SystemError.INSERT_FAILED.getCode(), errorHandler.getMessage(SystemError.INSERT_FAILED.toString()));
 		}
 
 	}
@@ -70,7 +70,7 @@ public class MobileServiceImpl implements MobileService {
 		accountCheck.checkAccountMobile(accountId, mobileId);
         int updateMobile = mobileDao.updateMobile(accountId, mobileId, isVerified);
         if (updateMobile <= 0) {
-			throw new BizException(1, "修改电话信息失败");
+        		throw new BizException(SystemError.UPDATE_FAILED.getCode(), errorHandler.getMessage(SystemError.UPDATE_FAILED.toString()));
 		}
 	}
 
@@ -82,7 +82,7 @@ public class MobileServiceImpl implements MobileService {
 		accountCheck.checkAccountMobile(accountId, mobileId);
         int deleteMobile = mobileDao.deleteMobile(accountId, mobileId);
         if (deleteMobile <= 0) {
-			throw new BizException(1, "删除电话失败");
+        		throw new BizException(SystemError.DELETE_FAILED.getCode(), errorHandler.getMessage(SystemError.DELETE_FAILED.toString()));
 		}
 	}
     

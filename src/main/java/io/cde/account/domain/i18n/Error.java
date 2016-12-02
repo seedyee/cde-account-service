@@ -10,9 +10,17 @@ public enum Error {
     */
     ACCOUNT_EXISTE(10),
     /**
+     * 无效用户id.
+     */
+    INVALID_ACCOUNT_ID(11),
+    /**
     * 用户名密码不匹配.
 	*/
     UNMATCHED_ACCOUNT_AND_PASSWORD(20),
+    /**
+     * 两次密码不一致.
+     */
+    UNMATCHED_PASSWORD1_AND_PASSWORD2(21),
     /**
 	* 邮箱没有认证.
 	*/
@@ -45,7 +53,7 @@ public enum Error {
 	* 默认电话不能删除.
 	*/
     UNDELETABLE_DEFAULT_MOBILE(100);
-
+    
     /**
 	* 错误码.
 	*/

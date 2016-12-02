@@ -104,7 +104,7 @@ public class EmailController {
 	 * @return 若是AccountNotFundException则抛出，否则返回异常对象信息
 	 */
 	private ErrorInfo handException(BizException e) {
-		if (e.getCode() == 100001) {
+		if (e.getCode() == Error.INVALID_ACCOUNT_ID.getCode()) {
 			throw new AccountNotFundException();
 		}
 		return new ErrorInfo(e.getCode(), e.getMessage());

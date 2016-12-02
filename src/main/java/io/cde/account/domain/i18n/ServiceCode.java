@@ -9,7 +9,11 @@ public enum ServiceCode {
 	/**
 	 * 用户服务.
 	 */
-	CDE_ACCOUNT_SERVICE(100);
+	CDE_ACCOUNT_SERVICE(100),
+	/**
+	 * 系统.
+	 */
+	SYSTEM(999);
 	
 	/**
 	 * 服务编号.

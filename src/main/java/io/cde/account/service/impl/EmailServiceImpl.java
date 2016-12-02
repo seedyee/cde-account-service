@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import io.cde.account.dao.impl.EmailDaoImpl;
 import io.cde.account.domain.Account;
 import io.cde.account.domain.Email;
+import io.cde.account.domain.i18n.SystemError;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.EmailService;
 import io.cde.account.tools.AccountCheck;
@@ -54,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
 		email.setEmailId(new ObjectId().toString());
 		int addEmail = emailDao.addEmail(accountId, email);
 		if (addEmail <= 0) {
-			throw new BizException(1, "添加邮箱失败");
+			throw new BizException(SystemError.INSERT_FAILED.getCode(), errorHandler.getMessage(SystemError.INSERT_FAILED.toString()));
 		}
 	}
 
@@ -66,7 +67,7 @@ public class EmailServiceImpl implements EmailService {
         accountCheck.checkAcccountEmail(accountId, emailId);
         int updateEmail = emailDao.updateEmail(accountId, emailId, isVerified);
         if (updateEmail <= 0) {
-			throw new BizException(1, "更新邮箱失败");
+        		throw new BizException(SystemError.UPDATE_FAILED.getCode(), errorHandler.getMessage(SystemError.UPDATE_FAILED.toString()));
 		}
 	}
 
@@ -78,7 +79,7 @@ public class EmailServiceImpl implements EmailService {
 		accountCheck.checkAcccountEmail(accountId, emailId);
 		int deleteEmail = emailDao.deleteEmail(accountId, emailId);
 		if (deleteEmail <= 0) {
-			throw new BizException(1, "删除邮箱失败");
+			throw new BizException(SystemError.DELETE_FAILED.getCode(), errorHandler.getMessage(SystemError.DELETE_FAILED.toString()));
 		}
 	}
 	

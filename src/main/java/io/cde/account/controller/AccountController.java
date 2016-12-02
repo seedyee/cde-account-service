@@ -1,6 +1,5 @@
 package io.cde.account.controller;
 
-import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.cde.account.domain.Account;
 import io.cde.account.domain.ErrorInfo;
+import io.cde.account.domain.i18n.Error;
 import io.cde.account.exception.AccountNotFundException;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.impl.AccountServiceImpl;
+import io.cde.account.tools.ErrorMessageSourceHandler;
 
 
 /**
@@ -25,6 +26,10 @@ import io.cde.account.service.impl.AccountServiceImpl;
 @RestController
 @RequestMapping(value = "/accounts")
 public class AccountController {
+	
+	@Autowired
+	private ErrorMessageSourceHandler errorHandler;
+	
 	@Autowired
 	private AccountServiceImpl accountService;
 	
@@ -90,7 +95,7 @@ public class AccountController {
 		try {
 			accountService.updateName(accountId, name);
 		} catch (BizException e) {
-			if(e.getCode() == 100001){
+			if(e.getCode() == Error.INVALID_ACCOUNT_ID.getCode()){
 				throw new AccountNotFundException();
 			}
 			return new ErrorInfo(e.getCode(),e.getMessage());
@@ -110,12 +115,12 @@ public class AccountController {
 			@RequestParam(name = "password1") @NotNull String password1,
 			@RequestParam(name = "password2") @NotNull String password2) {
 		if (!password1.equals(password2)) {
-			return new ErrorInfo(100, "两次密码不一致");
+			return new ErrorInfo(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.getCode(), errorHandler.getMessage(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.toString()) );
 		}
 		try {
 			accountService.updatePassword(accountId, password, password1);
 		} catch (BizException e) {
-			if(e.getCode() == 100001){
+			if(e.getCode() == Error.INVALID_ACCOUNT_ID.getCode()){
 				throw new AccountNotFundException();
 			}
 			return new ErrorInfo(e.getCode(),e.getMessage());

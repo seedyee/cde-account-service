@@ -51,7 +51,7 @@ public class AccountCheck {
 	public Account checkAccountExistedById(String accountId) throws BizException {
 		Account account = accountDao.findById(accountId);
 		if (account == null) {
-			throw new BizException(100001, "用户不存在");
+			throw new BizException(Error.INVALID_ACCOUNT_ID.getCode(), errorHandler.getMessage(Error.INVALID_ACCOUNT_ID.toString()));
 		}
 		return account;
 	}
