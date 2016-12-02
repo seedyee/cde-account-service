@@ -1,10 +1,12 @@
 package io.cde.account.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import io.cde.account.dao.impl.AccountDaoImpl;
@@ -40,6 +42,7 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public void createAccount(Account account) throws BizException {
 		Email email = new Email();
+		String hashed = null;
 		List<Email> emails = new ArrayList<>();
         accountCheck.checkAccountExistedByName(account.getName());
         accountCheck.checkEmailExistedByEmail(account.getEmail());
@@ -47,6 +50,9 @@ public class AccountServiceImpl implements AccountService{
         email.setEmail(account.getEmail());
         emails.add(email);
         account.setEmails(emails);
+        hashed = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
+        account.setPassword(hashed);
+        account.setTimestamp(new Date());
         int createAccount = accountDao.createAccount(account);
         if (createAccount <= 0) {
         		throw new BizException(SystemError.INSERT_FAILED.getCode(), errorHandler.getMessage(SystemError.INSERT_FAILED.toString()));
@@ -92,10 +98,10 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public void updatePassword(String accountId, String oldPassword, String newPassword) throws BizException{
 		Account account = accountCheck.checkAccountExistedById(accountId);
-		if (!account.getPassword().equals(oldPassword)) {
+		if (!BCrypt.checkpw(oldPassword, account.getPassword())) {
 			throw new BizException(Error.UNMATCHED_ACCOUNT_AND_PASSWORD.getCode(), errorHandler.getMessage(Error.UNMATCHED_ACCOUNT_AND_PASSWORD.toString()));
 		}
-		int updatePassword = accountDao.updatePassword(accountId, newPassword);
+		int updatePassword = accountDao.updatePassword(accountId, BCrypt.hashpw(newPassword, BCrypt.gensalt()));
 		if (updatePassword <= 0) {
 			throw new BizException(SystemError.UPDATE_FAILED.getCode(), errorHandler.getMessage(SystemError.UPDATE_FAILED.toString()));
 		}
