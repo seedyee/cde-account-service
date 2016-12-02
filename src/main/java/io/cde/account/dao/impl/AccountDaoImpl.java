@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import com.mongodb.WriteResult;
+
 import io.cde.account.dao.AccountDao;
 import io.cde.account.domain.Account;
 
@@ -26,11 +28,7 @@ public class AccountDaoImpl implements AccountDao {
 	 */
 	@Override
 	public int createAccount(Account account) {
-		try {
-			mongoTemPlate.insert(account, "account");
-		} catch (Exception e) {
-			return -1;
-		}
+		mongoTemPlate.insert(account, "account");
 		return 1;
 	}
 
@@ -41,11 +39,7 @@ public class AccountDaoImpl implements AccountDao {
 	public Account findById(String id) {
 		Account account = null;
 		Query query = Query.query(Criteria.where("_id").is(id));
-		try {
-			account = mongoTemPlate.findOne(query, Account.class);
-		} catch (Exception e) {
-			return null;
-		}
+		account = mongoTemPlate.findOne(query, Account.class);
 		return account;
 	}
 
@@ -56,11 +50,7 @@ public class AccountDaoImpl implements AccountDao {
 	public Account findByName(String name) {
 		Account account = null;
 		Query query = Query.query(Criteria.where("name").is(name));
-		try {
-			account = mongoTemPlate.findOne(query, Account.class);
-		} catch (Exception e) {
-			return null;
-		}
+		account = mongoTemPlate.findOne(query, Account.class);
 		return account;
 	}
 
@@ -75,9 +65,8 @@ public class AccountDaoImpl implements AccountDao {
 				.set("companyAddress", account.getCompanyAddress()).set("position", account.getPosition())
 				.set("personal", account.getPersonal()).set("isPublicEmail", account.isPublicEmail())
 				.set("isPublicMobile", account.isPublicMobile());
-		try {
-			mongoTemPlate.updateFirst(query, update, Account.class);
-		} catch (Exception e) {
+		WriteResult updateFirst = mongoTemPlate.updateFirst(query, update, Account.class);
+		if (updateFirst.getN() <= 0) {
 			return -1;
 		}
 		return 1;
@@ -90,9 +79,8 @@ public class AccountDaoImpl implements AccountDao {
 	public int updateName(String accountId, String name) {
 		Query query = Query.query(Criteria.where("_id").is(accountId));
 		Update update = Update.update("name", name);
-		try {
-			mongoTemPlate.updateFirst(query, update, Account.class);
-		} catch (Exception e) {
+		WriteResult updateFirst = mongoTemPlate.updateFirst(query, update, Account.class);
+		if (updateFirst.getN() <= 0) {
 			return -1;
 		}
 		return 1;
@@ -105,9 +93,8 @@ public class AccountDaoImpl implements AccountDao {
 	public int updatePassword(String accountId, String password) {
 		Query query = Query.query(Criteria.where("_id").is(accountId));
 		Update update = Update.update("password", password);
-		try {
-			mongoTemPlate.updateFirst(query, update, Account.class);
-		} catch (Exception e) {
+		WriteResult updateFirst = mongoTemPlate.updateFirst(query, update, Account.class);
+		if (updateFirst.getN() <= 0) {
 			return -1;
 		}
 		return 1;

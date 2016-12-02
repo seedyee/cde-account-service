@@ -1,13 +1,15 @@
 package io.cde.account.dao.impl;
 
-import java.util.List;
-
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.WriteResult;
 
 import io.cde.account.dao.EmailDao;
 import io.cde.account.domain.Account;
@@ -30,12 +32,8 @@ public class EmailDaoImpl implements EmailDao {
 	@Override
 	public boolean isAssociated(String accountId, String emailId) {
 		boolean isAssociated = false;
-		Query query = Query.query(Criteria.where("_id").is(accountId).and("emails._id").is(emailId));
-		try {
-			isAssociated = mongoTemplate.exists(query, Email.class);
-		} catch (Exception e) {
-			return isAssociated;
-		}
+		Query query = Query.query(Criteria.where("emails.emailId").is(emailId));
+		isAssociated = mongoTemplate.exists(query, "account");
 		return isAssociated;
 	}
 
@@ -46,15 +44,8 @@ public class EmailDaoImpl implements EmailDao {
 	public boolean isEmailExisted(String email) {
 		boolean isEmailExisted = false;
 		Query query = Query.query(Criteria.where("emails.email").is(email));
-		try {
-			isEmailExisted = mongoTemplate.exists(query, "account");
-			if (isEmailExisted) {
-				return true;
-			}
-		} catch (Exception e) {
-			return false;
-		}
-		return false;
+		isEmailExisted = mongoTemplate.exists(query, "account");
+		return isEmailExisted;
 	}
 
 	/* (non-Javadoc)
@@ -62,12 +53,11 @@ public class EmailDaoImpl implements EmailDao {
 	 */
 	@Override
 	public int updateEmail(String accountId, String emailId, boolean isVerified) {
-		Query query = Query.query(Criteria.where("_id").is(accountId).and("emails._id").is(emailId));
-		Update update = Update.update("emails.isVerified", isVerified);
-		try {
-			mongoTemplate.updateFirst(query, update, Account.class);
-		} catch (Exception e) {
-			//抛异常
+		Query query = Query.query(Criteria.where("_id").is(accountId).and("emails.emailId").is(emailId));
+		Update update = Update.update("emails.$.isVerified", isVerified);
+		WriteResult updateFirst = mongoTemplate.updateFirst(query, update, Account.class);
+		if (updateFirst.getN() <= 0) {
+			return -1;
 		}
 		return 1;
 	}
@@ -80,10 +70,9 @@ public class EmailDaoImpl implements EmailDao {
 		Query query = Query.query(Criteria.where("_id").is(accountId));
 		Update update = new Update();
 		update.addToSet("emails", email);
-		try {
-			mongoTemplate.upsert(query, update, Account.class);
-		} catch (Exception e) {
-			// TODO: handle exception
+		WriteResult upsert = mongoTemplate.upsert(query, update, Account.class);
+		if (upsert.getN() <= 0) {
+			return -1;
 		}
 		return 1;
 	}
@@ -94,12 +83,13 @@ public class EmailDaoImpl implements EmailDao {
 	@Override
 	public int deleteEmail(String accountId, String emailId) {
 		Query query = Query.query(Criteria.where("_id").is(accountId));
+		BasicDBObject basicDBObject = new BasicDBObject();
+		basicDBObject.put("emailId", emailId);
 		Update update = new Update();
-		update.pull("emails._id", emailId);
-		try {
-			mongoTemplate.upsert(query, update, Account.class);
-		} catch (Exception e) {
-			// TODO: handle exception
+		update.pull("emails", basicDBObject);
+		WriteResult upsert = mongoTemplate.upsert(query, update, Account.class);
+		if (upsert.getN() <= 0) {
+			return -1;
 		}
 		return 1;
 	}
