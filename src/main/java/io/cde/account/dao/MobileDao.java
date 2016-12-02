@@ -4,7 +4,6 @@ import io.cde.account.domain.Mobile;
 
 /**
  * @author lcl
- * @createDate 2016年11月29日下午5:41:15
  *
  */
 public interface MobileDao {

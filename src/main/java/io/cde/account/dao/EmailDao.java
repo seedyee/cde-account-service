@@ -1,14 +1,9 @@
 package io.cde.account.dao;
 
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-
 import io.cde.account.domain.Email;
 
 /**
  * @author lcl
- * @createDate 2016年11月29日下午3:33:42
  *
  */
 

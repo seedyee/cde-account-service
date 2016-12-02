@@ -10,44 +10,12 @@ spring:
       max-idle: 8
       min-idle: 0 
 
-account:
-  i18n:
-    messages:
-      basename: i18n/messages
+cde:
+  account:
+    i18n:
+      messages:
+        basename: i18n/messages
   
 debug: true
 
-#eureka:
-#  instance:
-#    hostname: account-service
-#  client:
-#    registerWithEureka: true
-#    fetchRegistry: true
-#    serviceUrl:
-#      defaultZone: http://discovery-server-1:8761/eureka/,http://discovery-server-2:8762/eureka/
-#---
-# mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=primary"
-#spring:
-#  profiles: primary
-#server:
-#  port: 8761
-#eureka:
-#  instance:
-#    hostname: account-service-1
-#  client:
-#    serviceUrl:
-#      defaultZone: http://discovery-server-2:8762/eureka/
-#
-#---
-## mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=secondary"
-#spring:
-#  profiles: secondary
-#server:
-#  port: 8762
-#eureka:
-#  instance:
-#    hostname: account-service-2
-#  client:
-#    serviceUrl:
-#      defaultZone: http://discovery-server-1:8761/eureka/
 

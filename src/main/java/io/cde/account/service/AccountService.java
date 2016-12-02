@@ -7,7 +7,6 @@ import io.cde.account.exception.BizException;
 
 /**
  * @author lcl
- * @createDate 2016年11月29日下午6:07:44
  *
  */
 
@@ -26,7 +25,7 @@ public interface AccountService {
 	 * 获取用户信息.
 	 * 
 	 * @param accountId 用户id
-	 * @return 返回用户信息或抛出操作异常
+	 * @return 返回用户信息
 	 */
 	Account getAccountInfo(String accountId);
 	
@@ -35,7 +34,7 @@ public interface AccountService {
 	 * 
 	 * @param account 携带用户基本信息的对象
 	 * @return 返回操作结果
-	 * @throws BizException 
+	 * @throws BizException 若用户id错误则抛出异常
 	 */
 	void updateAccount(Account account) throws BizException;
 	
@@ -46,7 +45,6 @@ public interface AccountService {
 	 * @param name 要修改的用户名
 	 * @return 返回操作的结果
 	 * @throws BizException 用户id错误抛出无效用户id异常，用户名被使用过抛出用户已存在异常
-	 * @throws AccountNotFoundException 
 	 */
 	void updateName(String accountId,String name) throws BizException;
 	
@@ -58,7 +56,6 @@ public interface AccountService {
 	 * @param newPassword 用户新密码
 	 * @return 返回操作的结果
 	 * @throws BizException 密码错误则抛出用户名和密码不匹配异常.
-	 * @throws AccountNotFoundException 错误的用户id则抛出无效的用户id异常；
 	 */
 	void updatePassword(String accountId, String oldPassword, String newPassword) throws BizException;
 }

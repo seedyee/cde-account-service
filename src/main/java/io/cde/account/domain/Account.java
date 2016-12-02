@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * 用户实体
  * @author lcl
- * @createDate 2016年11月14日上午11:06:17
  */
 @Document(collection = "account")
 public class Account extends BaseEntity {

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 /**
  * @author lcl
- * @createDate 2016年12月1日上午9:37:31
  *
  */
 public class ErrorInfo implements Serializable{

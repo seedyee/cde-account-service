@@ -2,14 +2,21 @@ package io.cde.account.exception;
 
 /**
  * @author lcl
- * @createDate 2016年11月29日下午1:59:24
  * 业务异常
  */
 public class BizException extends Exception {
-
+    
+	/**
+	 * 序列号.
+	 */
 	private static final long serialVersionUID = -5937698721553801873L;
-	
+	/**
+	 * 异常编码. 
+	 */
 	private int code;
+	/**
+	 * 异常信息.
+	 */
 	private String message;
 	
 	public BizException(int code, String message) {

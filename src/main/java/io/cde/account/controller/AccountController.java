@@ -20,7 +20,6 @@ import io.cde.account.service.impl.AccountServiceImpl;
 
 /**
  * @author lcl
- * @createDate 2016年11月30日下午8:15:31
  *
  */
 @RestController
@@ -29,8 +28,14 @@ public class AccountController {
 	@Autowired
 	private AccountServiceImpl accountService;
 	
+	/**
+	 * 用户注册.
+	 * 
+	 * @param account 携带注册信息的用户对象
+	 * @return 返回注册用户操作的结果，注册成功返回null; 失败返回导致操作失败的错误信息
+	 */
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public Object createAccount(@ModelAttribute(name = "account") Account account) {
+	public ErrorInfo createAccount(@ModelAttribute(name = "account") Account account) {
 		try {
 			accountService.createAccount(account);
 		} catch (BizException e) {
@@ -42,6 +47,7 @@ public class AccountController {
 	}
 	/**
 	 * 获取用户基本信息.
+	 * 
 	 * @param accountId 用户id
 	 * @return 返回用户基本信息或是错误的操作反馈
 	 */
@@ -54,14 +60,14 @@ public class AccountController {
 		return account;
 	}
 	/**
-	 * 修改用户信息
+	 * 修改用户信息.
+	 * 
 	 * @param accountId 用户id
 	 * @param account 携带要修改的信息的用户对象
-	 * @return 返回修改操作的结果
-	 * @throws AccountNotFoundException 
+	 * @return 返回修改操作的结果，修改成功返回null；失败返回相应的错误信息
 	 */
 	@RequestMapping(value = "/{accountId}/basicInfo", method = RequestMethod.POST)
-	public Object updateAccountInfo(@PathVariable String accountId, @ModelAttribute(name = "account") Account account) {
+	public ErrorInfo updateAccountInfo(@PathVariable String accountId, @ModelAttribute(name = "account") Account account) {
 		account.setId(accountId);
 		try {
 			accountService.updateAccount(account);
@@ -72,10 +78,11 @@ public class AccountController {
 	}
 	
 	/**
+	 * 修改用户名.
 	 * 
-	 * @param accountId
-	 * @param name
-	 * @return
+	 * @param accountId 用户id
+	 * @param name 新的用户名
+	 * @return 返回修改操作结果，修改成功返回null；失败返回相应的错误信息
 	 */
 	@RequestMapping(value = "/{accountId}/name", method = RequestMethod.POST)
 	public ErrorInfo updateName(@PathVariable String accountId,
@@ -91,10 +98,11 @@ public class AccountController {
 		return null;
 	}
 	/**
-	 * 修改用户密码
+	 * 修改用户密码.
+	 * 
 	 * @param accountId 用户id
 	 * @param account 携带要修改的密码的用户对象
-	 * @return 返回修改操作的结果
+	 * @return 返回修改操作的结果，修改成功返回null；失败返回相应的错误信息
 	 */
 	@RequestMapping(value = "/{accountId}/password", method = RequestMethod.POST)
 	public ErrorInfo updatePassword(@PathVariable String accountId, 

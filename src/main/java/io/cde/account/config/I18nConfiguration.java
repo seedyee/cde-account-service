@@ -10,12 +10,12 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  * 国际化messageSource 配置
  */
 @Configuration
-public class InternationalConfig {
+public class I18nConfiguration {
 
     /**
      * 获取国际化资源文件的basename.
      */
-    @Value(value = "${account.i18n.messages.basename}")
+    @Value(value = "${cde.account.i18n.messages.basename}")
     private String basename;
 
     /**

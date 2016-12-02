@@ -1,10 +1,7 @@
 package io.cde.account.domain.i18n;
 
-import org.bouncycastle.jcajce.provider.symmetric.Threefish;
-
 /**
  * @author lcl
- * @createDate 2016年11月29日上午9:59:30
  *
  */
 public enum Error {

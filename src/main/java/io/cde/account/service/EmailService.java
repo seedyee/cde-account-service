@@ -7,7 +7,6 @@ import io.cde.account.exception.BizException;
 
 /**
  * @author lcl
- * @createDate 2016年12月1日下午5:19:01
  *
  */
 public interface EmailService {

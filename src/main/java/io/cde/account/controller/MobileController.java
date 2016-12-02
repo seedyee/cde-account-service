@@ -21,7 +21,6 @@ import io.cde.account.service.impl.MobileServiceImpl;
 
 /**
  * @author lcl
- * @createDate 2016年12月2日上午10:30:52
  *
  */
 @RestController
@@ -32,9 +31,10 @@ public class MobileController {
 	private MobileServiceImpl mobileService;
 	
 	/**
-	 * 获取用户电话信息
-	 * @param accountId
-	 * @return
+	 * 获取用户电话信息.
+	 * 
+	 * @param accountId 用户id
+	 * @return 成功则返回用户电话信息，操作错误则返回相应的错误信息
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles", method = RequestMethod.GET)
 	public List<Mobile> getMobiles(@PathVariable String accountId) {
@@ -48,7 +48,8 @@ public class MobileController {
 	}
 	
 	/**
-	 * 修改用户的电话信息
+	 * 修改用户的电话信息.
+	 *
 	 * @param accountId 用户id
 	 * @param mobileId 要修改的电话的id
 	 * @param mobile 携带要修改的电话信息的对象
@@ -65,7 +66,8 @@ public class MobileController {
 	}
 	
 	/**
-	 * 增加用户电话信息
+	 * 增加用户电话信息.
+	 * 
 	 * @param accountId 用户id
 	 * @param mobile 携带要添加的电话的结果
 	 * @return 返回添加操作的结果
@@ -81,7 +83,8 @@ public class MobileController {
 	}
 	
 	/**
-	 * 删除用户电话信息
+	 * 删除用户电话信息.
+	 * 
 	 * @param accountId 用户id
 	 * @param mobileId 要删除的电话的id
 	 * @return 删除操作的结果
@@ -97,12 +100,13 @@ public class MobileController {
 	}
 	
 	/**
-	 * 异常处理
+	 * 异常处理.
+	 * 
 	 * @param e catch到的异常
 	 * @return 若是AccountNotFundException则抛出，否则返回异常对象信息
 	 */
 	private ErrorInfo handException(BizException e) {
-		if (e.getCode() == 100001 || e.getCode() == Error.UNASSOCIATED_ACCOUNT_AND_MOBILE.getCode()) {
+		if (e.getCode() == 100001) {
 			throw new AccountNotFundException();
 		}
 		return new ErrorInfo(e.getCode(), e.getMessage());

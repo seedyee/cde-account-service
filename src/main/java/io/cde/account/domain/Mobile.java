@@ -4,7 +4,6 @@ import org.springframework.data.annotation.Transient;
 
 /**
  * @author lcl
- * @createDate 2016年11月1日下午2:16:25
  *
  */
 public class Mobile {

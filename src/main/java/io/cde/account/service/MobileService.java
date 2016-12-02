@@ -7,7 +7,6 @@ import io.cde.account.exception.BizException;
 
 /**
  * @author lcl
- * @createDate 2016年12月2日上午9:46:29
  *
  */
 public interface MobileService {

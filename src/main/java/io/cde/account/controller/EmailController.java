@@ -20,7 +20,6 @@ import io.cde.account.service.impl.EmailServiceImpl;
 
 /**
  * @author lcl
- * @createDate 2016年12月1日下午6:30:28
  *
  */
 @RestController
@@ -46,6 +45,7 @@ public class EmailController {
 		}
 		return emails;
 	}
+	
 	/**
 	 * 修改用户的邮箱信息.
 	 * 
@@ -63,6 +63,7 @@ public class EmailController {
 		}
 		return null;
 	}
+	
 	/**
 	 * 添加用户邮箱信息.
 	 * 
@@ -79,6 +80,7 @@ public class EmailController {
 		}
 		return null;
 	}
+	
 	/**
 	 * 删除用户邮箱信息.
 	 * 
@@ -102,7 +104,7 @@ public class EmailController {
 	 * @return 若是AccountNotFundException则抛出，否则返回异常对象信息
 	 */
 	private ErrorInfo handException(BizException e) {
-		if (e.getCode() == 100001 || e.getCode() == Error.UNASSOCIATED_ACCOUNT_AND_EMAIL.getCode()) {
+		if (e.getCode() == 100001) {
 			throw new AccountNotFundException();
 		}
 		return new ErrorInfo(e.getCode(), e.getMessage());
