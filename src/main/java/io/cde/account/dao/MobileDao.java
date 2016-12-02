@@ -30,10 +30,11 @@ public interface MobileDao {
 	 * 修改电话信息.
 	 * 
 	 * @param accountId 用户id
-	 * @param mobile 要修改的电话信息
+	 * @param mobileId 电话信息id
+	 * @param isVerified 要修改的电话信息
 	 * @return 修改成功返回1，否则返回-1
 	 */
-	int updateMobile(String accountId, Mobile mobile);
+	int updateMobile(String accountId, String mobileId, boolean isVerified);
 	
 	/**
 	 * 添加电话信息.

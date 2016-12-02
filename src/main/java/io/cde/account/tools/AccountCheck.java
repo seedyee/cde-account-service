@@ -1,11 +1,9 @@
 package io.cde.account.tools;
 
-import javax.security.auth.login.AccountNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.cde.account.dao.AccountRepository;
+import io.cde.account.dao.impl.AccountDaoImpl;
 import io.cde.account.dao.impl.EmailDaoImpl;
 import io.cde.account.dao.impl.MobileDaoImpl;
 import io.cde.account.domain.Account;
@@ -24,7 +22,7 @@ public class AccountCheck {
 	private ErrorMessageSourceHandler errorHandler;
 	
 	@Autowired
-    private AccountRepository accountRepository;
+    private AccountDaoImpl accountDao;
 	
 	@Autowired
 	private EmailDaoImpl emailDao;
@@ -39,7 +37,7 @@ public class AccountCheck {
 	 * @throws BizException 用户名存在则抛用户已存在异常
 	 */
 	public void checkAccountExistedByName(String name) throws BizException {
-		Account account = accountRepository.findByName(name);
+		Account account = accountDao.findByName(name);
 		if (account != null) {
 			throw new BizException(Error.ACCOUNT_EXISTE.getCode(), errorHandler.getMessage(Error.ACCOUNT_EXISTE.toString()));
 		}
@@ -52,7 +50,7 @@ public class AccountCheck {
 	 * @throws BizException 用户不存在则抛出无效用户id
 	 */
 	public Account checkAccountExistedById(String accountId) throws BizException {
-		Account account = accountRepository.findById(accountId);
+		Account account = accountDao.findById(accountId);
 		if (account == null) {
 			throw new BizException(100001, "用户不存在");
 		}
