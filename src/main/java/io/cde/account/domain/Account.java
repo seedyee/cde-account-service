@@ -1,5 +1,6 @@
 package io.cde.account.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,10 +23,15 @@ public class Account extends BaseEntity {
 	 */
     private String password;
     /**
-	 * 新密码，由于修改密码的保留字段，不存入数据库.
+	 * 由于修改密码的保留字段，不存入数据库.
 	 */
 	@Transient
-    private String newPassword;
+    private String password1;
+	/**
+	 * 由于修改密码的保留字段，不存入数据库.
+	 */
+	@Transient
+    private String password2;
     /**
 	 * 用户头像地址.
 	 */
@@ -82,11 +88,11 @@ public class Account extends BaseEntity {
     /**
      * 用户邮箱信息.
      */
-    private List<Email> emails;
+    private List<Email> emails = new ArrayList<>();
     /**
      * 用户电话信息.
      */
-    private List<Mobile> mobiles;
+    private List<Mobile> mobiles = new ArrayList<>();
 
 	public String getName() {
 		return name;
@@ -100,11 +106,17 @@ public class Account extends BaseEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getNewPassword() {
-		return newPassword;
+	public String getPassword1() {
+		return password1;
 	}
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
+	public void setPassword1(String password1) {
+		this.password1 = password1;
+	}
+	public String getPassword2() {
+		return password2;
+	}
+	public void setPassword2(String password2) {
+		this.password2 = password2;
 	}
 	public String getAvatar() {
 		return avatar;

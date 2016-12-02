@@ -8,12 +8,9 @@ import org.springframework.data.annotation.Transient;
  * @author lcl
  *
  */
-public class Email extends BaseEntity {
-
-	/**
-	 * 邮箱所属用户id
-	 */
-	private String accountId;
+public class Email {
+	
+    private String emailId;
 	/**
 	 * 邮箱的地址
 	 */
@@ -33,43 +30,36 @@ public class Email extends BaseEntity {
 	@Transient
 	private boolean isPublic;
 	
-	public String getAccountId() {
-		return accountId;
+	public String getEmailId() {
+		return emailId;
 	}
 	
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 	
 	public String getEmail() {
 		return email;
 	}
-	
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public boolean getIsVerified() {
+	public boolean isVerified() {
 		return isVerified;
 	}
-	
-	public void setIsVerified(boolean isVerified) {
+	public void setVerified(boolean isVerified) {
 		this.isVerified = isVerified;
 	}
-	
-	public boolean getIsDefault() {
+	public boolean isDefault() {
 		return isDefault;
 	}
-	
-	public void setIsDefault(boolean isDefault) {
+	public void setDefault(boolean isDefault) {
 		this.isDefault = isDefault;
 	}
-	
-	public boolean getIsPublic() {
+	public boolean isPublic() {
 		return isPublic;
 	}
-	
-	public void setIsPublic(boolean isPublic) {
+	public void setPublic(boolean isPublic) {
 		this.isPublic = isPublic;
 	}
 }

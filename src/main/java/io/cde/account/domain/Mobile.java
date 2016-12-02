@@ -7,12 +7,9 @@ import org.springframework.data.annotation.Transient;
  * @createDate 2016年11月1日下午2:16:25
  *
  */
-public class Mobile extends BaseEntity {
-
-	/**
-	 * 电话所属用户id
-	 */
-	private String accountId;
+public class Mobile {
+    
+	private String mobileId;
 	/**
 	 * 电话号码
 	 */
@@ -32,43 +29,36 @@ public class Mobile extends BaseEntity {
 	@Transient
 	private boolean isPublic;
 	
-	public String getAccountId() {
-		return accountId;
+	public String getMobileId() {
+		return mobileId;
 	}
-
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
+	
+	public void setMobileId(String mobileId) {
+		this.mobileId = mobileId;
 	}
-
+	
 	public String getMobile() {
 		return mobile;
 	}
-
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-
-	public boolean getIsVerified() {
+	public boolean isVerified() {
 		return isVerified;
 	}
-
-	public void setIsVerified(boolean isVerified) {
+	public void setVerified(boolean isVerified) {
 		this.isVerified = isVerified;
 	}
-	
-	public boolean getIsDefault() {
+	public boolean isDefault() {
 		return isDefault;
 	}
-
-	public void setIsDefault(boolean isDefault) {
+	public void setDefault(boolean isDefault) {
 		this.isDefault = isDefault;
 	}
-	
-	public boolean getIsPublic() {
+	public boolean isPublic() {
 		return isPublic;
 	}
-
-	public void setIsPublic(boolean isPublic) {
+	public void setPublic(boolean isPublic) {
 		this.isPublic = isPublic;
 	}
 }
