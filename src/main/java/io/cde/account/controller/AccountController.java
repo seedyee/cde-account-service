@@ -2,6 +2,8 @@ package io.cde.account.controller;
 
 import javax.validation.constraints.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +28,12 @@ import io.cde.account.tools.ErrorMessageSourceHandler;
 @RestController
 @RequestMapping(value = "/accounts")
 public class AccountController {
-	
+
+	/**
+	 * 记录日志.
+	 */
+	private final Logger logger = LoggerFactory.getLogger(AccountController.class);
+
 	@Autowired
 	private ErrorMessageSourceHandler errorHandler;
 	
@@ -58,6 +65,7 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/{accountId}/basicInfo", method = RequestMethod.GET)
 	public Account getAccountInfo(@PathVariable String accountId) {
+		logger.info("query account start");
 		Account account = accountService.getAccountInfo(accountId);
 		if (account == null) {
 			throw new AccountNotFundException();
