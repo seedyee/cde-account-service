@@ -2,6 +2,7 @@ package io.cde.account.controller;
 
 import javax.validation.constraints.NotNull;
 
+import org.bouncycastle.util.test.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.cde.account.domain.Account;
 import io.cde.account.domain.ErrorInfo;
 import io.cde.account.domain.i18n.Error;
-import io.cde.account.exception.AccountNotFundException;
+import io.cde.account.exception.AccountNotFoundException;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.impl.AccountServiceImpl;
 import io.cde.account.tools.ErrorMessageSourceHandler;
@@ -33,7 +34,7 @@ public class AccountController {
 	 * 记录日志.
 	 */
 	private final Logger logger = LoggerFactory.getLogger(AccountController.class);
-
+	
 	@Autowired
 	private ErrorMessageSourceHandler errorHandler;
 	
@@ -48,13 +49,14 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public ErrorInfo createAccount(@ModelAttribute(name = "account") Account account) {
+		logger.info("create account start");
 		try {
 			accountService.createAccount(account);
 		} catch (BizException e) {
-			//加入日志服务以后用户日志记录异常
-			e.printStackTrace();
+			logger.debug("create account failed, the reason " + e.getCode() + ":" + e.getMessage());
 			return new ErrorInfo(e.getCode(),e.getMessage());
 		}
+		logger.info("create account end");
 		return null;
 	}
 	/**
@@ -68,8 +70,11 @@ public class AccountController {
 		logger.info("query account start");
 		Account account = accountService.getAccountInfo(accountId);
 		if (account == null) {
-			throw new AccountNotFundException();
+			AccountNotFoundException accountNotFoundException = new AccountNotFoundException(Error.INVALID_ACCOUNT_ID.getCode(), errorHandler.getMessage(Error.INVALID_ACCOUNT_ID.toString()));
+			logger.debug("query account failed, the reason " + accountNotFoundException.getCode() + ":" + accountNotFoundException.getMessage());
+			throw accountNotFoundException;
 		}
+		logger.info("query account successful");
 		return account;
 	}
 	/**
@@ -81,12 +86,15 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/{accountId}/basicInfo", method = RequestMethod.POST)
 	public ErrorInfo updateAccountInfo(@PathVariable String accountId, @ModelAttribute(name = "account") Account account) {
+		logger.info("update account information start");
 		account.setId(accountId);
 		try {
 			accountService.updateAccount(account);
 		} catch (BizException e) {
-			throw new AccountNotFundException();
+			logger.debug("update account information failed, the reason " + e.getCode() + ":" + e.getMessage());
+			throw new AccountNotFoundException();
 		}
+		logger.info("update account infomation successful");
 		return null;
 	}
 	
@@ -100,14 +108,17 @@ public class AccountController {
 	@RequestMapping(value = "/{accountId}/name", method = RequestMethod.POST)
 	public ErrorInfo updateName(@PathVariable String accountId,
 			@RequestParam(name = "name") @NotNull String name) {
+		logger.info("update account name start");
 		try {
 			accountService.updateName(accountId, name);
 		} catch (BizException e) {
+			logger.debug("update account name failed, the reason " + e.getCode() + ":" + e.getMessage());
 			if(e.getCode() == Error.INVALID_ACCOUNT_ID.getCode()){
-				throw new AccountNotFundException();
+				throw new AccountNotFoundException();
 			}
 			return new ErrorInfo(e.getCode(),e.getMessage());
 		}
+		logger.info("update account name successful");
 		return null;
 	}
 	/**
@@ -122,17 +133,22 @@ public class AccountController {
 			@RequestParam(name = "password") @NotNull String password, 
 			@RequestParam(name = "password1") @NotNull String password1,
 			@RequestParam(name = "password2") @NotNull String password2) {
+		logger.info("update account password start");
 		if (!password1.equals(password2)) {
-			return new ErrorInfo(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.getCode(), errorHandler.getMessage(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.toString()) );
+			ErrorInfo errorInfo = new ErrorInfo(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.getCode(), errorHandler.getMessage(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.toString()) );
+			logger.debug("update account password failed, the reason " + errorInfo.getCode() + ":" + errorInfo.getMessage());
+			return errorInfo;
 		}
 		try {
 			accountService.updatePassword(accountId, password, password1);
 		} catch (BizException e) {
+			logger.debug("update account password failed, the reason " + e.getCode() + ":" + e.getMessage());
 			if(e.getCode() == Error.INVALID_ACCOUNT_ID.getCode()){
-				throw new AccountNotFundException();
+				throw new AccountNotFoundException();
 			}
 			return new ErrorInfo(e.getCode(),e.getMessage());
 		}
+		logger.info("update account password successful");
 		return null;
 	}
 }

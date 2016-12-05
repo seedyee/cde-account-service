@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  *
  */
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Not found the account by id")
-public class AccountNotFundException extends RuntimeException {
+public class AccountNotFoundException extends RuntimeException {
 
 	/**
 	 * 序列号.
@@ -26,7 +26,7 @@ public class AccountNotFundException extends RuntimeException {
 	/**
 	 * 无参数构造器.
 	 */
-	public AccountNotFundException() {}
+	public AccountNotFoundException() {}
 	
 	/**
 	 * 有参数构造器.
@@ -34,7 +34,7 @@ public class AccountNotFundException extends RuntimeException {
 	 * @param code 异常编码
 	 * @param message 异常信息
 	 */
-	public AccountNotFundException(int code, String message) {
+	public AccountNotFoundException(int code, String message) {
 		this.code = code;
 		this.message = message;
 	}

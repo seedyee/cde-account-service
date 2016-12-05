@@ -3,6 +3,8 @@ package io.cde.account.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.cde.account.domain.Email;
 import io.cde.account.domain.ErrorInfo;
 import io.cde.account.domain.i18n.Error;
-import io.cde.account.exception.AccountNotFundException;
+import io.cde.account.exception.AccountNotFoundException;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.impl.EmailServiceImpl;
 
@@ -25,6 +27,11 @@ import io.cde.account.service.impl.EmailServiceImpl;
 @RestController
 @RequestMapping(value = "/accounts")
 public class EmailController {
+	
+	/**
+	 * 记录日志.
+	 */
+	private final Logger logger = LoggerFactory.getLogger(EmailController.class);
     
 	@Autowired
 	private EmailServiceImpl emailService;
@@ -37,12 +44,15 @@ public class EmailController {
 	 */
 	@RequestMapping(value = "/{accountId}/emails", method = RequestMethod.GET)
 	public List<Email> getEmails(@PathVariable String accountId) {
+	    logger.info("get the account's emails start");
 		List<Email> emails = new ArrayList<>();
 	    try {
 	    	emails = emailService.getEmails(accountId);
 		} catch (BizException e) {
-			throw new AccountNotFundException();
+			logger.debug("get the account's emails failed, the reason " + e.getCode() + ":" + e.getMessage());
+			throw new AccountNotFoundException();
 		}
+	    logger.info("get the account's emails end");
 		return emails;
 	}
 	
@@ -56,11 +66,14 @@ public class EmailController {
 	 */
 	@RequestMapping(value = "/{accountId}/emails/{emailId}", method = RequestMethod.POST)
 	public ErrorInfo updateEmail(@PathVariable String accountId, @PathVariable String emailId, @RequestParam(name = "isVerified") boolean isVerified) {
+		logger.info("update email start");
 		try {
 			emailService.updateEmail(accountId, emailId, isVerified);
 		} catch (BizException e) {
+			logger.debug("update email failed, the reason " + e.getCode() + ":" + e.getMessage());
 			return this.handException(e);
 		}
+		logger.info("update email successful");
 		return null;
 	}
 	
@@ -73,11 +86,14 @@ public class EmailController {
 	 */
 	@RequestMapping(value = "/{accountId}/emails", method = RequestMethod.POST)
 	public ErrorInfo addEmail(@PathVariable String accountId, @ModelAttribute(name = "email") Email email) {
+		logger.info("add email start");
 		try {
 			emailService.addEmail(accountId, email);
 		} catch (BizException e) {
+			logger.debug("add email failed, the reason " + e.getCode() + ":" + e.getMessage());
 			return this.handException(e);
 		}
+		logger.info("add email successful");
 		return null;
 	}
 	
@@ -90,11 +106,14 @@ public class EmailController {
 	 */
 	@RequestMapping(value = "/{accountId}/emails/{emailId}", method = RequestMethod.DELETE)
 	public ErrorInfo deleteEmail(@PathVariable String accountId, @PathVariable String emailId) {
+		logger.info("delete email start");
 		try {
 			emailService.deleteEmail(accountId, emailId);
 		} catch (BizException e) {
+			logger.debug("delete email failed, the reason " + e.getCode() + ":" + e.getMessage());
 			return this.handException(e);
 		}
+		logger.info("delete email successful");
 		return null;
 	}
 	
@@ -105,7 +124,7 @@ public class EmailController {
 	 */
 	private ErrorInfo handException(BizException e) {
 		if (e.getCode() == Error.INVALID_ACCOUNT_ID.getCode()) {
-			throw new AccountNotFundException();
+			throw new AccountNotFoundException();
 		}
 		return new ErrorInfo(e.getCode(), e.getMessage());
 	}

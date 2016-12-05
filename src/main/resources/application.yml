@@ -15,7 +15,6 @@ cde:
     i18n:
       messages:
         basename: i18n/messages
-  
-debug: true
+
 
 

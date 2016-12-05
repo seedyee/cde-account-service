@@ -3,7 +3,8 @@ package io.cde.account.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.cde.account.domain.ErrorInfo;
 import io.cde.account.domain.Mobile;
 import io.cde.account.domain.i18n.Error;
-import io.cde.account.exception.AccountNotFundException;
+import io.cde.account.exception.AccountNotFoundException;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.impl.MobileServiceImpl;
 
@@ -26,6 +27,11 @@ import io.cde.account.service.impl.MobileServiceImpl;
 @RestController
 @RequestMapping(value = "/accounts")
 public class MobileController {
+	
+	/**
+	 * 记录日志.
+	 */
+	private final Logger logger = LoggerFactory.getLogger(Mobile.class);
     
 	@Autowired
 	private MobileServiceImpl mobileService;
@@ -39,11 +45,14 @@ public class MobileController {
 	@RequestMapping(value = "/{accountId}/mobiles", method = RequestMethod.GET)
 	public List<Mobile> getMobiles(@PathVariable String accountId) {
         List<Mobile> mobiles = new ArrayList<>();
+        logger.info("get the account's mobiles start");
         try {
 			mobiles = mobileService.getMobiles(accountId);
 		} catch (BizException e) {
-			throw new AccountNotFundException();
+			logger.debug("get the account's mobiles failed, the reason " + e.getCode() + ":" + e.getMessage());
+			throw new AccountNotFoundException();
 		}
+        logger.info("get the account's mobiles end");
 		return mobiles;
 	}
 	
@@ -57,11 +66,14 @@ public class MobileController {
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles/{mobileId}", method = RequestMethod.POST)
 	public ErrorInfo updateMobile(@PathVariable String accountId, @PathVariable String mobileId, @RequestParam(name = "isVerified") boolean isVerified) {
+		logger.info("update mobile start");
 		try {
 			mobileService.updateMobile(accountId, mobileId, isVerified);
 		} catch (BizException e) {
+			logger.debug("update mobile failed, the reason " + e.getCode() + ":" + e.getMessage());
 			return this.handException(e);
 		}
+		logger.info("update mobile end");
 		return null;
 	}
 	
@@ -74,11 +86,14 @@ public class MobileController {
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles", method = RequestMethod.POST)
 	public ErrorInfo addMobile(@PathVariable String accountId, @ModelAttribute(name = "mobile") Mobile mobile) {
-        try {
+        logger.info("add mobile start");
+		try {
 			mobileService.addMobile(accountId, mobile);
 		} catch (BizException e) {
+			logger.debug("add mobile failed, the reason " + e.getCode() + ":" + e.getMessage());
 			return this.handException(e);
 		}
+		logger.info("add mobile successful");;
 		return null;
 	}
 	
@@ -91,11 +106,14 @@ public class MobileController {
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles/{mobileId}", method = RequestMethod.DELETE)
 	public Object deleteMobile(@PathVariable String accountId, @PathVariable String mobileId) {
-        try {
+        logger.info("delete mobile start");
+		try {
 			mobileService.deleteMobile(accountId, mobileId);
 		} catch (BizException e) {
+			logger.debug("delete mobile failed, the reason " + e.getCode() + ":" + e.getMessage());
 			return this.handException(e);
 		}
+		logger.info("delete mobile successful");
 		return null;
 	}
 	
@@ -107,7 +125,7 @@ public class MobileController {
 	 */
 	private ErrorInfo handException(BizException e) {
 		if (e.getCode() == Error.INVALID_ACCOUNT_ID.getCode()) {
-			throw new AccountNotFundException();
+			throw new AccountNotFoundException();
 		}
 		return new ErrorInfo(e.getCode(), e.getMessage());
 	}
