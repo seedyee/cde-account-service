@@ -45,14 +45,13 @@ public class MobileController {
 	@RequestMapping(value = "/{accountId}/mobiles", method = RequestMethod.GET)
 	public List<Mobile> getMobiles(@PathVariable String accountId) {
         List<Mobile> mobiles = new ArrayList<>();
-        logger.info("get the account's mobiles start");
+        logger.info("get the account's mobiles started");
         try {
 			mobiles = mobileService.getMobiles(accountId);
 		} catch (BizException e) {
-			logger.debug("get the account's mobiles failed, the reason " + e.getCode() + ":" + e.getMessage());
+			logger.debug("get the account's mobiles failed", e);
 			throw new AccountNotFoundException();
 		}
-        logger.info("get the account's mobiles end");
 		return mobiles;
 	}
 	
@@ -66,14 +65,13 @@ public class MobileController {
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles/{mobileId}", method = RequestMethod.POST)
 	public ErrorInfo updateMobile(@PathVariable String accountId, @PathVariable String mobileId, @RequestParam(name = "isVerified") boolean isVerified) {
-		logger.info("update mobile start");
+		logger.info("update mobile started");
 		try {
 			mobileService.updateMobile(accountId, mobileId, isVerified);
 		} catch (BizException e) {
-			logger.debug("update mobile failed, the reason " + e.getCode() + ":" + e.getMessage());
+			logger.debug("update mobile failed", e);
 			return this.handException(e);
 		}
-		logger.info("update mobile end");
 		return null;
 	}
 	
@@ -86,14 +84,13 @@ public class MobileController {
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles", method = RequestMethod.POST)
 	public ErrorInfo addMobile(@PathVariable String accountId, @ModelAttribute(name = "mobile") Mobile mobile) {
-        logger.info("add mobile start");
+        logger.info("add mobile started");
 		try {
 			mobileService.addMobile(accountId, mobile);
 		} catch (BizException e) {
-			logger.debug("add mobile failed, the reason " + e.getCode() + ":" + e.getMessage());
+			logger.debug("add mobile failed", e);
 			return this.handException(e);
 		}
-		logger.info("add mobile successful");;
 		return null;
 	}
 	
@@ -106,14 +103,13 @@ public class MobileController {
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles/{mobileId}", method = RequestMethod.DELETE)
 	public Object deleteMobile(@PathVariable String accountId, @PathVariable String mobileId) {
-        logger.info("delete mobile start");
+        logger.info("delete mobile started");
 		try {
 			mobileService.deleteMobile(accountId, mobileId);
 		} catch (BizException e) {
-			logger.debug("delete mobile failed, the reason " + e.getCode() + ":" + e.getMessage());
+			logger.debug("delete mobile failed", e);
 			return this.handException(e);
 		}
-		logger.info("delete mobile successful");
 		return null;
 	}
 	

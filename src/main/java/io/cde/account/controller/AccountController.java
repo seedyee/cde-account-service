@@ -52,10 +52,9 @@ public class AccountController {
 		try {
 			accountService.createAccount(account);
 		} catch (BizException e) {
-			logger.debug("create account failed, the reason " + e.getCode() + ":" + e.getMessage());
+			logger.debug("create account failed, the reason ", e);
 			return new ErrorInfo(e.getCode(),e.getMessage());
 		}
-		logger.info("create account end");
 		return null;
 	}
 	/**
@@ -66,14 +65,13 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/{accountId}/basicInfo", method = RequestMethod.GET)
 	public Account getAccountInfo(@PathVariable String accountId) {
-		logger.info("query account start");
+		logger.info("query account started");
 		Account account = accountService.getAccountInfo(accountId);
 		if (account == null) {
 			AccountNotFoundException accountNotFoundException = new AccountNotFoundException(Error.INVALID_ACCOUNT_ID.getCode(), errorHandler.getMessage(Error.INVALID_ACCOUNT_ID.toString()));
-			logger.debug("query account failed, the reason " + accountNotFoundException.getCode() + ":" + accountNotFoundException.getMessage());
+			logger.debug("query account failed", accountNotFoundException);
 			throw accountNotFoundException;
 		}
-		logger.info("query account successful");
 		return account;
 	}
 	/**
@@ -85,15 +83,14 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/{accountId}/basicInfo", method = RequestMethod.POST)
 	public ErrorInfo updateAccountInfo(@PathVariable String accountId, @ModelAttribute(name = "account") Account account) {
-		logger.info("update account information start");
+		logger.info("update account information started");
 		account.setId(accountId);
 		try {
 			accountService.updateAccount(account);
 		} catch (BizException e) {
-			logger.debug("update account information failed, the reason " + e.getCode() + ":" + e.getMessage());
+			logger.debug("update account information failed", e);
 			throw new AccountNotFoundException();
 		}
-		logger.info("update account infomation successful");
 		return null;
 	}
 	
@@ -107,17 +104,16 @@ public class AccountController {
 	@RequestMapping(value = "/{accountId}/name", method = RequestMethod.POST)
 	public ErrorInfo updateName(@PathVariable String accountId,
 			@RequestParam(name = "name") @NotNull String name) {
-		logger.info("update account name start");
+		logger.info("update account name started");
 		try {
 			accountService.updateName(accountId, name);
 		} catch (BizException e) {
-			logger.debug("update account name failed, the reason " + e.getCode() + ":" + e.getMessage());
+			logger.debug("update account name failed", e);
 			if(e.getCode() == Error.INVALID_ACCOUNT_ID.getCode()){
 				throw new AccountNotFoundException();
 			}
 			return new ErrorInfo(e.getCode(),e.getMessage());
 		}
-		logger.info("update account name successful");
 		return null;
 	}
 	/**
@@ -132,22 +128,21 @@ public class AccountController {
 			@RequestParam(name = "password") @NotNull String password, 
 			@RequestParam(name = "password1") @NotNull String password1,
 			@RequestParam(name = "password2") @NotNull String password2) {
-		logger.info("update account password start");
+		logger.info("update account password started");
 		if (!password1.equals(password2)) {
 			ErrorInfo errorInfo = new ErrorInfo(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.getCode(), errorHandler.getMessage(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.toString()) );
-			logger.debug("update account password failed, the reason " + errorInfo.getCode() + ":" + errorInfo.getMessage());
+			logger.debug("update account password failed", errorInfo);
 			return errorInfo;
 		}
 		try {
 			accountService.updatePassword(accountId, password, password1);
 		} catch (BizException e) {
-			logger.debug("update account password failed, the reason " + e.getCode() + ":" + e.getMessage());
+			logger.debug("update account password failed", e);
 			if(e.getCode() == Error.INVALID_ACCOUNT_ID.getCode()){
 				throw new AccountNotFoundException();
 			}
 			return new ErrorInfo(e.getCode(),e.getMessage());
 		}
-		logger.info("update account password successful");
 		return null;
 	}
 }
