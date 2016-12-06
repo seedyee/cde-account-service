@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import io.cde.account.dao.impl.EmailDaoImpl;
@@ -35,6 +38,7 @@ public class EmailServiceImpl implements EmailService {
 	 * @see io.cde.account.service.EmailService#getEmails(java.lang.String)
 	 */
 	@Override
+	@Cacheable(cacheNames = "emails", key = "'email:' + #accountId")
 	public List<Email> getEmails(String accountId) throws BizException {
 		List<Email> emails = new ArrayList<>();
 		Account account = accountCheck.checkAccountExistedById(accountId);
@@ -49,6 +53,8 @@ public class EmailServiceImpl implements EmailService {
 	 * @see io.cde.account.service.EmailService#addEmail(java.lang.String, io.cde.account.domain.Email)
 	 */
 	@Override
+	@Caching(evict = {@CacheEvict(cacheNames = "accounts", key = "'account:' + #accountId"),
+			@CacheEvict(cacheNames = "emails", key = "'email:' + #accountId")})
 	public void addEmail(String accountId, Email email) throws BizException {
 		accountCheck.checkAccountExistedById(accountId);
 		accountCheck.checkEmailExistedByEmail(email.getEmail());
@@ -63,6 +69,8 @@ public class EmailServiceImpl implements EmailService {
 	 * @see io.cde.account.service.EmailService#updateEmail(java.lang.String, java.lang.String, boolean)
 	 */
 	@Override
+	@Caching(evict = {@CacheEvict(cacheNames = "accounts", key = "'account:' + #accountId"),
+			@CacheEvict(cacheNames = "emails", key = "'email:' + #accountId")})
 	public void updateEmail(String accountId, String emailId, boolean isVerified) throws BizException {
         accountCheck.checkAcccountEmail(accountId, emailId);
         int updateEmail = emailDao.updateEmail(accountId, emailId, isVerified);
@@ -75,6 +83,8 @@ public class EmailServiceImpl implements EmailService {
 	 * @see io.cde.account.service.EmailService#deleteEmail(java.lang.String, java.lang.String)
 	 */
 	@Override
+	@Caching(evict = {@CacheEvict(cacheNames = "accounts", key = "'account:' + #accountId"),
+			@CacheEvict(cacheNames = "emails", key = "'email:' + #accountId")})
 	public void deleteEmail(String accountId, String emailId) throws BizException {
 		accountCheck.checkAcccountEmail(accountId, emailId);
 		int deleteEmail = emailDao.deleteEmail(accountId, emailId);

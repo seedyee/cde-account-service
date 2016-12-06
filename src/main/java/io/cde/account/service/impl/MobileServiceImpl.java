@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import io.cde.account.dao.impl.MobileDaoImpl;
@@ -37,6 +40,7 @@ public class MobileServiceImpl implements MobileService {
 	 * @see io.cde.account.service.MobileService#getMobiles(java.lang.String)
 	 */
 	@Override
+	@Cacheable(cacheNames = "mobiles", key = "'mobile:' + #accountId")
 	public List<Mobile> getMobiles(String accountId) throws BizException {
 		List<Mobile> mobiles = new ArrayList<>();
 		Account account = accountCheck.checkAccountExistedById(accountId);
@@ -51,6 +55,8 @@ public class MobileServiceImpl implements MobileService {
 	 * @see io.cde.account.service.MobileService#addMobile(java.lang.String, io.cde.account.domain.Mobile)
 	 */
 	@Override
+	@Caching(evict = {@CacheEvict(cacheNames = "accounts", key = "'account:' + #accountId"),
+			@CacheEvict(cacheNames = "mobiles", key = "'mobile:' + #accountId")})
 	public void addMobile(String accountId, Mobile mobile) throws BizException {
 		accountCheck.checkAccountExistedById(accountId);
 		accountCheck.checkMobileExistedByMobile(mobile.getMobile());
@@ -66,6 +72,8 @@ public class MobileServiceImpl implements MobileService {
 	 * @see io.cde.account.service.MobileService#updateMobile(java.lang.String, boolean)
 	 */
 	@Override
+	@Caching(evict = {@CacheEvict(cacheNames = "accounts", key = "'account:' + #accountId"),
+			@CacheEvict(cacheNames = "mobiles", key = "'mobile:' + #accountId")})
 	public void updateMobile(String accountId, String mobileId, boolean isVerified) throws BizException {
 		accountCheck.checkAccountMobile(accountId, mobileId);
         int updateMobile = mobileDao.updateMobile(accountId, mobileId, isVerified);
@@ -78,6 +86,8 @@ public class MobileServiceImpl implements MobileService {
 	 * @see io.cde.account.service.MobileService#deleteMobile(java.lang.String, java.lang.String)
 	 */
 	@Override
+	@Caching(evict = {@CacheEvict(cacheNames = "accounts", key = "'account:' + #accountId"),
+			@CacheEvict(cacheNames = "mobiles", key = "'mobile:' + #accountId")})
 	public void deleteMobile(String accountId, String mobileId) throws BizException {
 		accountCheck.checkAccountMobile(accountId, mobileId);
         int deleteMobile = mobileDao.deleteMobile(accountId, mobileId);

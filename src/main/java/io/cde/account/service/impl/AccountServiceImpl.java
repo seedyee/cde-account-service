@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +65,7 @@ public class AccountServiceImpl implements AccountService{
 	 * @see io.cde.account.service.impl.AccountService#getAccountInfo(java.lang.String)
 	 */
 	@Override
+	@Cacheable(cacheNames = {"accounts"}, key = "'account:' + #accountId")
 	public Account getAccountInfo(String accountId) {
 		return accountDao.findById(accountId);
 	}
@@ -71,6 +74,7 @@ public class AccountServiceImpl implements AccountService{
 	 * @see io.cde.account.service.impl.AccountService#updateAccount(io.cde.account.domain.Account)
 	 */
 	@Override
+	@CacheEvict(cacheNames = {"accounts"}, key = "'account:' + #account.id")
 	public void updateAccount(Account account) throws BizException{
         accountCheck.checkAccountExistedById(account.getId());
         int updateAccount = accountDao.updateAccount(account);
@@ -83,6 +87,7 @@ public class AccountServiceImpl implements AccountService{
 	 * @see io.cde.account.service.impl.AccountService#updateName(java.lang.String, java.lang.String)
 	 */
 	@Override
+	@CacheEvict(cacheNames = {"accounts"}, key = "'account:' + #accountId")
 	public void updateName(String accountId, String name) throws BizException{
 		accountCheck.checkAccountExistedById(accountId);
 		accountCheck.checkAccountExistedByName(name);
@@ -96,6 +101,7 @@ public class AccountServiceImpl implements AccountService{
 	 * @see io.cde.account.service.impl.AccountService#updatePassword(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
+	@CacheEvict(cacheNames = {"accounts"}, key = "'account:' + #accountId")
 	public void updatePassword(String accountId, String oldPassword, String newPassword) throws BizException{
 		Account account = accountCheck.checkAccountExistedById(accountId);
 		if (!BCrypt.checkpw(oldPassword, account.getPassword())) {
