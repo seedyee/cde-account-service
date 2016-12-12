@@ -1,5 +1,6 @@
 package io.cde.account.dao;
 
+import io.cde.account.domain.Account;
 import io.cde.account.domain.Email;
 
 /**
@@ -14,9 +15,9 @@ public interface EmailDao {
 	 * 
 	 * @param accountId 用户id
 	 * @param emailId 邮箱id
-	 * @return 有返回true，否则返回false
+	 * @return 返回该用户信息
 	 */
-    boolean isAssociated(String accountId, String emailId);
+	Account findAccountByEmailId(String accountId, String emailId);
     
     /**
      * 根据邮箱地址查询邮箱信息.

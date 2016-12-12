@@ -28,11 +28,11 @@ public class EmailDaoImpl implements EmailDao {
 	 * @see io.cde.account.dao.EmailDao#getEmailById(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public boolean isAssociated(String accountId, String emailId) {
-		boolean isAssociated = false;
+	public Account findAccountByEmailId(String accountId, String emailId) {
+		Account account = null;
 		Query query = Query.query(Criteria.where("_id").is(accountId).and("emails.emailId").is(emailId));
-		isAssociated = mongoTemplate.exists(query, "account");
-		return isAssociated;
+		account = mongoTemplate.findOne(query, Account.class);
+		return account;
 	}
 
 	/* (non-Javadoc)

@@ -1,6 +1,8 @@
 package io.cde.account.dao;
 
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+
 import io.cde.account.domain.Account;
 
 /**

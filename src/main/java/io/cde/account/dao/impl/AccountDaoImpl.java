@@ -60,10 +60,10 @@ public class AccountDaoImpl implements AccountDao {
 	public int updateAccount(Account account) {
 		Query query = Query.query(Criteria.where("_id").is(account.getId()));
 		Update update = Update.update("realName", account.getRealName()).set("email", account.getEmail())
-				.set("company", account.getCompany()).set("companyBusiness", account.getCompanyBusiness())
-				.set("companyAddress", account.getCompanyAddress()).set("position", account.getPosition())
+				.set("company", account.getCompany()).set("business", account.getBusiness())
+				.set("address", account.getAddress()).set("position", account.getPosition())
 				.set("personal", account.getPersonal()).set("isPublicEmail", account.isPublicEmail())
-				.set("isPublicMobile", account.isPublicMobile());
+				.set("mobile", account.getMobile()).set("isPublicMobile", account.isPublicMobile());
 		WriteResult updateFirst = mongoTemPlate.updateFirst(query, update, Account.class);
 		if (updateFirst.getN() <= 0) {
 			return -1;

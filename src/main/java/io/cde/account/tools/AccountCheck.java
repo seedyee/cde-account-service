@@ -70,17 +70,19 @@ public class AccountCheck {
 	}
 	
 	/**
-	 * 判断用户是否关联邮箱.
+	 * 通过用户id和邮箱id判断邮箱是否存在.
 	 * 
 	 * @param accountId 用户id
 	 * @param emailId 邮箱id
-	 * @throws BizException 没有关联则抛出用户没有关联该邮箱异常
+	 * @return 
+	 * @throws BizException
 	 */
-	public void checkAcccountEmail(String accountId, String emailId) throws BizException {
-		boolean isAssociated = emailDao.isAssociated(accountId, emailId);
-		if (!isAssociated) {
+	public Account checkAcccountEmail(String accountId, String emailId) throws BizException {
+		Account account = emailDao.findAccountByEmailId(accountId, emailId);
+		if (account == null) {
 			throw new BizException(Error.UNASSOCIATED_ACCOUNT_AND_EMAIL.getCode(), errorHandler.getMessage(Error.UNASSOCIATED_ACCOUNT_AND_EMAIL.toString()));
 		}
+		return account;
 	}
 	
 	public void checkMobileExistedByMobile(String mobile) throws BizException {
