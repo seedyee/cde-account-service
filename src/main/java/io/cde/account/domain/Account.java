@@ -42,11 +42,11 @@ public class Account extends BaseEntity {
     /**
 	 * 公司地址.
 	 */
-    private String companyAddress;
+    private String address;
     /**
 	 * 行业.
 	 */
-    private String companyBusiness;
+    private String business;
     /**
 	 * 职位.
 	 */
@@ -129,17 +129,17 @@ public class Account extends BaseEntity {
 	public void setCompany(String company) {
 		this.company = company;
 	}
-	public String getCompanyAddress() {
-		return companyAddress;
+	public String getAddress() {
+		return address;
 	}
-	public void setCompanyAddress(String companyAddress) {
-		this.companyAddress = companyAddress;
+	public void setAddress(String address) {
+		this.address = address;
 	}
-	public String getCompanyBusiness() {
-		return companyBusiness;
+	public String getBusiness() {
+		return business;
 	}
-	public void setCompanyBusiness(String companyBusiness) {
-		this.companyBusiness = companyBusiness;
+	public void setBusiness(String business) {
+		this.business = business;
 	}
 	public String getPosition() {
 		return position;
