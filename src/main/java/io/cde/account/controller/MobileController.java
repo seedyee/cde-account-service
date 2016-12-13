@@ -19,6 +19,7 @@ import io.cde.account.domain.i18n.Error;
 import io.cde.account.exception.AccountNotFoundException;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.impl.MobileServiceImpl;
+import io.cde.account.tools.RegexUtils;
 
 /**
  * @author lcl
@@ -83,10 +84,13 @@ public class MobileController {
 	 * @return 返回添加操作的结果
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles", method = RequestMethod.POST)
-	public ErrorInfo addMobile(@PathVariable String accountId, @ModelAttribute(name = "mobile") Mobile mobile) {
-        logger.info("add mobile started");
+	public ErrorInfo addMobile(@PathVariable String accountId, @RequestParam(name = "mobile") String mobile) {
+        System.err.println("--------检测电话号码正则表达式----------" + mobile + "*****" + RegexUtils.isMobile(mobile));
+		logger.info("add mobile started");
+		Mobile mobile2 = new Mobile();
+		mobile2.setMobile(mobile);
 		try {
-			mobileService.addMobile(accountId, mobile);
+			mobileService.addMobile(accountId, mobile2);
 		} catch (BizException e) {
 			logger.debug("add mobile failed", e);
 			return this.handException(e);

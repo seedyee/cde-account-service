@@ -1,5 +1,6 @@
 package io.cde.account.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
@@ -47,8 +48,14 @@ public class AccountController {
 	 * @return 返回注册用户操作的结果，注册成功返回null; 失败返回导致操作失败的错误信息
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public ErrorInfo createAccount(@ModelAttribute(name = "account") Account account) {
+	public ErrorInfo createAccount(@RequestParam(name = "name") String name, @RequestParam(name = "email") String email, 
+			@RequestParam(name = "password") String password,HttpServletResponse response) {
+		Account account = new Account();
+		account.setName(name);
+		account.setEmail(email);
+		account.setPassword(password);
 		logger.info("create account start");
+		//response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.25:1337");
 		try {
 			accountService.createAccount(account);
 		} catch (BizException e) {
@@ -64,7 +71,8 @@ public class AccountController {
 	 * @return 返回用户基本信息或是错误的操作反馈
 	 */
 	@RequestMapping(value = "/{accountId}/basicInfo", method = RequestMethod.GET)
-	public Account getAccountInfo(@PathVariable String accountId) {
+	public Account getAccountInfo(@PathVariable String accountId, HttpServletResponse response) {
+		//response.setHeader("Access-Control-Allow-Origin", "*");
 		logger.info("query account started");
 		Account account = accountService.getAccountInfo(accountId);
 		if (account == null) {
