@@ -20,19 +20,19 @@ public class RegexUtils {
 	 * 
 	 * 规则：
 	 */
-	private static final String ACCOUNT_PASSWORD_REGEX = "/((?=.*\\d)(?=.*\\D)|(?=.*[a-zA-Z])(?=.*[^a-zA-Z]))^.{6,24}$/";
+	private static final String ACCOUNT_PASSWORD_REGEX = "((?=.*\\d)(?=.*\\D)|(?=.*[a-zA-Z])(?=.*[^a-zA-Z]))^.{6,24}$";
 	/**
 	 * 匹配用户邮箱正则表示式字符串.
 	 * 
 	 * 规则：
 	 */
-	private static final String ACCOUNT_EMAIL_REGEX = "/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i";
+	private static final String ACCOUNT_EMAIL_REGEX = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$";
 	/**
 	 * 匹配用户电话号码正则表示式字符串.
 	 * 
 	 * 规则：1开头，总由11位数字组成
 	 */
-	private static final String ACCOUNT_MOBILE_REGEX = " /^1[0-9]{10}$/";
+	private static final String ACCOUNT_MOBILE_REGEX = "^[1][3-8]+\\d{9}";
     
 	private static Pattern pattern = null;
 	
