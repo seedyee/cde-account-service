@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 用户实体
  * @author lcl
@@ -25,11 +27,13 @@ public class Account extends BaseEntity {
 	 * 由于修改密码的保留字段，不存入数据库.
 	 */
 	@Transient
+	@JsonIgnore
     private String password1;
 	/**
 	 * 由于修改密码的保留字段，不存入数据库.
 	 */
 	@Transient
+	@JsonIgnore
     private String password2;
     /**
 	 * 用户头像地址.
@@ -67,6 +71,7 @@ public class Account extends BaseEntity {
 	 * 校验码，保留字段，不存到数据库中.
 	 */
     @Transient
+    @JsonIgnore
 	private String verifyCode;
     /**
 	 * 用户默认邮箱.
@@ -87,10 +92,12 @@ public class Account extends BaseEntity {
     /**
      * 用户邮箱信息.
      */
+	@JsonIgnore
     private List<Email> emails = new ArrayList<>();
     /**
      * 用户电话信息.
      */
+	@JsonIgnore
     private List<Mobile> mobiles = new ArrayList<>();
 
 	public String getName() {
