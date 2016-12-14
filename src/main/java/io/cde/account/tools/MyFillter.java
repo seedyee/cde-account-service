@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;;
  * @author lcl
  *
  */
-@WebFilter(filterName = "myfilter", urlPatterns = "/*")
+@WebFilter(filterName = "myfilter", urlPatterns = "/accounts")
 public class MyFillter implements Filter{
 
 	/* (non-Javadoc)
@@ -22,7 +22,6 @@ public class MyFillter implements Filter{
 	 */
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -32,11 +31,12 @@ public class MyFillter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		// TODO Auto-generated method stub
 		HttpServletResponse response2 = (HttpServletResponse) response;
-		response2.setHeader("Access-Control-Allow-Origin", "http://192.168.1.25:1337");
+		response2.setHeader("Access-Control-Allow-Origin", "*");
+		response2.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+        response2.setHeader("Access-Control-Allow-Headers","Access-Control-Allow-Origin,Access-Control-Allow-Methods,Access-Control-Max-Age,Content-Type");
 		response2.setContentType("application/json");
-		chain.doFilter(request, response2);
+		chain.doFilter(request, response);
 	}
 
 	/* (non-Javadoc)
@@ -44,8 +44,6 @@ public class MyFillter implements Filter{
 	 */
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
-		// TODO Auto-generated method stub
 		
 	}
-
 }
