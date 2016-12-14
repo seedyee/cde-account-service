@@ -2,15 +2,15 @@ package io.cde.account.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.cde.account.domain.ErrorInfo;
@@ -19,6 +19,7 @@ import io.cde.account.domain.i18n.Error;
 import io.cde.account.exception.AccountNotFoundException;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.impl.MobileServiceImpl;
+import io.cde.account.tools.ErrorMessageSourceHandler;
 import io.cde.account.tools.RegexUtils;
 
 /**
@@ -33,6 +34,9 @@ public class MobileController {
 	 * 记录日志.
 	 */
 	private final Logger logger = LoggerFactory.getLogger(Mobile.class);
+	
+	@Autowired
+	private ErrorMessageSourceHandler errorHandler;
     
 	@Autowired
 	private MobileServiceImpl mobileService;
@@ -65,15 +69,15 @@ public class MobileController {
 	 * @return 返回操作的结果
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles/{mobileId}", method = RequestMethod.POST)
-	public ErrorInfo updateMobile(@PathVariable String accountId, @PathVariable String mobileId, @RequestParam(name = "isVerified") boolean isVerified) {
+	public ErrorInfo updateMobile(@PathVariable String accountId, @PathVariable String mobileId, @RequestBody Map<String, Object> params) {
 		logger.info("update mobile started");
 		try {
-			mobileService.updateMobile(accountId, mobileId, isVerified);
+			mobileService.updateMobile(accountId, mobileId, (Boolean)params.get("isVerified"));
 		} catch (BizException e) {
 			logger.debug("update mobile failed", e);
 			return this.handException(e);
 		}
-		return null;
+		return new ErrorInfo();
 	}
 	
 	/**
@@ -84,18 +88,20 @@ public class MobileController {
 	 * @return 返回添加操作的结果
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles", method = RequestMethod.POST)
-	public ErrorInfo addMobile(@PathVariable String accountId, @RequestParam(name = "mobile") String mobile) {
-        System.err.println("--------检测电话号码正则表达式----------" + mobile + "*****" + RegexUtils.isMobile(mobile));
+	public ErrorInfo addMobile(@PathVariable String accountId, @RequestBody Map<String, String> params) {
 		logger.info("add mobile started");
+		if (!RegexUtils.isMobile(params.get("mobile"))) {
+			return new ErrorInfo(Error.ILLEGAL_MOBILE.getCode(), errorHandler.getMessage(Error.ILLEGAL_MOBILE.toString()));
+		}
 		Mobile mobile2 = new Mobile();
-		mobile2.setMobile(mobile);
+		mobile2.setMobile(params.get("mobile"));
 		try {
 			mobileService.addMobile(accountId, mobile2);
 		} catch (BizException e) {
 			logger.debug("add mobile failed", e);
 			return this.handException(e);
 		}
-		return null;
+		return new ErrorInfo();
 	}
 	
 	/**
@@ -114,7 +120,7 @@ public class MobileController {
 			logger.debug("delete mobile failed", e);
 			return this.handException(e);
 		}
-		return null;
+		return new ErrorInfo();
 	}
 	
 	/**
