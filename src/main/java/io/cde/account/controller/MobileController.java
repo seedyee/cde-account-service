@@ -72,7 +72,7 @@ public class MobileController {
 	public ErrorInfo updateMobile(@PathVariable String accountId, @PathVariable String mobileId, @RequestBody Map<String, Object> params) {
 		logger.info("update mobile started");
 		try {
-			mobileService.updateMobile(accountId, mobileId, (Boolean)params.get("isVerified"));
+			mobileService.updateMobile(accountId, mobileId, (Boolean)params.get("verified"));
 		} catch (BizException e) {
 			logger.debug("update mobile failed", e);
 			return this.handException(e);

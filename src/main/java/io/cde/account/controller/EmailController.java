@@ -72,7 +72,7 @@ public class EmailController {
 	public ErrorInfo updateEmail(@PathVariable String accountId, @PathVariable String emailId, @RequestBody Map<String, Object> params) {
 		logger.info("update email started");
 		try {
-			emailService.updateEmail(accountId, emailId, (Boolean) params.get("isVerified"));
+			emailService.updateEmail(accountId, emailId, (Boolean) params.get("verified"));
 		} catch (BizException e) {
 			logger.debug("update email failed", e);
 			return this.handException(e);
