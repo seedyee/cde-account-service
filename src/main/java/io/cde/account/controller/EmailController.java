@@ -2,15 +2,15 @@ package io.cde.account.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.cde.account.domain.Email;
@@ -19,6 +19,7 @@ import io.cde.account.domain.i18n.Error;
 import io.cde.account.exception.AccountNotFoundException;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.impl.EmailServiceImpl;
+import io.cde.account.tools.RegexUtils;
 
 /**
  * @author lcl
@@ -64,15 +65,15 @@ public class EmailController {
 	 * @return 返回修改操作的结果
 	 */
 	@RequestMapping(value = "/{accountId}/emails/{emailId}", method = RequestMethod.POST)
-	public ErrorInfo updateEmail(@PathVariable String accountId, @PathVariable String emailId, @RequestParam(name = "isVerified") boolean isVerified) {
+	public ErrorInfo updateEmail(@PathVariable String accountId, @PathVariable String emailId, @RequestBody Map<String, Object> params) {
 		logger.info("update email started");
 		try {
-			emailService.updateEmail(accountId, emailId, isVerified);
+			emailService.updateEmail(accountId, emailId, (Boolean) params.get("isVerified"));
 		} catch (BizException e) {
 			logger.debug("update email failed", e);
 			return this.handException(e);
 		}
-		return null;
+		return new ErrorInfo();
 	}
 	
 	/**
@@ -83,15 +84,20 @@ public class EmailController {
 	 * @return 返回添加操作的结果
 	 */
 	@RequestMapping(value = "/{accountId}/emails", method = RequestMethod.POST)
-	public ErrorInfo addEmail(@PathVariable String accountId, @ModelAttribute(name = "email") Email email) {
+	public ErrorInfo addEmail(@PathVariable String accountId, @RequestBody Map<String, String> params) {
+		if (!RegexUtils.isEmail(params.get("email"))) {
+			return new ErrorInfo(123, "邮箱格式错误");
+		}
 		logger.info("add email started");
+		Email email = new Email();
+		email.setEmail(params.get("email"));
 		try {
 			emailService.addEmail(accountId, email);
 		} catch (BizException e) {
 			logger.debug("add email failed", e);
 			return this.handException(e);
 		}
-		return null;
+		return new ErrorInfo();
 	}
 	
 	/**
@@ -110,7 +116,7 @@ public class EmailController {
 			logger.debug("delete email failed", e);
 			return this.handException(e);
 		}
-		return null;
+		return new ErrorInfo();
 	}
 	
 	/**
