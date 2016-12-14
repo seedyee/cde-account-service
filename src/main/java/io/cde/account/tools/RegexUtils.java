@@ -68,7 +68,7 @@ public class RegexUtils {
      * @return 用户名符合正则表达式规则返回true，否则返回false
      */
     public static boolean isEmail(String email) {
-      	pattern = Pattern.compile(ACCOUNT_EMAIL_REGEX);
+      	pattern = Pattern.compile(ACCOUNT_EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
 		matcher = pattern.matcher(email);
 		return matcher.find();
     }
