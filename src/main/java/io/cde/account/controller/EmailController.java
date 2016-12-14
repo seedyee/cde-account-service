@@ -19,6 +19,7 @@ import io.cde.account.domain.i18n.Error;
 import io.cde.account.exception.AccountNotFoundException;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.impl.EmailServiceImpl;
+import io.cde.account.tools.ErrorMessageSourceHandler;
 import io.cde.account.tools.RegexUtils;
 
 /**
@@ -34,6 +35,9 @@ public class EmailController {
 	 */
 	private final Logger logger = LoggerFactory.getLogger(EmailController.class);
     
+	@Autowired
+	private ErrorMessageSourceHandler errorHandler;
+	
 	@Autowired
 	private EmailServiceImpl emailService;
 	
@@ -86,7 +90,7 @@ public class EmailController {
 	@RequestMapping(value = "/{accountId}/emails", method = RequestMethod.POST)
 	public ErrorInfo addEmail(@PathVariable String accountId, @RequestBody Map<String, String> params) {
 		if (!RegexUtils.isEmail(params.get("email"))) {
-			return new ErrorInfo(123, "邮箱格式错误");
+			return new ErrorInfo(Error.ILLEGAL_EMAIL.getCode(), errorHandler.getMessage(Error.ILLEGAL_EMAIL.toString()));
 		}
 		logger.info("add email started");
 		Email email = new Email();
