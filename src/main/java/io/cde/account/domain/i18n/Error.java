@@ -52,7 +52,24 @@ public enum Error {
     /**
 	* 默认电话不能删除.
 	*/
-    UNDELETABLE_DEFAULT_MOBILE(100);
+    UNDELETABLE_DEFAULT_MOBILE(100),
+    /**
+     * 非法的用户名字符串
+     */
+	ILLEGAL_ACCOUNT_NAME(110),
+	/**
+     * 非法的用户名字符串
+     */
+	ILLEGAL_PASSWORD(111),
+	/**
+     * 非法的用户名字符串
+     */
+	ILLEGAL_EMAIL(112),
+	/**
+     * 非法的用户名字符串
+     */
+	ILLEGAL_MOBILE(113);
+	
     
     /**
 	* 错误码.
