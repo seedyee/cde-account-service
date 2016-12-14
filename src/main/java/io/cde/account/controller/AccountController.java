@@ -1,16 +1,23 @@
 package io.cde.account.controller;
 
+import java.util.Map;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.cde.account.domain.Account;
@@ -20,6 +27,7 @@ import io.cde.account.exception.AccountNotFoundException;
 import io.cde.account.exception.BizException;
 import io.cde.account.service.impl.AccountServiceImpl;
 import io.cde.account.tools.ErrorMessageSourceHandler;
+import io.cde.account.tools.RegexUtils;
 
 
 /**
@@ -47,22 +55,23 @@ public class AccountController {
 	 * @param account 携带注册信息的用户对象
 	 * @return 返回注册用户操作的结果，注册成功返回null; 失败返回导致操作失败的错误信息
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public ErrorInfo createAccount(@RequestParam(name = "name") String name, @RequestParam(name = "email") String email, 
-			@RequestParam(name = "password") String password,HttpServletResponse response) {
-		Account account = new Account();
-		account.setName(name);
-		account.setEmail(email);
-		account.setPassword(password);
+	
+//	public ErrorInfo createAccount(@RequestParam(name = "name") String name, @RequestParam(name = "email") String email, 
+//			@RequestParam(name = "password") String password) {
+	@RequestMapping(method = RequestMethod.POST)
+	public ErrorInfo createAccount(@RequestBody Map<String, String> account, ServletRequest request) {
+		Account accounts = new Account();
+		accounts.setName(account.get("name"));
+		accounts.setEmail(account.get("email"));
+		accounts.setPassword(account.get("password"));
 		logger.info("create account start");
-		//response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.25:1337");
 		try {
-			accountService.createAccount(account);
+			accountService.createAccount(accounts);
 		} catch (BizException e) {
 			logger.debug("create account failed, the reason ", e);
 			return new ErrorInfo(e.getCode(),e.getMessage());
 		}
-		return null;
+		return new ErrorInfo();
 	}
 	/**
 	 * 获取用户基本信息.
@@ -71,8 +80,7 @@ public class AccountController {
 	 * @return 返回用户基本信息或是错误的操作反馈
 	 */
 	@RequestMapping(value = "/{accountId}/basicInfo", method = RequestMethod.GET)
-	public Account getAccountInfo(@PathVariable String accountId, HttpServletResponse response) {
-		//response.setHeader("Access-Control-Allow-Origin", "*");
+	public Account getAccountInfo(@PathVariable String accountId) {
 		logger.info("query account started");
 		Account account = accountService.getAccountInfo(accountId);
 		if (account == null) {
@@ -90,7 +98,7 @@ public class AccountController {
 	 * @return 返回修改操作的结果，修改成功返回null；失败返回相应的错误信息
 	 */
 	@RequestMapping(value = "/{accountId}/basicInfo", method = RequestMethod.POST)
-	public ErrorInfo updateAccountInfo(@PathVariable String accountId, @ModelAttribute(name = "account") Account account) {
+	public ErrorInfo updateAccountInfo(@PathVariable String accountId, @RequestBody Account account) {
 		logger.info("update account information started");
 		account.setId(accountId);
 		try {
@@ -99,7 +107,7 @@ public class AccountController {
 			logger.debug("update account information failed", e);
 			throw new AccountNotFoundException();
 		}
-		return null;
+		return new ErrorInfo();
 	}
 	
 	/**
@@ -111,10 +119,13 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/{accountId}/name", method = RequestMethod.POST)
 	public ErrorInfo updateName(@PathVariable String accountId,
-			@RequestParam(name = "name") @NotNull String name) {
+			@RequestBody Map<String, String> params) {
+//		if (false) {
+//			return new ErrorInfo(123, "用户名不符合要求");
+//		}
 		logger.info("update account name started");
 		try {
-			accountService.updateName(accountId, name);
+			accountService.updateName(accountId, params.get("name"));
 		} catch (BizException e) {
 			logger.debug("update account name failed", e);
 			if(e.getCode() == Error.INVALID_ACCOUNT_ID.getCode()){
@@ -122,7 +133,7 @@ public class AccountController {
 			}
 			return new ErrorInfo(e.getCode(),e.getMessage());
 		}
-		return null;
+		return new ErrorInfo();
 	}
 	/**
 	 * 修改用户密码.
@@ -133,17 +144,18 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/{accountId}/password", method = RequestMethod.POST)
 	public ErrorInfo updatePassword(@PathVariable String accountId, 
-			@RequestParam(name = "password") @NotNull String password, 
-			@RequestParam(name = "password1") @NotNull String password1,
-			@RequestParam(name = "password2") @NotNull String password2) {
+			@RequestBody Map<String, String> params ) {
 		logger.info("update account password started");
-		if (!password1.equals(password2)) {
+		if (params.get("password1") != null && !params.get("password1").equals(params.get("password2"))) {
 			ErrorInfo errorInfo = new ErrorInfo(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.getCode(), errorHandler.getMessage(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.toString()) );
 			logger.debug("update account password failed", errorInfo);
 			return errorInfo;
 		}
+		if (!RegexUtils.isAccountPassword(params.get("password1"))) {
+			return new ErrorInfo(123, "密码格式错误");
+		}
 		try {
-			accountService.updatePassword(accountId, password, password1);
+			accountService.updatePassword(accountId, params.get("password"), params.get("password1"));
 		} catch (BizException e) {
 			logger.debug("update account password failed", e);
 			if(e.getCode() == Error.INVALID_ACCOUNT_ID.getCode()){
@@ -151,6 +163,6 @@ public class AccountController {
 			}
 			return new ErrorInfo(e.getCode(),e.getMessage());
 		}
-		return null;
+		return new ErrorInfo();
 	}
 }
