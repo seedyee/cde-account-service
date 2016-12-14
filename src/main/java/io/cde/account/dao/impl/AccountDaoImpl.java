@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
@@ -40,12 +41,7 @@ public class AccountDaoImpl implements AccountDao {
 	@Override
 	public Account findById(String id) {
 		Account account = null;
-		//Query query = Query.query(Criteria.where("_id").is(id));
-		DBObject obj = new BasicDBObject("_id", id);
-		BasicDBObject fieldsObject = new BasicDBObject();
-		fieldsObject.put("emails", false);
-		fieldsObject.put("mobiles", false);
-		Query query = new BasicQuery(obj, fieldsObject);
+		Query query = Query.query(Criteria.where("_id").is(id));
 		account = mongoTemPlate.findOne(query, Account.class);
 		return account;
 	}
