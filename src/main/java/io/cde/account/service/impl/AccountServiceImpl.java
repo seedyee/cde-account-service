@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +75,10 @@ public class AccountServiceImpl implements AccountService{
 	 * @see io.cde.account.service.impl.AccountService#updateAccount(io.cde.account.domain.Account)
 	 */
 	@Override
-	@CacheEvict(cacheNames = {"accounts"}, key = "'account:' + #account.id")
+	
+	@Caching(evict = {@CacheEvict(cacheNames = "accounts", key = "'account:' + #account.id"),
+			@CacheEvict(cacheNames = "emails", key = "'email:' + #account.id"),
+			@CacheEvict(cacheNames = "mobiles", key = "'mobile:' + #account.id")})
 	public void updateAccount(Account account) throws BizException{
         accountCheck.checkAccountExistedById(account.getId());
         int updateAccount = accountDao.updateAccount(account);
