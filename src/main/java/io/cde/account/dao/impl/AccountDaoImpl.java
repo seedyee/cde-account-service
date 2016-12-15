@@ -66,8 +66,7 @@ public class AccountDaoImpl implements AccountDao {
 		Update update = Update.update("realName", account.getRealName()).set("email", account.getEmail())
 				.set("company", account.getCompany()).set("business", account.getBusiness())
 				.set("address", account.getAddress()).set("position", account.getPosition())
-				.set("personal", account.getPersonal()).set("isPublicEmail", account.isPublicEmail())
-				.set("mobile", account.getMobile()).set("isPublicMobile", account.isPublicMobile());
+				.set("personal", account.getPersonal()).set("mobile", account.getMobile());
 		WriteResult updateFirst = mongoTemPlate.updateFirst(query, update, Account.class);
 		if (updateFirst.getN() <= 0) {
 			return -1;

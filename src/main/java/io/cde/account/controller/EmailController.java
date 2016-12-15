@@ -71,13 +71,22 @@ public class EmailController {
 	@RequestMapping(value = "/{accountId}/emails/{emailId}", method = RequestMethod.POST)
 	public ErrorInfo updateEmail(@PathVariable String accountId, @PathVariable String emailId, @RequestBody Map<String, Object> params) {
 		logger.info("update email started");
+		
 		try {
-			emailService.updateEmail(accountId, emailId, (Boolean) params.get("verified"));
+			if (params.get("verified") != null) {
+				emailService.updateEmail(accountId, emailId, (Boolean) params.get("verified"));
+				return new ErrorInfo();
+			}
+			if (params.get("public") != null) {
+				emailService.updatePublicEmail(accountId, (Boolean) params.get("public"));
+				return new ErrorInfo();
+			}
+			
 		} catch (BizException e) {
 			logger.debug("update email failed", e);
 			return this.handException(e);
 		}
-		return new ErrorInfo();
+		return new ErrorInfo(123,"参数为空");
 	}
 	
 	/**

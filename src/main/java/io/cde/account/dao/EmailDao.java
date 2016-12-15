@@ -39,6 +39,14 @@ public interface EmailDao {
     int updateEmail(String accountId, String emailId, boolean isVerified);
     
     /**
+     * 设置默认邮箱是否是公开.
+     * 
+     * @param accountId 用户id
+     * @param isPublic 是否公开
+     * @return 修改操作成功返回1，否者返回-1
+     */
+    int updatePublicEmail(String accountId, boolean isPublic);
+    /**
      * 为指定的用户添加邮箱.
      * 
      * @param accountId 用户id

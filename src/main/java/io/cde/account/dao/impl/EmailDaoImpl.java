@@ -59,7 +59,21 @@ public class EmailDaoImpl implements EmailDao {
 		}
 		return 1;
 	}
-
+	
+    /* (non-Javadoc)
+     * @see io.cde.account.dao.EmailDao#updatePublicEmail(java.lang.String, java.lang.String, boolean)
+     */
+    @Override
+    public int updatePublicEmail(String accountId, boolean isPublic) {
+    	Query query = Query.query(Criteria.where("_id").is(accountId));
+		Update update = Update.update("isPublicEmail", isPublic);
+		WriteResult updateFirst = mongoTemplate.updateFirst(query, update, Account.class);
+		if (updateFirst.getN() <= 0) {
+			return -1;
+		}
+		return 1;
+    }
+    
 	/* (non-Javadoc)
 	 * @see io.cde.account.dao.EmailDao#addEmail(java.lang.String, io.cde.account.domain.Email)
 	 */
@@ -91,5 +105,4 @@ public class EmailDaoImpl implements EmailDao {
 		}
 		return 1;
 	}
-
 }

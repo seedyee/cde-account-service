@@ -40,6 +40,15 @@ public interface EmailService {
     void updateEmail(String accountId, String emailId, boolean isVerified) throws BizException;
     
     /**
+     * 设置默认邮箱是否为公开.
+     * 
+     * @param accountId 用户id
+     * @param isPublis 是否公开
+     * @throws BizException
+     */
+    void updatePublicEmail(String accountId, boolean isPublis) throws BizException;
+    
+    /**
      * 删除指定用户的指定邮箱信息.
      * 
      * @param accountId 用户id

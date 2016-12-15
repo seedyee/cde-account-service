@@ -78,7 +78,21 @@ public class EmailServiceImpl implements EmailService {
         		throw new BizException(SystemError.UPDATE_FAILED.getCode(), errorHandler.getMessage(SystemError.UPDATE_FAILED.toString()));
 		}
 	}
-
+    
+	/* (non-Javadoc)
+	 * @see io.cde.account.service.EmailService#updatePublicEmail(java.lang.String, boolean)
+	 */
+	@Override
+	@Caching(evict = {@CacheEvict(cacheNames = "accounts", key = "'account:' + #accountId"),
+			@CacheEvict(cacheNames = "emails", key = "'email:' + #accountId")})
+	public void updatePublicEmail(String accountId, boolean isPublic) throws BizException {
+		accountCheck.checkAccountExistedById(accountId);
+		int updateEmail = emailDao.updatePublicEmail(accountId, isPublic);
+        if (updateEmail <= 0) {
+        		throw new BizException(SystemError.UPDATE_FAILED.getCode(), errorHandler.getMessage(SystemError.UPDATE_FAILED.toString()));
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see io.cde.account.service.EmailService#deleteEmail(java.lang.String, java.lang.String)
 	 */
