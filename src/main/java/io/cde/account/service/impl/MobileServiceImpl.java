@@ -104,6 +104,7 @@ public class MobileServiceImpl implements MobileService {
 			@CacheEvict(cacheNames = "mobiles", key = "'mobile:' + #accountId")})
 	public void deleteMobile(String accountId, String mobileId) throws BizException {
 		accountCheck.checkAccountMobile(accountId, mobileId);
+		accountCheck.checkDefaultMobile(accountId, mobileId);
         int deleteMobile = mobileDao.deleteMobile(accountId, mobileId);
         if (deleteMobile <= 0) {
         		throw new BizException(SystemError.DELETE_FAILED.getCode(), errorHandler.getMessage(SystemError.DELETE_FAILED.toString()));

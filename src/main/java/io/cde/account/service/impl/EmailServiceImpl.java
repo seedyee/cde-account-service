@@ -102,6 +102,7 @@ public class EmailServiceImpl implements EmailService {
 			@CacheEvict(cacheNames = "emails", key = "'email:' + #accountId")})
 	public void deleteEmail(String accountId, String emailId) throws BizException {
 		accountCheck.checkAcccountEmail(accountId, emailId);
+		accountCheck.checkDefaultEmail(accountId, emailId);
 		int deleteEmail = emailDao.deleteEmail(accountId, emailId);
 		if (deleteEmail <= 0) {
 			throw new BizException(SystemError.DELETE_FAILED.getCode(), errorHandler.getMessage(SystemError.DELETE_FAILED.toString()));
