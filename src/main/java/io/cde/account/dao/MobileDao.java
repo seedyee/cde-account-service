@@ -1,5 +1,6 @@
 package io.cde.account.dao;
 
+import io.cde.account.domain.Account;
 import io.cde.account.domain.Mobile;
 
 /**
@@ -13,9 +14,9 @@ public interface MobileDao {
 	 * 
 	 * @param accountId 用户id
 	 * @param mobileId 电话id
-	 * @return 关联返回true，否则返回false
+	 * @return 
 	 */
-	boolean isAssociated(String accountId, String mobileId);
+	Account findAccountByMobileId(String accountId, String mobileId);
 	
 	/**
 	 * 根据电话号码检查电话号码是否被使用过.

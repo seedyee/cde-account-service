@@ -28,11 +28,11 @@ public class MobileDaoImpl implements MobileDao {
 	 * @see io.cde.account.dao.MobileDao#getMobileById(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public boolean isAssociated(String accountId, String mobileId) {
-		boolean isAssociated = false;
+	public Account findAccountByMobileId(String accountId, String mobileId) {
+		Account account = null;
 		Query query = Query.query(Criteria.where("_id").is(accountId).and("mobiles.mobileId").is(mobileId));
-		isAssociated = mongoTemplate.exists(query, "account");
-		return isAssociated;
+		account = mongoTemplate.findOne(query, Account.class);
+		return account;
 	}
 
 	/* (non-Javadoc)
