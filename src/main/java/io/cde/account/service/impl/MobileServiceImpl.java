@@ -81,7 +81,21 @@ public class MobileServiceImpl implements MobileService {
         		throw new BizException(SystemError.UPDATE_FAILED.getCode(), errorHandler.getMessage(SystemError.UPDATE_FAILED.toString()));
 		}
 	}
-
+    
+	/* (non-Javadoc)
+	 * @see io.cde.account.service.MobileService#updatePublicMobile(java.lang.String, boolean)
+	 */
+	@Override
+	@Caching(evict = {@CacheEvict(cacheNames = "accounts", key = "'account:' + #accountId"),
+			@CacheEvict(cacheNames = "mobiles", key = "'mobile:' + #accountId")})
+	public void updatePublicMobile(String accountId, boolean isPublic) throws BizException {
+		accountCheck.checkAccountExistedById(accountId);
+		int updateEmail = mobileDao.updatePublicMobile(accountId, isPublic);
+        if (updateEmail <= 0) {
+        		throw new BizException(SystemError.UPDATE_FAILED.getCode(), errorHandler.getMessage(SystemError.UPDATE_FAILED.toString()));
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see io.cde.account.service.MobileService#deleteMobile(java.lang.String, java.lang.String)
 	 */

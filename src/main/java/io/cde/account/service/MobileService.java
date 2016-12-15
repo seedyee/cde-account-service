@@ -40,6 +40,14 @@ public interface MobileService {
     void updateMobile(String accountId, String mobileId, boolean isVerified) throws BizException;
     
     /**
+     * 修改默认电话是否公开.
+     * 
+     * @param accountId 用户id
+     * @param isPublic 是否公开
+     */
+    void updatePublicMobile(String accountId, boolean isPublic) throws BizException;
+    
+    /**
      * 删除指定用户的指定电话.
      * 
      * @param accountId 用户id

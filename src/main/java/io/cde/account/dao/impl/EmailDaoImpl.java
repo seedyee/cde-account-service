@@ -1,13 +1,17 @@
 package io.cde.account.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 import com.mongodb.WriteResult;
 
 import io.cde.account.dao.EmailDao;
@@ -23,6 +27,9 @@ public class EmailDaoImpl implements EmailDao {
 	
 	@Autowired
     private MongoTemplate mongoTemplate;
+	
+	@Autowired
+	private MongoOperations mongoOperations;
 
 	/* (non-Javadoc)
 	 * @see io.cde.account.dao.EmailDao#getEmailById(java.lang.String, java.lang.String)
@@ -65,12 +72,12 @@ public class EmailDaoImpl implements EmailDao {
      */
     @Override
     public int updatePublicEmail(String accountId, boolean isPublic) {
-    	Query query = Query.query(Criteria.where("_id").is(accountId));
-		Update update = Update.update("isPublicEmail", isPublic);
-		WriteResult updateFirst = mongoTemplate.updateFirst(query, update, Account.class);
-		if (updateFirst.getN() <= 0) {
-			return -1;
-		}
+	    	Query query = Query.query(Criteria.where("_id").is(accountId));
+			Update update = Update.update("isPublicEmail", isPublic);
+			WriteResult updateFirst = mongoTemplate.updateFirst(query, update, Account.class);
+			if (updateFirst.getN() <= 0) {
+				return -1;
+			}
 		return 1;
     }
     

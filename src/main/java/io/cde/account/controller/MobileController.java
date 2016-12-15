@@ -72,12 +72,19 @@ public class MobileController {
 	public ErrorInfo updateMobile(@PathVariable String accountId, @PathVariable String mobileId, @RequestBody Map<String, Object> params) {
 		logger.info("update mobile started");
 		try {
-			mobileService.updateMobile(accountId, mobileId, (Boolean)params.get("verified"));
+			if (params.get("verified") != null) {
+				mobileService.updateMobile(accountId, mobileId, (Boolean)params.get("verified"));
+				return new ErrorInfo();
+			}
+			if (params.get("public") != null) {
+				mobileService.updatePublicMobile(accountId,(Boolean)params.get("public"));
+				return new ErrorInfo();
+			}
 		} catch (BizException e) {
 			logger.debug("update mobile failed", e);
 			return this.handException(e);
 		}
-		return new ErrorInfo();
+		return new ErrorInfo(123, "参数为空");
 	}
 	
 	/**

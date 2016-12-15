@@ -36,6 +36,15 @@ public interface MobileDao {
 	int updateMobile(String accountId, String mobileId, boolean isVerified);
 	
 	/**
+	 * 修改默认电话是否为公开.
+	 * 
+	 * @param accountId 用户id
+	 * @param isPublic 是否公开
+	 * @return 修改成功返回1，否则返回-1
+	 */
+	int updatePublicMobile(String accountId, boolean isPublic);
+	
+	/**
 	 * 添加电话信息.
 	 * 
 	 * @param accountId 用户id

@@ -59,7 +59,21 @@ public class MobileDaoImpl implements MobileDao {
 		}
 		return 1;
 	}
-
+	
+    /* (non-Javadoc)
+     * @see io.cde.account.dao.MobileDao#updatePublicMobile(java.lang.String, boolean)
+     */
+    @Override
+    public int updatePublicMobile(String accountId, boolean isPublic) {
+    		Query query = Query.query(Criteria.where("_id").is(accountId));
+		Update update = Update.update("isPublicMobile", isPublic);
+		WriteResult updateFirst = mongoTemplate.updateFirst(query, update, Account.class);
+		if (updateFirst.getN() <= 0) {
+			return -1;
+		}
+		return 1;
+    }
+    
 	/* (non-Javadoc)
 	 * @see io.cde.account.dao.MobileDao#addMobile(java.lang.String, io.cde.account.domain.Mobile)
 	 */
