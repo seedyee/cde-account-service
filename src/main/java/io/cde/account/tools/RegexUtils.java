@@ -14,7 +14,7 @@ public class RegexUtils {
 	 * 
 	 * 规则：
 	 */
-	private static final String ACCOUNT_NAME_REGEX = "";
+	private static final String ACCOUNT_NAME_REGEX = "^[a-zA-Z][a-zA-Z0-9]{2,15}$";
 	/**
 	 * 匹配用户密码正则表示式字符串.
 	 * 

@@ -98,7 +98,7 @@ public class EmailController {
 	 */
 	@RequestMapping(value = "/{accountId}/emails", method = RequestMethod.POST)
 	public ErrorInfo addEmail(@PathVariable String accountId, @RequestBody Map<String, String> params) {
-		if (!RegexUtils.isEmail(params.get("email"))) {
+		if (params.get("email") != null && !RegexUtils.isEmail(params.get("email"))) {
 			return new ErrorInfo(Error.ILLEGAL_EMAIL.getCode(), errorHandler.getMessage(Error.ILLEGAL_EMAIL.toString()));
 		}
 		logger.info("add email started");
