@@ -58,13 +58,13 @@ public class AccountController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ErrorInfo createAccount(@RequestBody Map<String, String> account, ServletRequest request) {
 		Account accounts = new Account();
-//		if (!RegexUtils.isAccountName(account.get("name"))) {
-//			return new ErrorInfo(Error.ILLEGAL_ACCOUNT_NAME.getCode(), errorHandler.getMessage(Error.ILLEGAL_ACCOUNT_NAME.toString()));
-//		}
-		if (!RegexUtils.isAccountPassword(account.get("password"))) {
+		if (account.get("name") != null && !RegexUtils.isAccountName(account.get("name"))) {
+			return new ErrorInfo(Error.ILLEGAL_ACCOUNT_NAME.getCode(), errorHandler.getMessage(Error.ILLEGAL_ACCOUNT_NAME.toString()));
+		}
+		if (account.get("password") != null && !RegexUtils.isAccountPassword(account.get("password"))) {
 			return new ErrorInfo(Error.ILLEGAL_PASSWORD.getCode(), errorHandler.getMessage(Error.ILLEGAL_PASSWORD.toString()));
 		}
-		if (!RegexUtils.isEmail(account.get("email"))) {
+		if (account.get("email") != null && !RegexUtils.isEmail(account.get("email"))) {
 			return new ErrorInfo(Error.ILLEGAL_EMAIL.getCode(), errorHandler.getMessage(Error.ILLEGAL_EMAIL.toString()));
 		}
 		accounts.setName(account.get("name"));
@@ -126,7 +126,7 @@ public class AccountController {
 	@RequestMapping(value = "/{accountId}/name", method = RequestMethod.POST)
 	public ErrorInfo updateName(@PathVariable String accountId,
 			@RequestBody Map<String, String> params) {
-		if (!RegexUtils.isAccountName(params.get("name"))) {
+		if (params.get("name") != null && !RegexUtils.isAccountName(params.get("name"))) {
 			return new ErrorInfo(Error.ILLEGAL_ACCOUNT_NAME.getCode(), errorHandler.getMessage(Error.ILLEGAL_ACCOUNT_NAME.toString()));
 		}
 		logger.info("update account name started");
