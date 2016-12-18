@@ -28,30 +28,38 @@ import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 public class RedisCacheConfiguration extends CachingConfigurerSupport {
 
     /**
+     * JedisConnectionFactor对象.
+     *
+     * @return jedisConnectionFactory
+     */
+    @Bean
+    public JedisConnectionFactory jedisConnectionFactory() {
+        return  new JedisConnectionFactory();
+    }
+
+    /**
      * 配置StringRedisTemplate实体.
      *
-     * @param jedisConnectionFactory jedisConnectionFactory对象
      * @return StringRedisTemplate实体
      */
     @Bean
-    public StringRedisTemplate stringRedisTemplate(final JedisConnectionFactory jedisConnectionFactory) {
+    public StringRedisTemplate stringRedisTemplate() {
         final StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
-        stringRedisTemplate.setConnectionFactory(jedisConnectionFactory);
+        stringRedisTemplate.setConnectionFactory(jedisConnectionFactory());
         return stringRedisTemplate;
     }
 
     /**
      * 配置RedisTemplate.
      *
-     * @param jedisConnectionFactory jedisConnectionFactory对象
-     * @return 返回redisTemplate实体
-     * @throws UnknownHostException。
+     * @return 返回RedisTemplate对象
+     * @throws UnknownHostException 没有配置host异常
      */
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(final JedisConnectionFactory jedisConnectionFactory) throws UnknownHostException {
-        final RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
-        template.setConnectionFactory(jedisConnectionFactory);
-        final Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(
+    public RedisTemplate<String, Object> redisTemplate() throws UnknownHostException {
+        final RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(jedisConnectionFactory());
+        final Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(
                 Object.class);
         final ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, Visibility.ANY);
