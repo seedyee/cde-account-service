@@ -13,23 +13,28 @@ import io.cde.account.tools.MyFillter;
  */
 @Configuration
 public class FilterConfiguration {
-	
-	private MyFillter myFilter;
-	
-	/**
-	 * 
-	 */
-	@Autowired
-	public FilterConfiguration(MyFillter myFilter) {
-		this.myFilter = myFilter;
-	}
-	
-	/**
-	 * 注入MyFilter
-	 * @return
-	 */
-	@Bean
-	public FilterRegistrationBean init(){
-		 return new FilterRegistrationBean(this.myFilter);
-	}
+    /**
+     * myFilter.
+     */
+    private MyFillter myFilter;
+
+    /**
+     * 使用构造方法实例化myFilter.
+     *
+     * @param myFilter myFilter对象
+     */
+    @Autowired
+    public FilterConfiguration(final MyFillter myFilter) {
+        this.myFilter = myFilter;
+    }
+
+    /**
+     * 注入MyFilter.
+     *
+     * @return 返回FilterRegistrationBean
+     */
+    @Bean
+    public FilterRegistrationBean init() {
+        return new FilterRegistrationBean(this.myFilter);
+    }
 }
