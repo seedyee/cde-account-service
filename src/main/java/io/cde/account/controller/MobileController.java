@@ -84,7 +84,7 @@ public class MobileController {
 			logger.debug("update mobile failed", e);
 			return this.handException(e);
 		}
-		return new ErrorInfo(123, "参数为空");
+		return new ErrorInfo(Error.MISS_REQUIRED_PARAMETER.getCode(), errorHandler.getMessage(Error.MISS_REQUIRED_PARAMETER.toString()));
 	}
 	
 	/**
@@ -96,10 +96,13 @@ public class MobileController {
 	 */
 	@RequestMapping(value = "/{accountId}/mobiles", method = RequestMethod.POST)
 	public ErrorInfo addMobile(@PathVariable String accountId, @RequestBody Map<String, String> params) {
-		logger.info("add mobile started");
+		if (params.get("mobile") == null) {
+			return new ErrorInfo(Error.MISS_REQUIRED_PARAMETER.getCode(), errorHandler.getMessage(Error.MISS_REQUIRED_PARAMETER.toString()));
+		}
 		if (!RegexUtils.isMobile(params.get("mobile"))) {
 			return new ErrorInfo(Error.ILLEGAL_MOBILE.getCode(), errorHandler.getMessage(Error.ILLEGAL_MOBILE.toString()));
 		}
+		logger.info("add mobile started");
 		Mobile mobile2 = new Mobile();
 		mobile2.setMobile(params.get("mobile"));
 		try {

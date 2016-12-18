@@ -3,21 +3,14 @@ package io.cde.account.controller;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.cde.account.domain.Account;
@@ -58,13 +51,16 @@ public class AccountController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ErrorInfo createAccount(@RequestBody Map<String, String> account, ServletRequest request) {
 		Account accounts = new Account();
-		if (account.get("name") != null && !RegexUtils.isAccountName(account.get("name"))) {
+		if(account.get("name") == null || account.get("password") == null || account.get("email") == null) {
+			return new ErrorInfo(Error.MISS_REQUIRED_PARAMETER.getCode(), errorHandler.getMessage(Error.MISS_REQUIRED_PARAMETER.toString()));
+		}
+		if (!RegexUtils.isAccountName(account.get("name"))) {
 			return new ErrorInfo(Error.ILLEGAL_ACCOUNT_NAME.getCode(), errorHandler.getMessage(Error.ILLEGAL_ACCOUNT_NAME.toString()));
 		}
-		if (account.get("password") != null && !RegexUtils.isAccountPassword(account.get("password"))) {
+		if (!RegexUtils.isAccountPassword(account.get("password"))) {
 			return new ErrorInfo(Error.ILLEGAL_PASSWORD.getCode(), errorHandler.getMessage(Error.ILLEGAL_PASSWORD.toString()));
 		}
-		if (account.get("email") != null && !RegexUtils.isEmail(account.get("email"))) {
+		if (!RegexUtils.isEmail(account.get("email"))) {
 			return new ErrorInfo(Error.ILLEGAL_EMAIL.getCode(), errorHandler.getMessage(Error.ILLEGAL_EMAIL.toString()));
 		}
 		accounts.setName(account.get("name"));
@@ -126,7 +122,10 @@ public class AccountController {
 	@RequestMapping(value = "/{accountId}/name", method = RequestMethod.POST)
 	public ErrorInfo updateName(@PathVariable String accountId,
 			@RequestBody Map<String, String> params) {
-		if (params.get("name") != null && !RegexUtils.isAccountName(params.get("name"))) {
+		if (params.get("name") == null) {
+			return new ErrorInfo(Error.MISS_REQUIRED_PARAMETER.getCode(), errorHandler.getMessage(Error.MISS_REQUIRED_PARAMETER.toString()));
+		}
+		if (!RegexUtils.isAccountName(params.get("name"))) {
 			return new ErrorInfo(Error.ILLEGAL_ACCOUNT_NAME.getCode(), errorHandler.getMessage(Error.ILLEGAL_ACCOUNT_NAME.toString()));
 		}
 		logger.info("update account name started");
@@ -152,9 +151,11 @@ public class AccountController {
 	public ErrorInfo updatePassword(@PathVariable String accountId, 
 			@RequestBody Map<String, String> params ) {
 		logger.info("update account password started");
-		if (params.get("password1") != null && !params.get("password1").equals(params.get("password2"))) {
+		if (params.get("password1") == null || params.get("password2") == null || params.get("password") == null) {
+			return new ErrorInfo(Error.MISS_REQUIRED_PARAMETER.getCode(), errorHandler.getMessage(Error.MISS_REQUIRED_PARAMETER.toString()));
+		}
+		if (!params.get("password1").equals(params.get("password2"))) {
 			ErrorInfo errorInfo = new ErrorInfo(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.getCode(), errorHandler.getMessage(Error.UNMATCHED_PASSWORD1_AND_PASSWORD2.toString()) );
-			logger.debug("update account password failed", errorInfo);
 			return errorInfo;
 		}
 		if (!RegexUtils.isAccountPassword(params.get("password1"))) {

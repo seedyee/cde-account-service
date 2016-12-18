@@ -86,7 +86,7 @@ public class EmailController {
 			logger.debug("update email failed", e);
 			return this.handException(e);
 		}
-		return new ErrorInfo(123,"参数为空");
+		return new ErrorInfo(Error.MISS_REQUIRED_PARAMETER.getCode(), errorHandler.getMessage(Error.MISS_REQUIRED_PARAMETER.toString()));
 	}
 	
 	/**
@@ -98,7 +98,10 @@ public class EmailController {
 	 */
 	@RequestMapping(value = "/{accountId}/emails", method = RequestMethod.POST)
 	public ErrorInfo addEmail(@PathVariable String accountId, @RequestBody Map<String, String> params) {
-		if (params.get("email") != null && !RegexUtils.isEmail(params.get("email"))) {
+		if (params.get("email") == null) {
+			return new ErrorInfo(Error.MISS_REQUIRED_PARAMETER.getCode(), errorHandler.getMessage(Error.MISS_REQUIRED_PARAMETER.toString()));
+		}
+		if (!RegexUtils.isEmail(params.get("email"))) {
 			return new ErrorInfo(Error.ILLEGAL_EMAIL.getCode(), errorHandler.getMessage(Error.ILLEGAL_EMAIL.toString()));
 		}
 		logger.info("add email started");
