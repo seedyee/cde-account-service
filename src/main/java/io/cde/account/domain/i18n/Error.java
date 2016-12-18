@@ -68,7 +68,11 @@ public enum Error {
 	/**
      * 非法的用户名字符串
      */
-	ILLEGAL_MOBILE(113);
+	ILLEGAL_MOBILE(113),
+	/**
+	 * 缺少必要参数
+	 */
+	MISS_REQUIRED_PARAMETER(114);
 	
     
     /**
