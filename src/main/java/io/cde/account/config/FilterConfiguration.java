@@ -1,11 +1,12 @@
 package io.cde.account.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import io.cde.account.tools.RequestFilter;
+import io.cde.account.tools.MyRequestFilter;
 
 /**
  * @author lcl
@@ -16,16 +17,16 @@ public class FilterConfiguration {
     /**
      * myFilter.
      */
-    private RequestFilter requestFilter;
+    private MyRequestFilter myRequestFilter;
 
     /**
-     * 使用构造方法实例化myFilter.
+     * 使用构造方法实例化myRequestFilter.
      *
-     * @param requestFilter myFilter对象
+     * @param myRequestFilter myRequestFilter对象
      */
     @Autowired
-    public FilterConfiguration(final RequestFilter requestFilter) {
-        this.requestFilter = requestFilter;
+    public FilterConfiguration(@Qualifier(value = "myRequestFilter") final MyRequestFilter myRequestFilter) {
+        this.myRequestFilter = myRequestFilter;
     }
 
     /**
@@ -35,6 +36,6 @@ public class FilterConfiguration {
      */
     @Bean
     public FilterRegistrationBean init() {
-        return new FilterRegistrationBean(this.requestFilter);
+        return new FilterRegistrationBean(this.myRequestFilter);
     }
 }

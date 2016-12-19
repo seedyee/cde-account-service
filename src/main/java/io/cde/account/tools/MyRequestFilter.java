@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
  * @author lcl
  */
 @Component
-@WebFilter(filterName = "requestFilter", urlPatterns = "/accounts")
-public class RequestFilter implements Filter {
+@WebFilter(urlPatterns = "/accounts")
+public class MyRequestFilter implements Filter {
 
     /**
      * 允许访问的域名.
