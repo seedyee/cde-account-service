@@ -5,7 +5,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import io.cde.account.tools.MyFillter;
+import io.cde.account.tools.RequestFilter;
 
 /**
  * @author lcl
@@ -16,16 +16,16 @@ public class FilterConfiguration {
     /**
      * myFilter.
      */
-    private MyFillter myFilter;
+    private RequestFilter requestFilter;
 
     /**
      * 使用构造方法实例化myFilter.
      *
-     * @param myFilter myFilter对象
+     * @param requestFilter myFilter对象
      */
     @Autowired
-    public FilterConfiguration(final MyFillter myFilter) {
-        this.myFilter = myFilter;
+    public FilterConfiguration(final RequestFilter requestFilter) {
+        this.requestFilter = requestFilter;
     }
 
     /**
@@ -35,6 +35,6 @@ public class FilterConfiguration {
      */
     @Bean
     public FilterRegistrationBean init() {
-        return new FilterRegistrationBean(this.myFilter);
+        return new FilterRegistrationBean(this.requestFilter);
     }
 }

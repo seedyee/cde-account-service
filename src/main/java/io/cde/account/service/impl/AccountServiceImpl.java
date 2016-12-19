@@ -29,14 +29,34 @@ import io.cde.account.tools.ErrorMessageSourceHandler;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-    @Autowired
+    /**
+     * ErrorMessageSourceHandler对象.
+     */
     private ErrorMessageSourceHandler errorHandler;
 
-    @Autowired
+    /**
+     * AccountCheck对象.
+     */
     private AccountCheck accountCheck;
 
-    @Autowired
+    /**
+     * AccountDaoImpl对象.
+     */
     private AccountDaoImpl accountDao;
+
+    /**
+     * 通过构造器注入对象.
+     *
+     * @param errorHandler errorHandler对象
+     * @param accountCheck accountCheck对象
+     * @param accountDao accountDao对象
+     */
+    @Autowired
+    public AccountServiceImpl(final ErrorMessageSourceHandler errorHandler, final AccountCheck accountCheck, final AccountDaoImpl accountDao) {
+        this.errorHandler = errorHandler;
+        this.accountCheck = accountCheck;
+        this.accountDao = accountDao;
+    }
 
     /* (non-Javadoc)
      * @see io.cde.account.service.impl.AccountService#createAccount(io.cde.account.domain.Account)

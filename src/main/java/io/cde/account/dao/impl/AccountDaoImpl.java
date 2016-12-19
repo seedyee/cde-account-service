@@ -18,8 +18,20 @@ import io.cde.account.domain.Account;
 @Repository
 public class AccountDaoImpl implements AccountDao {
 
-    @Autowired
+    /**
+     * MongoTemplate对象.
+     */
     private MongoTemplate mongoTemPlate;
+
+    /**
+     * 通过构造器注入对象.
+     *
+     * @param mongoTemPlate mongoTemPlate对象
+     */
+    @Autowired
+    public AccountDaoImpl(final MongoTemplate mongoTemPlate) {
+        this.mongoTemPlate = mongoTemPlate;
+    }
 
     /* (non-Javadoc)
      * @see io.cde.account.dao.AccountDao#createAccount(io.cde.account.domain.Account)

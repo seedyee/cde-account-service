@@ -36,14 +36,24 @@ public class AccountController {
     /**
      * 引入ErrorMessageSourceHandler对象.
      */
-    @Autowired
     private ErrorMessageSourceHandler errorHandler;
 
     /**
      * 引入AccountServiceImpl对象.
      */
-    @Autowired
     private AccountServiceImpl accountService;
+
+    /**
+     * 构造方法注入对象.
+     *
+     * @param errorHandler requestFilter对象
+     * @param accountService AccountServiceImpl对象
+     */
+    @Autowired
+    public AccountController(final ErrorMessageSourceHandler errorHandler, final AccountServiceImpl accountService) {
+        this.errorHandler = errorHandler;
+        this.accountService = accountService;
+    }
 
     /**
      * 用户注册.

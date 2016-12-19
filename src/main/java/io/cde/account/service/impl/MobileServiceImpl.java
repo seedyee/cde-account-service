@@ -24,15 +24,34 @@ import io.cde.account.tools.ErrorMessageSourceHandler;
 @Service
 public class MobileServiceImpl implements MobileService {
 
-    @Autowired
+    /**
+     * ErrorMessageSourceHandler对象.
+     */
     private ErrorMessageSourceHandler errorHandler;
 
-    @Autowired
+    /**
+     * AccountCheck对象.
+     */
     private AccountCheck accountCheck;
 
-    @Autowired
+    /**
+     * MobileDaoImpl对象.
+     */
     private MobileDaoImpl mobileDao;
 
+    /**
+     * 使用构造器注入对象.
+     *
+     * @param errorHandler ErrorMessageSourceHandler对象.
+     * @param accountCheck AccountCheck对象.
+     * @param mobileDao MobileDaoImpl对象.
+     */
+    @Autowired
+    public MobileServiceImpl(final ErrorMessageSourceHandler errorHandler, final AccountCheck accountCheck, final MobileDaoImpl mobileDao) {
+        this.errorHandler = errorHandler;
+        this.accountCheck = accountCheck;
+        this.mobileDao = mobileDao;
+    }
 
     /* (non-Javadoc)
      * @see io.cde.account.service.MobileService#getMobiles(java.lang.String)

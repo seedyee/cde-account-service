@@ -1,6 +1,5 @@
 package io.cde.account.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,11 +33,27 @@ public class EmailController {
      */
     private final Logger logger = LoggerFactory.getLogger(EmailController.class);
 
-    @Autowired
+    /**
+     * ErrorMessageSourceHandler对象.
+     */
     private ErrorMessageSourceHandler errorHandler;
 
-    @Autowired
+    /**
+     * EmailServiceImpl对象.
+     */
     private EmailServiceImpl emailService;
+
+    /**
+     * 通过构造器注入对象.
+     *
+     * @param errorHandler errorHandler对象
+     * @param emailService emailService对象
+     */
+    @Autowired
+    public EmailController(final ErrorMessageSourceHandler errorHandler, final EmailServiceImpl emailService) {
+        this.errorHandler = errorHandler;
+        this.emailService = emailService;
+    }
 
     /**
      * 获取用户的邮箱信息.
@@ -49,7 +64,7 @@ public class EmailController {
     @RequestMapping(value = "/{accountId}/emails", method = RequestMethod.GET)
     public List<Email> getEmails(@PathVariable final String accountId) {
         logger.info("get the account's emails started");
-        List<Email> emails = new ArrayList<>();
+        final List<Email> emails;
         try {
             emails = emailService.getEmails(accountId);
         } catch (BizException e) {

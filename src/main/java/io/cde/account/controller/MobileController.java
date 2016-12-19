@@ -1,6 +1,5 @@
 package io.cde.account.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,11 +33,27 @@ public class MobileController {
      */
     private final Logger logger = LoggerFactory.getLogger(Mobile.class);
 
-    @Autowired
+    /**
+     * ErrorMessageSourceHandler对象.
+     */
     private ErrorMessageSourceHandler errorHandler;
 
-    @Autowired
+    /**
+     * MobileServiceImpl对象.
+     */
     private MobileServiceImpl mobileService;
+
+    /**
+     * 通过构造器注入对象.
+     *
+     * @param errorHandler errorHandler对象
+     * @param mobileService mobileService对象
+     */
+    @Autowired
+    public MobileController(final ErrorMessageSourceHandler errorHandler, final MobileServiceImpl mobileService) {
+        this.errorHandler = errorHandler;
+        this.mobileService = mobileService;
+    }
 
     /**
      * 获取用户电话信息.
@@ -48,7 +63,7 @@ public class MobileController {
      */
     @RequestMapping(value = "/{accountId}/mobiles", method = RequestMethod.GET)
     public List<Mobile> getMobiles(@PathVariable final String accountId) {
-        List<Mobile> mobiles = new ArrayList<>();
+        final List<Mobile> mobiles;
         logger.info("get the account's mobiles started");
         try {
             mobiles = mobileService.getMobiles(accountId);

@@ -1,6 +1,5 @@
 package io.cde.account.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -25,14 +24,34 @@ import io.cde.account.tools.ErrorMessageSourceHandler;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    @Autowired
+    /**
+     * ErrorMessageSourceHandler对象.
+     */
     private ErrorMessageSourceHandler errorHandler;
 
-    @Autowired
+    /**
+     * AccountCheck对象.
+     */
     private AccountCheck accountCheck;
 
-    @Autowired
+    /**
+     * EmailDaoImpl对象.
+     */
     private EmailDaoImpl emailDao;
+
+    /**
+     * 通过构造器注入对象.
+     *
+     * @param errorHandler ErrorMessageSourceHandler对象.
+     * @param accountCheck AccountCheck对象.
+     * @param emailDao EmailDaoImpl对象.
+     */
+    @Autowired
+    public EmailServiceImpl(final ErrorMessageSourceHandler errorHandler, final AccountCheck accountCheck, final EmailDaoImpl emailDao) {
+        this.errorHandler = errorHandler;
+        this.accountCheck = accountCheck;
+        this.emailDao = emailDao;
+    }
 
     /* (non-Javadoc)
      * @see io.cde.account.service.EmailService#getEmails(java.lang.String)
@@ -72,7 +91,7 @@ public class EmailServiceImpl implements EmailService {
     @Caching(evict = {@CacheEvict(cacheNames = "accounts", key = "'account:' + #accountId"),
             @CacheEvict(cacheNames = "emails", key = "'email:' + #accountId")})
     public void updateEmail(final String accountId, final String emailId, final boolean isVerified) throws BizException {
-        accountCheck.checkAcccountEmail(accountId, emailId);
+        accountCheck.checkAccountEmail(accountId, emailId);
         final int updateEmail = emailDao.updateEmail(accountId, emailId, isVerified);
         if (updateEmail <= 0) {
             throw new BizException(SystemError.UPDATE_FAILED.getCode(), errorHandler.getMessage(SystemError.UPDATE_FAILED.toString()));
@@ -100,7 +119,7 @@ public class EmailServiceImpl implements EmailService {
     @Caching(evict = {@CacheEvict(cacheNames = "accounts", key = "'account:' + #accountId"),
             @CacheEvict(cacheNames = "emails", key = "'email:' + #accountId")})
     public void deleteEmail(final String accountId, final String emailId) throws BizException {
-        accountCheck.checkAcccountEmail(accountId, emailId);
+        accountCheck.checkAccountEmail(accountId, emailId);
         accountCheck.checkDefaultEmail(accountId, emailId);
         final int deleteEmail = emailDao.deleteEmail(accountId, emailId);
         if (deleteEmail <= 0) {

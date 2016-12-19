@@ -20,8 +20,20 @@ import io.cde.account.domain.Email;
 @Repository
 public class EmailDaoImpl implements EmailDao {
 
-    @Autowired
+    /**
+     * MongoTemplate对象.
+     */
     private MongoTemplate mongoTemplate;
+
+    /**
+     * 通过构造器注入对象.
+     *
+     * @param mongoTemPlate mongoTemPlate对象
+     */
+    @Autowired
+    public EmailDaoImpl(final MongoTemplate mongoTemPlate) {
+        this.mongoTemplate = mongoTemPlate;
+    }
 
     /* (non-Javadoc)
      * @see io.cde.account.dao.EmailDao#getEmailById(java.lang.String, java.lang.String)

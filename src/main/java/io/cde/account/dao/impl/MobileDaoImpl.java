@@ -20,8 +20,20 @@ import io.cde.account.domain.Mobile;
 @Repository
 public class MobileDaoImpl implements MobileDao {
 
-    @Autowired
+    /**
+     * MongoTemplate对象.
+     */
     private MongoTemplate mongoTemplate;
+
+    /**
+     * 通过构造器注入对象.
+     *
+     * @param mongoTemPlate mongoTemPlate对象
+     */
+    @Autowired
+    public MobileDaoImpl(final MongoTemplate mongoTemPlate) {
+        this.mongoTemplate = mongoTemPlate;
+    }
 
     /* (non-Javadoc)
      * @see io.cde.account.dao.MobileDao#getMobileById(java.lang.String, java.lang.String)
